@@ -1,0 +1,48 @@
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
+public class ResourceManager {
+	private OnField theField;
+	private Deck theDeck;
+	private ArrayList<Card> cardList;
+	private ArrayList<Sprite> spriteList;
+
+	public ResourceManager(String gameName, int xSize, int ySize) {
+		if (xSize == 0) {
+			xSize = 1000;
+		}
+		if (ySize == 0) {
+			ySize = 1000;
+		}
+		theField = new OnField();
+		theDeck = new Deck();
+		
+		this.beginRendering(gameName, xSize, ySize);
+	}
+
+	private void beginRendering(String gameName, int xSize, int ySize) {
+		// This method creates a separate thread for rendering the screen
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				createWindow(gameName, xSize, ySize);
+			}
+		});
+	}
+
+	private void createWindow(String gameName, int xSize, int ySize) {
+		// This creates a container for the game, known as a "JFrame"
+		// Then adds the extended "JPanel" object called "theGameWindow" to the frame that we can
+		// use to render things with.
+		JFrame window = new JFrame(gameName);
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//Pass the playing field and sprite list by reference so they can be rendered by the game window.
+		window.add(new GameWindow(this.theField, this.spriteList));
+		window.setSize(new Dimension(xSize, ySize));
+		window.setResizable(false);
+		window.setVisible(true);
+	}
+}
