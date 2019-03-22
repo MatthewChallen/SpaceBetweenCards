@@ -1,0 +1,30 @@
+import java.awt.Graphics;
+import java.util.ArrayList;
+
+import javax.swing.JPanel;
+
+public class GameWindow extends JPanel{
+	private OnField theField;
+	private ArrayList<Sprite> spriteList;
+	
+	public GameWindow(OnField theField, ArrayList<Sprite> spriteList){
+		//This creates a new window, passing the things that need to be displayed by reference
+		this.theField = theField;
+		this.spriteList = spriteList;
+	}
+	
+	public void paint(Graphics Screen) {
+		//Draws all the necessary objects when asked to by the system
+		int[] xLocation = this.theField.getXLocation();
+		int[] yLocation = this.theField.getYLocation();
+		String[] name = this.theField.getName();
+		for(int i = 0; i > spriteList.size(); i++) {
+			for(int j = 0; j > xLocation.length; j++) {
+				if(spriteList.get(i).getName().equals(name[j])) {
+					spriteList.get(i).paint(Screen, xLocation[j], yLocation[j]);
+				}
+			}
+		}
+		
+	}
+}
