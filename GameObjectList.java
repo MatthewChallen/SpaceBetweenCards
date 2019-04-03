@@ -1,12 +1,11 @@
-
 public class GameObjectList {
-	GameObjects[] gridObjects = new GameObjects[2];
+	GameObject[] gridObjects = new GameObject[2];
 	
 	public GameObjectList() {
 		
 	}
 	
-	public void addObject(GameObjects a) {
+	public void addObject(GameObject a) {
 		gridObjects[0] = a;
 	}
 	
@@ -25,7 +24,7 @@ public class GameObjectList {
 	}
 	
 	public boolean isThereCollision(){
-		if (gridObjects[0] instanceof GameObjects && gridObjects[1] instanceof GameObjects) {
+		if (gridObjects[0] instanceof GameObject && gridObjects[1] instanceof GameObject) {
 			return true;
 		}
 		return false;		
@@ -34,5 +33,12 @@ public class GameObjectList {
 	public String getObjectsID() {
 		return gridObjects[0].getObjectID() + " " + gridObjects[1].getObjectID();
 	}
+	
+	public String getObjectFileName() {
+		String fileName = null;
+		if(gridObjects[0] != null) {
+			fileName = gridObjects[0].getObjectFileName();
+		}
+		return fileName;
+	}
 }
-
