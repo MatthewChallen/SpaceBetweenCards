@@ -1,11 +1,17 @@
 
 public class PlayField {
-	GameObjectList[][] playGrid = new GameObjectList[10][10];
+	GameObjectList[][] playGrid;
 	
-	public PlayField() {
+	public PlayField(int x, int y) {
+		playGrid = new GameObjectList[10][10];
+		for(int i = 0; i < x; i++) {
+			for(int j = 0; j < y; j++) {
+				playGrid[i][j] = new GameObjectList();
+			}
+		}
 	}
 	
-	public void spawnPlayer(playerObject a, int y, int x) {
+	public void spawnPlayer(PlayerObject a, int y, int x) {
 		playGrid[y][x].addObject(a);
 	}
 	
@@ -25,4 +31,7 @@ public class PlayField {
 		playGrid[y][x].removeObject(noToDestroy);	
 	}
 	
+	public String getObjectFileName(int x, int y) {
+		return playGrid[x][y].getObjectFileName();
+	}
 }
