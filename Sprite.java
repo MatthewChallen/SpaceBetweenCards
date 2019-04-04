@@ -19,8 +19,8 @@ public class Sprite {
 
 	public void paint(Graphics Screen, int xLocation, int yLocation, int height, int width) {
 		// This method paints the sprite at the chosen location.
-
-		//Draw it
+		
+		// Draw it
 		Screen.drawImage(this.img, xLocation, yLocation, width, height, null);
 	}
 

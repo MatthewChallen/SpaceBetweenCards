@@ -2,6 +2,7 @@
 
 public class GameManager {
 	PlayField theField;
+	PlayerObject thePlayer;
 	// Create an instance of the resource manager
 
 	ResourceManager theResourceManager;
@@ -12,7 +13,7 @@ public class GameManager {
 	}
 
 	public GameManager() {
-		theResourceManager = new ResourceManager("The Space Between Cards", 0, 0);
+		theResourceManager = new ResourceManager("The Space Between Cards", 0, 0, 10, 10);
 		theField = theResourceManager.getPlayField();
 		
 	}
@@ -20,22 +21,26 @@ public class GameManager {
 	public void run() {
 		// This method contains the game logic loop (no rendering)
 		// Firstly, make the player object at with id 1 at location 3, 3
-		this.theField.spawnPlayer(new PlayerObject(1, 3, 3),  3, 3);
 		boolean running = true;
-		char input;
-		
+		int cardChosen;
+		theResourceManager.repaintWindow();
 		// Start the loop
 		while (running) {
 			//wait for player input
-			input = theResourceManager.getInput();
-			switch(input) {
-			case 1:
+			cardChosen = theResourceManager.getInput();
+			// Choose a card with the input and play it or close
+			if((int)cardChosen == -1) {
+				//This is the escape key. Avada Kedavara!
+				running = false;
+				System.out.println("Goodbye!");
+			}else {
+				theResourceManager.playCard(cardChosen - 0);
+				theField.newTurn();
+				// Rerender the screen
+				theResourceManager.repaintWindow();
 			}
-			// Choose a card with the input or close
-			System.out.println(input);
-			// Rerender the screen
-			theResourceManager.repaintWindow();
 		}
+		theResourceManager.stopRendering();
 	}
 	
 
