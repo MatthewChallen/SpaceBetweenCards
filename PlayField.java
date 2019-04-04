@@ -2,11 +2,11 @@
 public class PlayField {
 	GameObjectList[][] playGrid;
 	
-	public PlayField(int x, int y) {
-		playGrid = new GameObjectList[10][10];
+	public PlayField(int y, int x) {
+		playGrid = new GameObjectList[y][x];
 		for(int i = 0; i < x; i++) {
 			for(int j = 0; j < y; j++) {
-				playGrid[i][j] = new GameObjectList();
+				playGrid[j][i] = new GameObjectList();
 			}
 		}
 	}
@@ -31,7 +31,22 @@ public class PlayField {
 		playGrid[y][x].removeObject(noToDestroy);	
 	}
 	
-	public String getObjectFileName(int x, int y) {
-		return playGrid[x][y].getObjectFileName();
+	public String getObjectFileName(int y, int x) {
+		return playGrid[y][x].getObjectFileName();
 	}
+	
+	public void newTurn() {
+		//This method moves the board
+	}
+	
+	public int getXBoardSize() {
+		//This method returns the board size
+		return 10;
+	}
+	
+	public int getYBoardSize() {
+		//This method returns the board size
+		return 10;
+	}
+
 }
