@@ -1,8 +1,3 @@
-package com.playdis.cards;
-
-import com.playdis.objects.GameObject;
-import com.playdis.objects.PlayerObject;
-
 public class ShootCardDown extends Card {
 
 	public ShootCardDown(String name, String description) {
