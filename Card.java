@@ -2,7 +2,7 @@ public abstract class Card {
 	
 	private String name;
 	private String description;
-	public boolean cardDrawn = false;
+	// public boolean cardDrawn = false;
 	
 	public Card (String name, String description) {
 		this.name = name;
