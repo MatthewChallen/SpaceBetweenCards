@@ -1,5 +1,3 @@
-package com.playdis.cards;
-
 public class MoveCardUp extends Card {
 
 	public MoveCardUp(String name, String description) {
