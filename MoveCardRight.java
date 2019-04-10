@@ -1,7 +1,3 @@
-package com.playdis.cards;
-
-import com.playdis.objects.PlayerObject;
-
 public class MoveCardRight extends Card {
 
 	public MoveCardRight(String name, String description) {
