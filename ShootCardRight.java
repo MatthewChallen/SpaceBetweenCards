@@ -1,5 +1,3 @@
-package com.playdis.cards;
-
 public class ShootCardRight extends Card {
 
 	public ShootCardRight(String name, String description) {
