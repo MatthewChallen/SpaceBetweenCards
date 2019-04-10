@@ -1,5 +1,3 @@
-package com.playdis.cards;
-
 public abstract class Card {
 	
 	private String name;
