@@ -7,7 +7,7 @@ public class MoveCardLeft extends Card {
 	public String getCardFileName() {
 		
 		//This returns the name of the image that is rendered for this object
-		return "StrawberryMoveLeft.jpg";
+		return "cardShipLeft.png";
 	}
 	
 	public boolean play(PlayField theField) {
