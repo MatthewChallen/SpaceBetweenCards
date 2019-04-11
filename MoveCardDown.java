@@ -7,7 +7,7 @@ public class MoveCardDown extends Card {
 	public String getCardFileName() {
 		
 		//This returns the name of the image that is rendered for this object
-		return "cardShipUp.png";
+		return "CardShipDown.png";
 	}
 	
 	public boolean play(PlayField theField) {
