@@ -6,7 +6,7 @@ public class PlayField {
 	
 	public PlayField(int y, int x) {
 		 this.playGridXSize = x;
-	     this.playGridYSize = x;
+	     this.playGridYSize = y;
 		playGrid = new GameObjectList[y][x];
 		for(int i = 0; i < x; i++) {
 			for(int j = 0; j < y; j++) {

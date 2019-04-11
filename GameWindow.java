@@ -34,7 +34,7 @@ public class GameWindow extends JPanel {
 		Screen.setFont(new Font("Game Font", Font.PLAIN, 24));
 		System.out.println(bottomLeftText[0]);
 		Screen.setColor(Color.BLACK);
-		Screen.fillRect(0, this.getHeight() - 40, this.getWidth(), 40);
+		Screen.fillRect(0, 0, this.getWidth(), this.getHeight());
 		Screen.setColor(Color.WHITE);
 		Screen.drawString(bottomLeftText[0], 20, this.getHeight()-20);
 		paintBackGround(Screen);
