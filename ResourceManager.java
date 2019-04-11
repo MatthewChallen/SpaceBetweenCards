@@ -32,7 +32,7 @@ public class ResourceManager implements KeyListener, MouseListener {
 		theField = new PlayField(xBoardSize, yBoardSize);
 
 		// Make the player object and add it to the field
-		thePlayer = new PlayerObject(0, xBoardSize / 2, yBoardSize - 1);
+		thePlayer = new PlayerObject(0, xBoardSize / 2, yBoardSize - 2);
 		theField.spawnPlayer(thePlayer, thePlayer.getYCoordinates(), thePlayer.getXCoordinates());
 
 		// Set up the cards
@@ -131,17 +131,20 @@ public class ResourceManager implements KeyListener, MouseListener {
 
 	public void playCard(int cardNo) {
 		// This method plays the card, then removes it from the hand
+		bottomLeftText[0] = "Played the " + theHand.get(cardNo - 1).getName() + " card!";
 		theHand.get(cardNo - 1).play(theField);
 		theHand.remove(cardNo - 1);
 		drawCard();
-		bottomLeftText[0] = "Played the " + cardNo + "th card!";
 	}
 
 	private void addCardsToDeck(int deckSize) {
 		// This method adds cards to the deck to make a default deck
 		for (int i = 0; i < deckSize; i++) {
 			// Add a random card from the options
-			theDeck.add(new Card());
+			theDeck.add(new MoveCardLeft("Move Card left", "Moves the player left"));
+			theDeck.add(new MoveCardUp("Move Card up", "Moves the player up"));
+			theDeck.add(new MoveCardDown("Move Card down", "Moves the player down"));
+			theDeck.add(new MoveCardRight("Move Card right", "Moves the player right"));
 		}
 	}
 
