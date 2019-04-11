@@ -15,7 +15,9 @@ public class MoveCardDown extends Card {
 		// Moves the player one space to the Down
 		// Assumed a movePlayer() + getPlayer() method
 		// both in the PlayField class but can be changed
+    Compilation-error-fixing
 		theField.movePlayerObject("down");	
+
 		return true;
 	}
 }
