@@ -7,11 +7,10 @@ public class MoveCardUp extends Card {
 	public String getCardFileName() {
 		
 		//This returns the name of the image that is rendered for this object
-		return "StrawberryMoveUp.jpg";
+		return "cardShipUp.png";
 	}
 	
 	public boolean play(PlayField theField) {
-    Compilation-error-fixing
 		System.out.println("yo bro");
 		// Moves the player one space to the Up.
 		// Assumed a movePlayer() + getPlayer() method
