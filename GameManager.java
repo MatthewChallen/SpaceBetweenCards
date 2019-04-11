@@ -35,13 +35,11 @@ public class GameManager {
 				System.out.println("Goodbye!");
 			}else {
 				theResourceManager.playCard(cardChosen - 0);
-				theField.newTurn();
+				// theField.newTurn();
 				// Rerender the screen
 				theResourceManager.repaintWindow();
 			}
 		}
 		theResourceManager.stopRendering();
 	}
-	
-
 }
