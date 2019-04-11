@@ -7,7 +7,7 @@ public class PlayerObject extends GameObject {
 	
 	public String getObjectFileName() {
 		//This returns the name of the image that is rendered for this object
-		return "ship.png";
+		return "playerShip.png";
 	}
 
 }
