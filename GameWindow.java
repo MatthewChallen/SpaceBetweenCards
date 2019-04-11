@@ -47,8 +47,8 @@ public class GameWindow extends JPanel {
 		//This method paints the game board and all objects on it
 		
 		//These are the size of the board and screen
-		int xSize = theField.getXBoardSize();
-		int ySize = theField.getYBoardSize();
+		int xSize = theField.getPlayGridXSize();
+		int ySize = theField.getPlayGridYSize();
 		int screenHeight = this.getHeight();
 		int screenWidth = this.getWidth();
 		//This is the amount of space at the bottom and the top of the screen for the cards the player and the enemies can play
@@ -96,8 +96,8 @@ public class GameWindow extends JPanel {
 		//This method paints the cards in the players hand
 		
 		//These are the size of the board and screen
-		int xSize = theField.getXBoardSize();
-		int ySize = theField.getYBoardSize();
+		int xSize = theField.getPlayGridXSize();
+		int ySize = theField.getPlayGridYSize();
 		int screenHeight = this.getHeight();
 		int screenWidth = this.getWidth();
 		//This is the amount of space from the bottom that the cards have to be shown in

@@ -1,8 +1,12 @@
 
 public class PlayField {
 	GameObjectList[][] playGrid;
+    int playGridXSize;
+    int playGridYSize;
 	
 	public PlayField(int y, int x) {
+		 this.playGridXSize = x;
+	     this.playGridYSize = x;
 		playGrid = new GameObjectList[y][x];
 		for(int i = 0; i < x; i++) {
 			for(int j = 0; j < y; j++) {
@@ -87,4 +91,15 @@ public class PlayField {
 		}
 	}
 	
+	public String getObjectFileName(int xLocation, int yLocation) {
+		return playGrid[xLocation][yLocation].getObjectFileName();
+	}
+	
+	public int getPlayGridXSize() {
+        return this.playGridXSize;
+    }
+
+    public int getPlayGridYSize() {
+        return this.playGridYSize;
+    }
 }
