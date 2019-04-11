@@ -1,12 +1,18 @@
 
 public class PlayField {
-	GameObjectList[][] playGrid = new GameObjectList[10][10];
+	GameObjectList[][] playGrid;
 	
-	public PlayField() {
+	public PlayField(int y, int x) {
+		playGrid = new GameObjectList[y][x];
+		for(int i = 0; i < x; i++) {
+			for(int j = 0; j < y; j++) {
+				playGrid[i][j] = new GameObjectList();
+			}
+		}
 	}
 	
 	// Spawns player at requested point
-	public void spawnPlayer(playerObject a, int y, int x) {
+	public void spawnPlayer(PlayerObject a, int y, int x) {
 		playGrid[y][x].addObject(a);
 	}
 	
@@ -36,7 +42,7 @@ public class PlayField {
 		case "left" :
 			for (int i = 0; i < playGrid.length; i++) {
 				for (int j = 0; j < playGrid[i].length; j++) {
-					if (playGrid[i][j].whatObjectIsThis() instanceof playerObject) {
+					if (playGrid[i][j].whatObjectIsThis() instanceof PlayerObject) {
 						playGrid[i][j-1].addObject(playGrid[i][j].whatObjectIsThis());
 						playGrid[i][j].removeObject(1); ;
 						break;
@@ -47,7 +53,7 @@ public class PlayField {
 		case "right" :
 			for (int i = 0; i < playGrid.length; i++) {
 				for (int j = 0; j < playGrid[i].length; j++) {
-					if (playGrid[i][j].whatObjectIsThis() instanceof playerObject) {
+					if (playGrid[i][j].whatObjectIsThis() instanceof PlayerObject) {
 						playGrid[i][j+1].addObject(playGrid[i][j].whatObjectIsThis());
 						playGrid[i][j].removeObject(1); ;
 						break;
@@ -58,7 +64,7 @@ public class PlayField {
 		case "up" :
 			for (int i = 0; i < playGrid.length; i++) {
 				for (int j = 0; j < playGrid[i].length; j++) {
-					if (playGrid[i][j].whatObjectIsThis() instanceof playerObject) {
+					if (playGrid[i][j].whatObjectIsThis() instanceof PlayerObject) {
 						playGrid[i-1][j].addObject(playGrid[i][j].whatObjectIsThis());
 						playGrid[i][j].removeObject(1); ;
 						break;
@@ -69,7 +75,7 @@ public class PlayField {
 		case "down" :
 			for (int i = 0; i < playGrid.length; i++) {
 				for (int j = 0; j < playGrid[i].length; j++) {
-					if (playGrid[i][j].whatObjectIsThis() instanceof playerObject) {
+					if (playGrid[i][j].whatObjectIsThis() instanceof PlayerObject) {
 						playGrid[i+1][j].addObject(playGrid[i][j].whatObjectIsThis());
 						playGrid[i][j].removeObject(1); ;
 						break;

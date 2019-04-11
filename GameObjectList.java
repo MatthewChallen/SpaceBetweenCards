@@ -1,13 +1,13 @@
 
 public class GameObjectList {
-	GameObjects[] gridObjects = new GameObjects[2];
+	GameObject[] gridObjects = new GameObject[2];
 	
 	public GameObjectList() {
 		
 	}
 	// Adds object to list, checks first to see if object already in array index and then adds objects to array
-	public void addObject(GameObjects a) {
-		if (gridObjects[0] instanceof GameObjects) {
+	public void addObject(GameObject a) {
+		if (gridObjects[0] instanceof GameObject) {
 			gridObjects[1] = a;
 		}
 		
@@ -33,7 +33,7 @@ public class GameObjectList {
 	
 	// Checks for collision and returns true or false depending. True = collision and False = no collision
 	public boolean isThereCollision(){
-		if (gridObjects[0] instanceof GameObjects && gridObjects[1] instanceof GameObjects) {
+		if (gridObjects[0] instanceof GameObject && gridObjects[1] instanceof GameObject) {
 			return true;
 		}
 		return false;		
@@ -45,7 +45,7 @@ public class GameObjectList {
 	}
 	
 	// Supplies object to PlayField
-	public GameObjects whatObjectIsThis() {
+	public GameObject whatObjectIsThis() {
 		return gridObjects[0];
 	}
 	

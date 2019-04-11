@@ -1,8 +1,8 @@
+
 public class PlayerObject extends GameObject {
 
 	public PlayerObject(int objectID, int xCoordinate, int yCoordinate) {
 		super(objectID, xCoordinate, yCoordinate);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public String getObjectFileName() {
