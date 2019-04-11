@@ -11,7 +11,6 @@ public class MoveCardRight extends Card {
 	}
 	
 	public boolean play(PlayField theField) {
-		System.out.println("yo bro");
 		// Moves the player one space to the Right.
 		// Assumed a movePlayer() + getPlayer() method
 		// both in the PlayField class but can be changed
