@@ -15,7 +15,9 @@ public class MoveCardDown extends Card {
 		// Moves the player one space to the Down
 		// Assumed a movePlayer() + getPlayer() method
 		// both in the PlayField class but can be changed
-		theField.movePlayer(theField.getPlayer().getYCoordinates() - 1, theField.getPlayer().getXCoordinates());	
+    Compilation-error-fixing
+		theField.movePlayerObject("down");	
+
 		return true;
 	}
 }

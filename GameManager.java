@@ -28,7 +28,6 @@ public class GameManager {
 		while (running) {
 			//wait for player input
 			cardChosen = theResourceManager.getInput();
-			theField.movePlayerObject("up");
 			// Choose a card with the input and play it or close
 			if((int)cardChosen == -1) {
 				//This is the escape key. Avada Kedavara!

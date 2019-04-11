@@ -26,6 +26,8 @@ public class GameWindow extends JPanel {
 		this.topSectionPercentage = 0.2;
 		this.bottomSectionPercentage = 0.2;
 		this.bottomLeftText = bottomLeftText;
+		//Load the default sprite at space 0
+		loadNewSprite("Strawberry");
 	}
 
 	public void paint(Graphics Screen) {
@@ -125,24 +127,40 @@ public class GameWindow extends JPanel {
 				}
 				if(!foundSprite) {
 					//If we didn't find the sprite in the list of loaded sprites, attempt to load it and render the most recently added sprite!!
-					loadNewSprite(fileName);
-					spriteList.get(spriteList.size()-1).paint(Screen, screenHeight-spriteHeight, leftOffSet+i*spriteWidth, spriteHeight, spriteWidth);
+					if(loadNewSprite(fileName)) {
+						spriteList.get(spriteList.size()-1).paint(Screen, leftOffSet+i*spriteWidth, screenHeight-spriteHeight, spriteHeight, spriteWidth);
+					}else {
+						spriteList.get(0).paint(Screen, leftOffSet+i*spriteWidth, screenHeight-spriteHeight, spriteHeight, spriteWidth);
+					}
 				}
 			}
 		}
 	}
 
-	private void loadNewSprite(String fileName) {
+	private boolean loadNewSprite(String fileName) {
 		// Loads a sprite with the mentioned filename and adds it to the loaded sprites
 		BufferedImage img = null;
-		try {
-			img = ImageIO.read(new File(fileName));
-		} catch (IOException e) {
-			System.err.println("Failed to load sprite with filename " + fileName);
+		Boolean doLoad = true;
+		for(int i = 0; i < spriteList.size(); i++) {
+			if(fileName.contentEquals( spriteList.get(i).getName())) {
+				doLoad = false;
+			}
 		}
-		if (img != null) {
-			spriteList.add(new Sprite(img, fileName));
-			System.out.println("Successfully added file: " + fileName);
+		if(doLoad) {
+			try {
+				img = ImageIO.read(new File(fileName));
+			} catch (IOException e) {
+				System.err.println("Failed to load sprite with filename " + fileName);
+			}
+			if (img != null) {
+				spriteList.add(new Sprite(img, fileName));
+				System.out.println("Successfully added file: " + fileName);
+				return true;
+			}else {
+				return false;
+			}
+		}else {
+			return false;
 		}
 	}
 }
