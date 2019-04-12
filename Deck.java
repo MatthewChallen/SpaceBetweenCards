@@ -1,5 +1,3 @@
-package come.playdis.deck;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
