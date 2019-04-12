@@ -1,16 +1,3 @@
-import java.util.ArrayList;
-import java.util.Collections;
-
-import com.playdis.cards.Card;
-import com.playdis.cards.MoveCardDown;
-import com.playdis.cards.MoveCardLeft;
-import com.playdis.cards.MoveCardRight;
-import com.playdis.cards.MoveCardUp;
-import com.playdis.cards.ShootCardDown;
-import com.playdis.cards.ShootCardLeft;
-import com.playdis.cards.ShootCardRight;
-import com.playdis.cards.ShootCardUp;
-
 public class Deck {
 	
 	private ArrayList<Card> deckCards;
