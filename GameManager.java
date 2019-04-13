@@ -1,8 +1,8 @@
 
 
 public class GameManager {
-	PlayField theField;
-	PlayerObject thePlayer;
+	private PlayField theField;
+	private PlayerObject thePlayer;
 	// Create an instance of the resource manager
 
 	ResourceManager theResourceManager;
@@ -14,8 +14,7 @@ public class GameManager {
 
 	public GameManager() {
 		theResourceManager = new ResourceManager("The Space Between Cards", 0, 0, 10, 10);
-		theField = theResourceManager.getPlayField();
-		
+		theField = theResourceManager.getPlayField();		
 	}
 
 	public void run() {
