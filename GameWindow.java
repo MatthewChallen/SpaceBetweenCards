@@ -16,6 +16,7 @@ public class GameWindow extends JPanel {
 	private double topSectionPercentage;
 	private double bottomSectionPercentage;
 	private String[] bottomLeftText;
+	private String folderName;
 
 	public GameWindow(PlayField theField, ArrayList<Sprite> spriteList, ArrayList<Card> theHand, String[] bottomLeftText) {
 		// This creates a new window, passing the things that need to be displayed by
@@ -28,6 +29,7 @@ public class GameWindow extends JPanel {
 		this.bottomLeftText = bottomLeftText;
 		//Load the default sprite at space 0
 		loadNewSprite("Strawberry");
+		folderName = "Sprites/";
 	}
 
 	public void paint(Graphics Screen) {
@@ -77,11 +79,11 @@ public class GameWindow extends JPanel {
 					}
 					// If the sprite is not found, attempt to load it. Then render the most recently added sprite
 					if (!foundSprite) {
-						loadNewSprite(fileName);
-						spriteList.get(spriteList.size()-1).paint(Screen,i*spriteWidth,
-								topOffSet + j*spriteHeight, spriteHeight,
-								spriteWidth);
-						
+						if(loadNewSprite(fileName)) {
+							spriteList.get(spriteList.size()-1).paint(Screen,i*spriteWidth,
+									topOffSet + j*spriteHeight, spriteHeight,
+									spriteWidth);
+						}
 					}
 				}
 
@@ -143,14 +145,14 @@ public class GameWindow extends JPanel {
 		Boolean doLoad = true;
 		//Make sure the sprite isn't already loaded
 		for(int i = 0; i < spriteList.size(); i++) {
-			if(fileName.contentEquals( spriteList.get(i).getName())) {
+			if(fileName.contentEquals(spriteList.get(i).getName())) {
 				doLoad = false;
 			}
 		}
 		//Load the sprite
 		if(doLoad) {
 			try {
-				img = ImageIO.read(new File(fileName));
+				img = ImageIO.read(new File(folderName + fileName));
 			} catch (IOException e) {
 				System.err.println("Failed to load sprite with filename " + fileName);
 			}
