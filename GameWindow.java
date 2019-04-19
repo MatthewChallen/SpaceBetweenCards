@@ -141,11 +141,13 @@ public class GameWindow extends JPanel {
 		// Loads a sprite with the mentioned filename and adds it to the loaded sprites
 		BufferedImage img = null;
 		Boolean doLoad = true;
+		//Make sure the sprite isn't already loaded
 		for(int i = 0; i < spriteList.size(); i++) {
 			if(fileName.contentEquals( spriteList.get(i).getName())) {
 				doLoad = false;
 			}
 		}
+		//Load the sprite
 		if(doLoad) {
 			try {
 				img = ImageIO.read(new File(fileName));
@@ -153,6 +155,7 @@ public class GameWindow extends JPanel {
 				System.err.println("Failed to load sprite with filename " + fileName);
 			}
 			if (img != null) {
+				//Add the sprite to the list
 				spriteList.add(new Sprite(img, fileName));
 				System.out.println("Successfully added file: " + fileName);
 				return true;
