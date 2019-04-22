@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 
 public class ResourceManager implements KeyListener, MouseListener {
 	private PlayField theField;
+	private Deck[] theDecks;
 	private ArrayList<Card> theHand;
 	private ArrayList<Card> theDeck;
 	private ArrayList<Sprite> spriteList;
@@ -19,23 +20,19 @@ public class ResourceManager implements KeyListener, MouseListener {
 	private JFrame theGameFrame;
 	private int cardChosen;
 	private boolean isCardChosen;
-	private PlayerObject thePlayer;
 	private boolean readyToRender;
 	private int maxHandSize;
 	private String bottomLeftText[];
 
-	public ResourceManager(String gameName, int xScreenSize, int yScreenSize, int xBoardSize, int yBoardSize) {
-		// This method is the constructor for the resource manager. If xSize and ySize
-		// are 0, it will full screen
+	// This method is the constructor for the resource manager. If xSize and ySize
+	// are 0, it will full screen
+	public ResourceManager(String gameName, int xScreenSize, int yScreenSize, int xBoardSize, int yBoardSize, Deck[] theDecks) {
 
 		// Create a new playing field
 		theField = new PlayField(xBoardSize, yBoardSize);
 
-		// Make the player object and add it to the field
-		thePlayer = new PlayerObject(0, xBoardSize / 2, yBoardSize - 2);
-		theField.spawnPlayer(thePlayer, thePlayer.getYCoordinates(), thePlayer.getXCoordinates());
-
 		// Set up the cards
+		this.theDecks = theDecks;
 		theHand = new ArrayList<Card>(0);
 		theDeck = new ArrayList<Card>(0);
 		maxHandSize = 5;
@@ -67,14 +64,15 @@ public class ResourceManager implements KeyListener, MouseListener {
 
 	}
 
+	// This method should only ever be called by the game manager once in order to
+	// be
+	// able to move things around the player field
 	public PlayField getPlayField() {
-		// This method should only ever be called by the game manager in order to be
-		// able to move things around the player field
 		return this.theField;
 	}
 
+	// This method creates a separate thread for rendering the screen
 	private void beginRendering(String gameName, int xScreenSize, int yScreenSize) {
-		// This method creates a separate thread for rendering the screen
 		readyToRender = false;
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -83,11 +81,10 @@ public class ResourceManager implements KeyListener, MouseListener {
 		});
 	}
 
+	// This creates a container for the game, known as a "JFrame"
+	// Then adds the extended "JPanel" object called "theGameWindow" to the frame
+	// that we can use to render things with.
 	private void createWindow(String gameName, int xScreenSize, int yScreenSize) {
-		// This creates a container for the game, known as a "JFrame"
-		// Then adds the extended "JPanel" object called "theGameWindow" to the frame
-		// that we can
-		// use to render things with.
 		theGameFrame = new JFrame(gameName);
 		theGameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// Pass the playing field and sprite list by reference so they can be rendered
@@ -111,8 +108,8 @@ public class ResourceManager implements KeyListener, MouseListener {
 
 	}
 
+	// This method draws a card from the deck and adds it to the hand
 	public boolean drawCard() {
-		// This method draws a card from the deck and adds it to the hand
 		if (theDeck.size() == 0) {
 			return false;
 		}
@@ -129,16 +126,18 @@ public class ResourceManager implements KeyListener, MouseListener {
 		return true;
 	}
 
-	public void playCard(int cardNo) {
-		// This method plays the card, then removes it from the hand
+	// This method plays the card, then removes it from the hand. Returns true if
+	// the cardNo is a valid input
+	public boolean playCard(int cardNo) {
 		bottomLeftText[0] = "Played the " + theHand.get(cardNo - 1).getName() + " card!";
 		theHand.get(cardNo - 1).play(theField);
 		theHand.remove(cardNo - 1);
 		drawCard();
+		return true;
 	}
 
+	// This method adds cards to the deck to make a default deck
 	private void addCardsToDeck(int deckSize) {
-		// This method adds cards to the deck to make a default deck
 		for (int i = 0; i < deckSize; i++) {
 			// Add a random card from the options
 			theDeck.add(new MoveCardLeft("Move Card left", "Moves the player left"));
@@ -153,8 +152,8 @@ public class ResourceManager implements KeyListener, MouseListener {
 		theGameWindow.repaint();
 	}
 
+	// This method gets input for the GameManager
 	public int getInput() {
-		// This method gets input for the GameManager
 		while (!isCardChosen) {
 			try {
 				Thread.sleep(10);
@@ -221,6 +220,7 @@ public class ResourceManager implements KeyListener, MouseListener {
 		// No actions need to be taken on this method, we are only logging mouse clicks.
 	}
 
+	// This method ends the rendering process
 	public void stopRendering() {
 		theGameWindow.removeKeyListener(this);
 		theGameFrame.dispose();

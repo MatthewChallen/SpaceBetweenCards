@@ -1,6 +1,6 @@
 
 public class GameObjectList {
-	GameObject[] gridObjects = new GameObject[2];
+	private GameObject[] gridObjects = new GameObject[2];
 	
 	public GameObjectList() {
 		
