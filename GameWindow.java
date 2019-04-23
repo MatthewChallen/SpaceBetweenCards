@@ -85,55 +85,6 @@ public class GameWindow extends JPanel {
 
 	}
 
-	private void paintCards(Graphics Screen) {
-		// This method paints the cards in the players hand
-
-		// These are the size of the board and screen
-		int xSize = theField.getPlayGridXSize();
-		int ySize = theField.getPlayGridYSize();
-		int screenHeight = this.getHeight();
-		int screenWidth = this.getWidth();
-		// This is the amount of space from the bottom that the cards have to be shown
-		// in
-		int bottomOffSet = (int) (bottomSectionPercentage * screenHeight
-				+ ((1 - topSectionPercentage - bottomSectionPercentage) * screenHeight) / xSize);
-		// These are the dimensions of the sprites
-		int spriteHeight = bottomOffSet;
-		int spriteWidth = spriteHeight / 2;
-		// This is the amount space to the left of the cards
-		int leftOffSet = (int) (screenWidth - theHand.size() * spriteWidth) / 2;
-		// These variables are the filename and a controller for the loops
-		String fileName = null;
-		boolean foundSprite = false;
-		// Go though all the cards in the hand
-		for (int i = 0; i < theHand.size(); i++) {
-			// Finding the filename of the sprite to render
-			fileName = theHand.get(i).getCardFileName();
-			// Finding the associated sprite
-			if (fileName != null) {
-				for (int j = 0; j < spriteList.size(); j++) {
-					// if this is the correct sprite, render it!
-					if (fileName.contentEquals(spriteList.get(j).getName())) {
-						spriteList.get(j).paint(Screen, leftOffSet + i * spriteWidth, screenHeight - spriteHeight,
-								spriteHeight, spriteWidth);
-						foundSprite = true;
-					}
-				}
-				if (!foundSprite) {
-					// If we didn't find the sprite in the list of loaded sprites, attempt to load
-					// it and render the most recently added sprite!!
-					if (loadNewSprite(fileName)) {
-						spriteList.get(spriteList.size() - 1).paint(Screen, leftOffSet + i * spriteWidth,
-								screenHeight - spriteHeight, spriteHeight, spriteWidth);
-					} else {
-						spriteList.get(0).paint(Screen, leftOffSet + i * spriteWidth, screenHeight - spriteHeight,
-								spriteHeight, spriteWidth);
-					}
-				}
-			}
-		}
-	}
-
 	private boolean loadNewSprite(String fileName) {
 		// Loads a sprite with the mentioned filename and adds it to the loaded sprites
 		BufferedImage img = null;
