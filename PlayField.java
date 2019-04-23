@@ -112,12 +112,12 @@ public class PlayField {
 	
 	//Moves the field down a space to prepare for the next turn
 	public void moveField() {
-
+		
 	}
 	
-	//This moves all the objects in motion such as projectiles
+	//This moves all the objects in motion once such as projectiles
 	public void moveAllObjects() {
-
+		
 	}
 	
 	public String getObjectFileName(int xLocation, int yLocation) {
