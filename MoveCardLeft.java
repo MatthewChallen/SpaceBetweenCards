@@ -10,11 +10,11 @@ public class MoveCardLeft extends Card {
 		return "cardShipLeft.png";
 	}
 	
-	public boolean play(PlayField theField) {
+	public boolean OnPlay(PlayField theField) {
 		// Moves the player one space to the Left.
 		// Assumed a movePlayer() + getPlayer() method
 		// both in the PlayField class but can be changed
-		theField.movePlayerObject("left");	
+	    theField.moveObject("left", ResourceManager.GetRM()[0].GetPlayer(), 1);
 
 		return true;
 	}

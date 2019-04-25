@@ -2,7 +2,8 @@
 public class GameManager {
 	private PlayField theField;
 	private Deck[] theDecks;
-	private int handSize;
+	private Hand[] theHand;
+	//private int handSize;
 	// Create an reference to a resource manager
 	ResourceManager theResourceManager;
 
@@ -16,15 +17,17 @@ public class GameManager {
 		// objects by calling the constructors of other classes
 		
 		//Set up all the decks
-		Deck theHand = new Deck();
+		theHand = new Hand[1];
+		theHand[0] = new Hand(); 
 		Deck thePlayerDeck = new Deck();
 		Deck theEnemyDeck = new Deck();
 		Deck theFieldDeck = new Deck();
-		Deck[] theDecks = {theHand, thePlayerDeck, theFieldDeck, theEnemyDeck};
-		handSize = 5;
+		Deck[] theDecks = {thePlayerDeck, theFieldDeck, theEnemyDeck};
+
+        theHand[0].SetDrawDeck(theDecks, 1);
 		
 		//Make the resource manager
-		theResourceManager = new ResourceManager("The Space Between Cards", 0, 0, 10, 10, theDecks);
+		theResourceManager = new ResourceManager("The Space Between Cards", 0, 0, 10, 10, theDecks, theHand);
 		
 		//Get a reference to the Play Field from the resource manager
 		theField = theResourceManager.getPlayField();
@@ -46,7 +49,9 @@ public class GameManager {
 				running = false;
 				System.out.println("Goodbye!");
 			} else {
-				theResourceManager.playCard(cardChosen - 0);
+			    theHand[0].PlayCard(theField, cardChosen);
+			    theHand[0].DrawCard();
+				//theResourceManager.playCard(cardChosen - 0);
 				// theField.newTurn();
 				// Rerender the screen
 				theResourceManager.repaintWindow();
@@ -55,6 +60,7 @@ public class GameManager {
 		theResourceManager.stopRendering();
 	}
 
+	/*
 	public void run(String isAPlaceholderMethodUntilIMplemented) {
 		// NOT ACTIVE CODE YET
 		// Primary game loop
@@ -62,23 +68,24 @@ public class GameManager {
 		while (running) {
 
 			// Refill player hand while there is still space to fill and cards in the deck
-			while(theDecks[0].getRemainingCards() < handSize && theDecks[1].getRemainingCards() > 0) {
-				theDecks[0].drawFrom(theDecks[1]);
+			while(theHand[0].GetCardCount() < handSize) {
+				theHand[0].DrawCard();
 			}
 			
+			
 			// Play card from field deck
-			if(theDecks[2].getRemainingCards() > 0) {
+			if(theDecks[0].GetCardCount() > 0) {
 				for(int i = 0; i < theField.getPlayGridXSize(); i++) {
-					theDecks[2].playCard(theField);
+					theDecks[1].playCard(theField);
 				}
 			}
 			
 			// Get player input and play the card from the hand
-			running = playerPlayCard();
+			//running = playerPlayCard();
 
 			// Play enemy card
-			if(theDecks[3].getRemainingCards() > 0) {
-				theDecks[3].playCard(theField);
+			if(theDecks[2].GetCardCount() > 0) {
+				theDecks[2].playCard(theField);
 			}
 			
 			// Move objects in motion
@@ -97,7 +104,10 @@ public class GameManager {
 		//Cleanup
 		theResourceManager.stopRendering();
 	}
+	*/
 	
+	
+	/*
 	public boolean playerPlayCard() {
 		boolean validCardChosen = false;
 		boolean running = true;
@@ -110,13 +120,14 @@ public class GameManager {
 				running = false;
 			} else {
 				// If the card is in the hand, change validCardChosen to true
-				if(theDecks[0].getRemainingCards() > cardChosen) {
-					theDecks[0].playCard(theField, cardChosen);
+				if(theHand[0].GetCardCount() > cardChosen) {
+					theHand[0].PlayCard(theField, cardChosen);
+					theHand[0].DrawCard();
 				}
 			}
 		}
 		return running;
-	}
+	}*/
 	
 	public boolean checkEndConditions() {
 		boolean running = true;
@@ -131,7 +142,7 @@ public class GameManager {
 		}
 		
 		//If the enemy deck is out of cards, stop the game
-		if(theDecks[3].getRemainingCards() == 0) {
+		if(theDecks[2].GetCardCount() == 0) {
 			running = false;
 		}
 		

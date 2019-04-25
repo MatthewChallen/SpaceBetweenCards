@@ -10,11 +10,11 @@ public class MoveCardUp extends Card {
 		return "cardShipUp.png";
 	}
 	
-	public boolean play(PlayField theField) {
+	public boolean OnPlay(PlayField theField) {
 		// Moves the player one space to the Up.
 		// Assumed a movePlayer() + getPlayer() method
 		// both in the PlayField class but can be changed
-		theField.movePlayerObject("up");	
+	    theField.moveObject("up", ResourceManager.GetRM()[0].GetPlayer(), 1);	
 
 
 		return true;

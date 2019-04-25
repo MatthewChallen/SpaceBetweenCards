@@ -12,14 +12,15 @@ import javax.swing.JPanel;
 public class GameWindow extends JPanel {
 	private PlayField theField;
 	private ArrayList<Sprite> spriteList;
-	private ArrayList<Card> theHand;
+	//private ArrayList<Card> theHand;
+	private Hand[] theHand;
 	private String[] bottomLeftText;
 	private String folderName;
 	private int bottomPercentageAllocated;
 	private int rightPercentageAllocated;
 	private double cardRatio;
 
-	public GameWindow(PlayField theField, ArrayList<Sprite> spriteList, ArrayList<Card> theHand,
+	public GameWindow(PlayField theField, ArrayList<Sprite> spriteList, Hand[] theHand,
 			String[] bottomLeftText) {
 		// This creates a new window, passing the things that need to be displayed by
 		// reference
@@ -30,9 +31,10 @@ public class GameWindow extends JPanel {
 		this.bottomPercentageAllocated = 20;
 		this.rightPercentageAllocated = 20;
 		this.bottomLeftText = bottomLeftText;
+
+        folderName = "Sprites/";
 		// Load the default sprite at space 0
-		loadNewSprite("Strawberry");
-		folderName = "Sprites/";
+		loadNewSprite("Strawberry.jpg");
 	}
 
 	public void paint(Graphics screen) {
@@ -120,7 +122,7 @@ public class GameWindow extends JPanel {
 		
 		//First, find out if the hand is more constrained by height or width
 		double heightConstraint = cardRatio/ySize;
-		double widthConstraint = theHand.size()/xSize;
+		double widthConstraint = theHand[0].GetCardCount()/xSize;
 		
 		//declare/initialize other needed variables
 		int cardHeight = 0;
@@ -136,12 +138,12 @@ public class GameWindow extends JPanel {
 			cardHeight = ySize;
 			cardWidth = (int) (ySize/cardRatio);
 			//Find the excess space, and remove it 
-			occupiedSpace = cardWidth*theHand.size();
+			occupiedSpace = cardWidth*theHand[0].GetCardCount();
 			xPosition += (xSize - occupiedSpace)/2;
 			xSize = occupiedSpace;
 		}else {
 			//If the cards are more constrained by width, base the cards on the available width
-			cardWidth = xSize/theHand.size();
+			cardWidth = xSize/theHand[0].GetCardCount();
 			cardHeight = (int)(cardWidth*cardRatio);
 			//Find the excess space, and remove it
 			occupiedSpace = cardHeight;
@@ -150,9 +152,9 @@ public class GameWindow extends JPanel {
 		}
 		
 		//Finally, render the cards
-		for(int cardNo = 0; cardNo < theHand.size(); cardNo++) {
+		for(int cardNo = 0; cardNo < theHand[0].GetCardCount(); cardNo++) {
 			//Find the name of the cards sprite
-			fileName = theHand.get(cardNo).getCardFileName();
+			fileName = theHand[0].GetHandList().get(cardNo)[0].getCardFileName();
 			if(fileName != null) {
 				//Assume the sprite is not found, then search the sprite list for that sprite
 				foundSprite = false;

@@ -1,3 +1,4 @@
+import TypeListings.ObjectType;
 
 public class PlayField {
 	private GameObjectList[][] playGrid;
@@ -13,12 +14,17 @@ public class PlayField {
 				playGrid[i][j] = new GameObjectList();
 			}
 		}
-		spawnPlayer(new PlayerObject(0, x / 2, y - 1), y -1, x / 2);
+		spawnPlayer();
+		
 	}
 	
 	// Spawns player at requested point
-	public void spawnPlayer(PlayerObject a, int y, int x) {
-		playGrid[y][x].addObject(a);
+	public void spawnPlayer() {
+	    int x = playGridXSize / 2;
+	    int y = playGridYSize -1;
+	    
+	    playGrid[x][y].addObject(ResourceManager.GetRM()[0].GetNewObject(ObjectType.PLAYERSHIP, x, y));
+	    ResourceManager.GetRM()[0].GetPlayer()[0].setXYCoordinates(x, y);
 	}
 	
 	public int[] getPlayerLocation() {
@@ -60,51 +66,50 @@ public class PlayField {
 	// Checks board for player object and then moves the object to another GameObjectList
 	// Code can be reduced to check for player before case and then implement the move
 	// Exception still needs to be implemented to stop player moving off board
-	public void movePlayerObject(String direction) {
-		switch(direction) {
+	public void moveObject(String direction, GameObject [] target, int distance) {
+		int x = target[0].getXCoordinates();
+		int y = target[0].getYCoordinates();
+	    
+	    switch(direction) {
 		case "left" :
-			for (int i = 0; i < playGrid.length; i++) {
-				for (int j = 0; j < playGrid[i].length; j++) {
-					if (playGrid[i][j].whatObjectIsThis() instanceof PlayerObject) {
-						playGrid[i][j-1].addObject(playGrid[i][j].whatObjectIsThis());
-						playGrid[i][j].removeObject(1); ;
-						break;
-					}
-				}
+			if(playGrid[x][y].removeObject(target)){
+			    x -= distance;
+			    if(x < 0) {
+			        x=0;
+			    }
+			    playGrid[x][y].addObject(target);
+			    target[0].setXYCoordinates(x, y);
 			}
 			break;
 		case "right" :
-			for (int i = 0; i < playGrid.length; i++) {
-				for (int j = 0; j < playGrid[i].length; j++) {
-					if (playGrid[i][j].whatObjectIsThis() instanceof PlayerObject) {
-						playGrid[i][j+1].addObject(playGrid[i][j].whatObjectIsThis());
-						playGrid[i][j].removeObject(1); ;
-						break;
-					}
-				}
-			}
+		    if(playGrid[x][y].removeObject(target)){
+                x += distance;
+                if(x >= playGridXSize) {
+                    x=playGridXSize-1;
+                }
+                playGrid[x][y].addObject(target);
+                target[0].setXYCoordinates(x, y);
+            }
 			break;
 		case "up" :
-			for (int i = 0; i < playGrid.length; i++) {
-				for (int j = 0; j < playGrid[i].length; j++) {
-					if (playGrid[i][j].whatObjectIsThis() instanceof PlayerObject) {
-						playGrid[i-1][j].addObject(playGrid[i][j].whatObjectIsThis());
-						playGrid[i][j].removeObject(1); ;
-						break;
-					}
-				}
-			}
+		    if(playGrid[x][y].removeObject(target)){
+                y -= distance;
+                if(y < 0) {
+                    y=0;
+                }
+                playGrid[x][y].addObject(target);
+                target[0].setXYCoordinates(x, y);
+            }
 			break;
 		case "down" :
-			for (int i = 0; i < playGrid.length; i++) {
-				for (int j = 0; j < playGrid[i].length; j++) {
-					if (playGrid[i][j].whatObjectIsThis() instanceof PlayerObject) {
-						playGrid[i+1][j].addObject(playGrid[i][j].whatObjectIsThis());
-						playGrid[i][j].removeObject(1); ;
-						break;
-					}
-				}
-			}
+		    if(playGrid[x][y].removeObject(target)){
+                y += distance;
+                if(y >= playGridYSize) {
+                    y=playGridYSize-1;
+                }
+                playGrid[x][y].addObject(target);
+                target[0].setXYCoordinates(x, y);
+            }
 			break;
 		
 		}

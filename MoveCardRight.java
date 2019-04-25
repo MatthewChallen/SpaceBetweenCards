@@ -10,14 +10,11 @@ public class MoveCardRight extends Card {
 		return "cardShipRight.png";
 	}
 	
-	public boolean play(PlayField theField) {
+	public boolean OnPlay(PlayField theField) {
 		// Moves the player one space to the Right.
 		// Assumed a movePlayer() + getPlayer() method
 		// both in the PlayField class but can be changed
-		theField.movePlayerObject("right");		
-
-		
-
+		theField.moveObject("right", ResourceManager.GetRM()[0].GetPlayer(), 1);
 		return true;
 	}
 }
