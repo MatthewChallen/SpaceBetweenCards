@@ -20,7 +20,7 @@ public class Hand {
     }
 
     // Plays the Xth card
-    public void PlayCard(PlayField theField, int X) {
+    public void PlayCard(PlayField [] theField, int X) {
         hand.get(X-1)[0].OnPlay(theField);
         Discard(X-1);
     }

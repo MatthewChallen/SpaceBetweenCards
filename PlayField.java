@@ -14,36 +14,17 @@ public class PlayField {
 				playGrid[i][j] = new GameObjectList();
 			}
 		}
-		spawnPlayer();
+		spawnPlayer(x, y);
 		
 	}
 	
 	// Spawns player at requested point
-	public void spawnPlayer() {
-	    int x = playGridXSize / 2;
-	    int y = playGridYSize -1;
-	    
+	public void spawnPlayer(int x, int y) {
+	    x = x/2;
+	    y = y-1;
 	    playGrid[x][y].addObject(ResourceManager.GetRM()[0].GetNewObject(ObjectType.PLAYERSHIP, x, y));
-	    ResourceManager.GetRM()[0].GetPlayer()[0].setXYCoordinates(x, y);
 	}
 	
-	public int[] getPlayerLocation() {
-		//Finds the player, and gives their location
-		int[] location = new int[2];
-		location [0] = -1;
-		location [1] = -1;
-		for(int i = 0; i < playGridXSize; i++) {
-			for(int j = 0; j < playGridYSize; j++) {
-				//If it is the player object at this space
-				if(playGrid[i][j].whatObjectIsThis() instanceof PlayerObject) {
-					//Get their location and return it at the end
-					location[0] = playGrid[i][j].whatObjectIsThis().getXCoordinates();
-					location[1] = playGrid[i][j].whatObjectIsThis().getYCoordinates();
-				}
-			}
-		}
-		return location;
-	}
 	
 	// Checks for collision and then supplies string of object ID's
 	public String checkForCollision() {

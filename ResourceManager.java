@@ -61,6 +61,8 @@ public class ResourceManager implements KeyListener, MouseListener {
         this.bottomLeftText = new String[1];
         this.bottomLeftText[0] = "Welcome";
 
+
+        
         // Create a new list of game objects.
         this.objectList = new ArrayList<GameObject>(0);
         

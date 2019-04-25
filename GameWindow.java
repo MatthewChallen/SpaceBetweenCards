@@ -220,9 +220,10 @@ public class GameWindow extends JPanel {
 					//If the sprite wasn't found, load it
 					if(!foundSprite) {
 						if(loadNewSprite(fileName)) {
+						    System.out.println(fileName + " loaded");
 							//If the sprite is successfully loaded, render the most recently loaded sprite
 							currentXPosition = xStartingPosition + x * spriteWidth;
-							currentYPosition = yStartingPosition + y * spriteWidth;
+							currentYPosition = yStartingPosition + y * spriteHeight;
 							spriteList.get(spriteList.size()-1).paint(screen, currentXPosition, currentYPosition, spriteHeight, spriteWidth);
 						}
 					}

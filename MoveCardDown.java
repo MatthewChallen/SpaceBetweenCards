@@ -10,12 +10,12 @@ public class MoveCardDown extends Card {
 		return "cardShipDown.png";
 	}
 	
-	public boolean OnPlay(PlayField theField) {
+	public boolean OnPlay(PlayField [] theField) {
 		
 		// Moves the player one space to the Down
 		// Assumed a movePlayer() + getPlayer() method
 		// both in the PlayField class but can be changed
-	    theField.moveObject("down", ResourceManager.GetRM()[0].GetPlayer(), 1);	
+	    theField[0].moveObject("down", ResourceManager.GetRM()[0].GetPlayer(), 1);	
 
 		return true;
 	}
