@@ -23,12 +23,12 @@ public class PlayField {
 	public void spawnPlayer(int x, int y) {
 	    x = x/2;
 	    y = y-3;
-	    playGrid[x][y].addObject(ResourceManager.GetRM()[0].GetNewObject(ObjectType.PLAYERSHIP, x, y));
+	    playGrid[x][y].addObject(ResourceManager.GetRM().GetNewObject(ObjectType.PLAYERSHIP, x, y));
 	}
 	
 	public void spawnObject(ObjectType type, int x, int y) {
 	    if(x>=0 && x < playGridXSize && y >=0 && y < playGridYSize) {
-	        playGrid[x][y].addObject(ResourceManager.GetRM()[0].GetNewObject(type, x, y));
+	        playGrid[x][y].addObject(ResourceManager.GetRM().GetNewObject(type, x, y));
 	    }
 	}
 	
@@ -87,7 +87,7 @@ public class PlayField {
                         y=0;
                         
                     }else {
-                      ResourceManager.GetRM()[0].RemoveGameObject(target);
+                      ResourceManager.GetRM().RemoveGameObject(target);
                       break;
                     }
                     

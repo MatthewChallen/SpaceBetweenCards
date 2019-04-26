@@ -28,7 +28,7 @@ public class MoveCardDown extends Card {
         // Moves the player one space to the Down
         // Assumed a movePlayer() + getPlayer() method
         // both in the PlayField class but can be changed
-        theField.moveObject("down", ResourceManager.GetRM()[0].GetPlayer(), distance);
+        theField.moveObject("down", ResourceManager.GetRM().GetPlayer(), distance);
 
         return true;
     }

@@ -15,14 +15,14 @@ public class GameWindow extends JPanel {
 	private ArrayList<Sprite> spriteList;
 	//private ArrayList<Card> theHand;
 	private Hand[] theHand;
-	private String[] bottomLeftText;
+	private String bottomLeftText;
 	private String folderName;
 	private int bottomPercentageAllocated;
 	private int rightPercentageAllocated;
 	private double cardRatio;
 
 	public GameWindow(PlayField theField, ArrayList<Sprite> spriteList, Hand[] theHand,
-			String[] bottomLeftText) {
+			String bottomLeftText) {
 		// This creates a new window, passing the things that need to be displayed by
 		// reference
 		this.theField = theField;
@@ -54,13 +54,13 @@ public class GameWindow extends JPanel {
 		
 		// Put the bottom left text on the bottom left
 		screen.setFont(new Font("Game Font", Font.PLAIN, 24));
-		System.out.println(bottomLeftText[0]);
+		System.out.println(bottomLeftText);
 
 		// Clear the screen with black
 		screen.setColor(Color.BLACK);
 		screen.fillRect(0, 0, this.getWidth(), this.getHeight());
 		screen.setColor(Color.WHITE);
-		screen.drawString(bottomLeftText[0], 20, this.getHeight() - 20);
+		screen.drawString(bottomLeftText, 20, this.getHeight() - 20);
 
 		paintBackGround(screen);
 		//paintCards(screen);

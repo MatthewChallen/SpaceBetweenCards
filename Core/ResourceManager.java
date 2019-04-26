@@ -30,12 +30,13 @@ public class ResourceManager implements KeyListener, MouseListener {
     private int maxHandSize;
     
     //made static so other's could use it as debug text
-    private static String bottomLeftText[];
+    private static String bottomLeftText;
     
     
-    //Made instance avalible so classes can request objects.
-    static private ResourceManager[] instance = new ResourceManager[1];
-    static public ResourceManager[] GetRM() {
+    //Made instance available so classes can request objects.
+    //Will need to be instantiated first by constructor
+    static private ResourceManager instance = null;
+    static public ResourceManager GetRM() {
         return instance;
     }
 
@@ -44,7 +45,7 @@ public class ResourceManager implements KeyListener, MouseListener {
     public ResourceManager(String gameName, int xScreenSize, int yScreenSize, int xBoardSize, int yBoardSize,
             Deck[] theDecks, Hand[] theHand) {
 
-        instance[0] = this;
+        instance = this;
 
         // Set up the cards
         this.theDecks = theDecks;
@@ -60,8 +61,7 @@ public class ResourceManager implements KeyListener, MouseListener {
 
         // Create a new list of sprites, to be added to as needed
         this.spriteList = new ArrayList<Sprite>();
-        this.bottomLeftText = new String[1];
-        this.bottomLeftText[0] = "Welcome";
+        this.bottomLeftText = "Loop Successful";
 
 
         
@@ -162,49 +162,6 @@ public class ResourceManager implements KeyListener, MouseListener {
             }
         }
     }
-    
-    /*
-    // This method draws a card from the deck and adds it to the hand
-    public boolean drawCard() {
-        if (theDeck.size() == 0) {
-            return false;
-        }
-        // If there is an empty space in the hand...
-        for (int i = theHand[0].GetCardCount(); i < maxHandSize; i++) {
-
-            // Add a card from the deck to the hand
-            theHand[0].DrawCard();
-            // Remove that card from the deck
-
-        }
-        System.out.println("There are " + theDeck.size() + " Cards remaining in the deck!");
-        return true;
-    }*/
-
-    /*
-    // This method plays the card, then removes it from the hand. Returns true if
-    // the cardNo is a valid input
-    public boolean playCard(int cardNo) {
-        bottomLeftText[0] = "Played the " + theHand.get(cardNo - 1).getName() + " card!";
-        theHand[0].
-        theHand.get(cardNo - 1).play(theField);
-        theHand.remove(cardNo - 1);
-        drawCard();
-        return true;
-    }*/
-
-    
-    /*
-    // This method adds cards to the deck to make a default deck
-    private void addCardsToDeck(int deckSize) {
-        for (int i = 0; i < deckSize; i++) {
-            // Add a random card from the options
-            theDeck.add(new MoveCardLeft("Move Card left", "Moves the player left"));
-            theDeck.add(new MoveCardUp("Move Card up", "Moves the player up"));
-            theDeck.add(new MoveCardDown("Move Card down", "Moves the player down"));
-            theDeck.add(new MoveCardRight("Move Card right", "Moves the player right"));
-        }
-    }*/
 
     public PlayerObject GetPlayer() {
         PlayerObject hold = null;
