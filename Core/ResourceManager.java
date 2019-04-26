@@ -61,7 +61,7 @@ public class ResourceManager implements KeyListener, MouseListener {
 
         // Create a new list of sprites, to be added to as needed
         this.spriteList = new ArrayList<Sprite>();
-        this.bottomLeftText = "Loop Successful";
+        ResourceManager.bottomLeftText = "Welcome";
 
 
         
@@ -119,7 +119,7 @@ public class ResourceManager implements KeyListener, MouseListener {
         theGameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Pass the playing field and sprite list by reference so they can be rendered
         // by the game window.
-        this.theGameWindow = new GameWindow(this.theField, this.spriteList, this.theHand, this.bottomLeftText);
+        this.theGameWindow = new GameWindow(this.theField, this.spriteList, this.theHand, ResourceManager.bottomLeftText);
         theGameFrame.add(this.theGameWindow);
         if (xScreenSize == 0 && yScreenSize == 0) {
             theGameFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
