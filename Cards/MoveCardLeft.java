@@ -1,3 +1,9 @@
+package Cards;
+
+import Core.Card;
+import Core.PlayField;
+import Core.ResourceManager;
+
 public class MoveCardLeft extends Card {
     
     private int distance;
@@ -18,11 +24,11 @@ public class MoveCardLeft extends Card {
 		return "cardShipLeft.png";
 	}
 	
-	public boolean OnPlay(PlayField [] theField) {
+	public boolean OnPlay(PlayField theField) {
 		// Moves the player one space to the Left.
 		// Assumed a movePlayer() + getPlayer() method
 		// both in the PlayField class but can be changed
-	    theField[0].moveObject("left", ResourceManager.GetRM()[0].GetPlayer(), distance);
+	    theField.moveObject("left", ResourceManager.GetRM()[0].GetPlayer(), distance);
 
 		return true;
 	}

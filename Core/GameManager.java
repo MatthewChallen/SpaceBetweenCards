@@ -1,7 +1,10 @@
+package Core;
 import java.util.concurrent.TimeUnit;
 
 public class GameManager {
-	private PlayField [] theField;
+    final private int fieldXSize = 20;
+    final private int fieldYSize = 20;
+	private PlayField theField;
 	private Deck[] theDecks;
 	private Hand[] theHand;
 	//private int handSize;
@@ -25,14 +28,13 @@ public class GameManager {
 		Deck theFieldDeck = new Deck();
 		Deck[] theDecks = {thePlayerDeck, theFieldDeck, theEnemyDeck};
 
-        theHand[0].SetDrawDeck(theDecks, 1);
+        theHand[0].SetDrawDeck(theDecks[0]);
 		
 		//Make the resource manager
-		theResourceManager = new ResourceManager("The Space Between Cards", 0, 0, 10, 10, theDecks, theHand);
+		theResourceManager = new ResourceManager("The Space Between Cards", 0, 0, fieldXSize, fieldYSize, theDecks, theHand);
 		
 		//Get a reference to the Play Field from the resource manager
-		theField = new PlayField[1];
-		theField[0] = theResourceManager.getPlayField();
+		theField = theResourceManager.getPlayField();
 	}
 
 	public void run() {
@@ -55,6 +57,7 @@ public class GameManager {
 			} else {
 			    theHand[0].PlayCard(theField, cardChosen);
 			    theHand[0].DrawCard();
+			    Update();
 				//theResourceManager.playCard(cardChosen - 0);
 				// theField.newTurn();
 				// Rerender the screen
@@ -62,6 +65,15 @@ public class GameManager {
 			}
 		}
 		theResourceManager.stopRendering();
+	}
+	
+	private void Update() {
+	    int size = theResourceManager.GetObjectListSize();
+	    for(int i = 0; i <size; ++i) {
+	        theResourceManager.GetObjectListElement(i).Update(theField);
+	    }
+	    
+	    theResourceManager.Update();
 	}
 
 	/*public boolean checkEndConditions() {

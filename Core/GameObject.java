@@ -1,3 +1,4 @@
+package Core;
 public abstract class GameObject {
 	private int objectID;
 	private int health;
@@ -18,6 +19,8 @@ public abstract class GameObject {
         this.yCoordinate =yCoordinate;
         this.health = 0;
     }
+    
+    public void Update(PlayField field) {}
     
     public int getID() {
         return objectID;
@@ -59,7 +62,7 @@ public abstract class GameObject {
    
    public String getObjectFileName() {
 	   //This method returns null, because an object should never be of just GameObject, it should always be an extended version
-	   return null;
+	   return "strawberry.jpg";
    }
    
 }

@@ -1,7 +1,13 @@
+package Core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import Cards.MoveCardDown;
+import Cards.MoveCardLeft;
+import Cards.MoveCardRight;
+import Cards.MoveCardUp;
+import Cards.Shoot;
 import TypeListings.CardType;
 
 public class Deck {
@@ -12,9 +18,9 @@ public class Deck {
     static boolean seedSet = false;
     final static long seed = System.currentTimeMillis();
 
-    List<Card[]> deck = new ArrayList<Card[]>();
-    List<Card[]> discard = new ArrayList<Card[]>();
-    List<Card[]> drawn = new ArrayList<Card[]>();
+    List<Card> deck = new ArrayList<Card>();
+    List<Card> discard = new ArrayList<Card>();
+    List<Card> drawn = new ArrayList<Card>();
 
     
     public int GetCardCount() {
@@ -32,12 +38,12 @@ public class Deck {
     
     // sends the referanced cards to the discard pile from drawn/deck, adds cards to
     // discard pile if not in either
-    void Discard(Card[] ref) {
+    void Discard(Card ref) {
         boolean found = false;
 
         // checks if the card is being discarded from the "drawn" cards
         for (int i = 0; i < drawn.size() && found == false; i++) {
-            if (drawn.get(i)[0].GetCardID() == ref[0].GetCardID()) {
+            if (drawn.get(i).GetCardID() == ref.GetCardID()) {
                 found = true;
                 drawn.remove(i);
                 discard.add(ref);
@@ -46,7 +52,7 @@ public class Deck {
 
         // checks if the card is being discard from the deck
         for (int i = 0; i < deck.size() && found == false; i++) {
-            if (deck.get(i)[0].GetCardID() == ref[0].GetCardID()) {
+            if (deck.get(i).GetCardID() == ref.GetCardID()) {
                 found = true;
                 deck.remove(i);
                 discard.add(ref);
@@ -73,7 +79,7 @@ public class Deck {
         }
     }
 
-    Card[] DrawCard() {
+    Card DrawCard() {
         if (deck.size() == 0) {
             Shuffle();
         }
@@ -82,13 +88,13 @@ public class Deck {
         if (deck.size() == 0) {
             return null;
         }
-        Card[] hold = deck.get(0);
+        Card hold = deck.get(0);
         deck.remove(0);
         drawn.add(hold);
         return hold;
     }
 
-    void AddCard(Card[] ref) {
+    void AddCard(Card ref) {
         deck.add(ref);
     }
 
@@ -98,7 +104,7 @@ public class Deck {
             deck.add(discard.get(0));
             discard.remove(0);
         }
-        List<Card[]> hold = new ArrayList<Card[]>();
+        List<Card> hold = new ArrayList<Card>();
         hold.addAll(deck);
         deck.clear();
         int i = 0;
@@ -118,23 +124,25 @@ public class Deck {
 
         for (int i = 0; i < x; ++i) {
             // TODO: update to be calling from resource manager
-            Card[] hold = new Card[1];
+            Card hold = null;
 
-            switch (CardType.values()[rand.nextInt(4)]) {
+            switch (CardType.values()[rand.nextInt(5)]) {
             case MOVE_UP:
-                hold[0] = new MoveCardUp("Move up", "Moves the player up");
+                hold = new MoveCardUp("Move up", "Moves the player up");
                 break;
             case MOVE_DOWN:
-                hold[0] = new MoveCardDown("Move down", "Moves the player down");
+                hold = new MoveCardDown("Move down", "Moves the player down");
                 break;
             case MOVE_LEFT:
-                hold[0] = new MoveCardLeft("Move Left", "Moves the player Left");
+                hold = new MoveCardLeft("Move Left", "Moves the player Left");
                 break;
             case MOVE_RIGHT:
-                hold[0] = new MoveCardRight("Move right", "Moves the player right");
+                hold = new MoveCardRight("Move right", "Moves the player right");
                 break;
+            case SHOOT:
+                hold = new Shoot("Shoots", "Fire a shot forwards");
             default:
-                hold[0] = new MoveCardUp("Move up", "Moves the player up");
+                hold = new MoveCardUp("Move up", "Moves the player up");
                 break;
 
             }
@@ -152,23 +160,26 @@ public class Deck {
 
         for (int i = 0; i < 20; ++i) {
             // TODO: update to be calling from resource manager
-            Card[] hold = new Card[1];
+            Card hold = null;
 
-            switch (CardType.values()[rand.nextInt(4)]) {
+            switch (CardType.values()[rand.nextInt(5)]) {
             case MOVE_UP:
-                hold[0] = new MoveCardUp("Move up", "Moves the player up");
+                hold = new MoveCardUp("Move up", "Moves the player up");
                 break;
             case MOVE_DOWN:
-                hold[0] = new MoveCardDown("Move down", "Moves the player down");
+                hold = new MoveCardDown("Move down", "Moves the player down");
                 break;
             case MOVE_LEFT:
-                hold[0] = new MoveCardLeft("Move Left", "Moves the player Left");
+                hold = new MoveCardLeft("Move Left", "Moves the player Left");
                 break;
             case MOVE_RIGHT:
-                hold[0] = new MoveCardRight("Move right", "Moves the player right");
+                hold = new MoveCardRight("Move right", "Moves the player right");
+                break;
+            case SHOOT:
+                hold = new Shoot("Shoots", "Fire a shot forwards");
                 break;
             default:
-                hold[0] = new MoveCardUp("Move up", "Moves the player up");
+                hold = new MoveCardUp("Move up", "Moves the player up");
                 break;
 
             }

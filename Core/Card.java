@@ -1,3 +1,4 @@
+package Core;
 
 public abstract class Card {
     private static int nextID = 0;
@@ -31,7 +32,7 @@ public abstract class Card {
     }
 	
 	//calls when card is played
-    public boolean OnPlay(PlayField [] theField) {
+    public boolean OnPlay(PlayField theField) {
 		// This method does the cards effect. Is overwritten for individual cards. Uses
 		// methods on the passed PlayField to do so. See PlayField for the methods.
 		// If the card cannot be played (it would move the player off the board, for

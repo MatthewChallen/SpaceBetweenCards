@@ -4,7 +4,7 @@
 /GameObject.class
 /GameObjectList.class
 /GameWindow.class
-/MoveCardDown.class
+/Hand.class
 /MoveCardLeft.class
 /MoveCardRight.class
 /MoveCardUp.class
@@ -17,10 +17,3 @@
 /ShootCardRight.class
 /ShootCardUp.class
 /Sprite.class
-/Types.class
-/ObjectsNames.class
-/FieldObjectsNames.class
-/ObjectTypes.class
-/ObjectType.class
-/Hand.class
-/bin/

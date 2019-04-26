@@ -1,3 +1,4 @@
+package Core;
 import TypeListings.ObjectType;
 
 public class PlayField {
@@ -21,10 +22,15 @@ public class PlayField {
 	// Spawns player at requested point
 	public void spawnPlayer(int x, int y) {
 	    x = x/2;
-	    y = y-1;
+	    y = y-3;
 	    playGrid[x][y].addObject(ResourceManager.GetRM()[0].GetNewObject(ObjectType.PLAYERSHIP, x, y));
 	}
 	
+	public void spawnObject(ObjectType type, int x, int y) {
+	    if(x>=0 && x < playGridXSize && y >=0 && y < playGridYSize) {
+	        playGrid[x][y].addObject(ResourceManager.GetRM()[0].GetNewObject(type, x, y));
+	    }
+	}
 	
 	// Checks for collision and then supplies string of object ID's
 	public String checkForCollision() {
@@ -47,9 +53,9 @@ public class PlayField {
 	// Checks board for player object and then moves the object to another GameObjectList
 	// Code can be reduced to check for player before case and then implement the move
 	// Exception still needs to be implemented to stop player moving off board
-	public void moveObject(String direction, GameObject [] target, int distance) {
-		int x = target[0].getXCoordinates();
-		int y = target[0].getYCoordinates();
+	public void moveObject(String direction, GameObject target, int distance) {
+		int x = target.getXCoordinates();
+		int y = target.getYCoordinates();
 	    
 	    switch(direction) {
 		case "left" :
@@ -59,7 +65,7 @@ public class PlayField {
 			        x=0;
 			    }
 			    playGrid[x][y].addObject(target);
-			    target[0].setXYCoordinates(x, y);
+			    target.setXYCoordinates(x, y);
 			}
 			break;
 		case "right" :
@@ -69,17 +75,26 @@ public class PlayField {
                     x=playGridXSize-1;
                 }
                 playGrid[x][y].addObject(target);
-                target[0].setXYCoordinates(x, y);
+                target.setXYCoordinates(x, y);
             }
 			break;
 		case "up" :
 		    if(playGrid[x][y].removeObject(target)){
                 y -= distance;
                 if(y < 0) {
-                    y=0;
+                    
+                    if(target instanceof PlayerObject) {
+                        y=0;
+                        
+                    }else {
+                      ResourceManager.GetRM()[0].RemoveGameObject(target);
+                      break;
+                    }
+                    
+                    //y=0;
                 }
                 playGrid[x][y].addObject(target);
-                target[0].setXYCoordinates(x, y);
+                target.setXYCoordinates(x, y);
             }
 			break;
 		case "down" :
@@ -89,7 +104,7 @@ public class PlayField {
                     y=playGridYSize-1;
                 }
                 playGrid[x][y].addObject(target);
-                target[0].setXYCoordinates(x, y);
+                target.setXYCoordinates(x, y);
             }
 			break;
 		

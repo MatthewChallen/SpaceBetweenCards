@@ -1,3 +1,4 @@
+package Core;
 
 public class GameObjectList {
 	private GameObject[] gridObjects = new GameObject[2];
@@ -6,13 +7,13 @@ public class GameObjectList {
 		
 	}
 	// Adds object to list, checks first to see if object already in array index and then adds objects to array
-	public void addObject(GameObject [] a) {
+	public void addObject(GameObject gameObject) {
 		if (gridObjects[0] instanceof GameObject) {
-			gridObjects[1] = a[0];
+			gridObjects[1] = gameObject;
 		}
 		
 		else {
-			gridObjects[0] = a[0];
+			gridObjects[0] = gameObject;
 		}
 	}
 	
@@ -32,9 +33,9 @@ public class GameObjectList {
     }
 	
 	//removes specific object. returns false if object not found.
-	public boolean removeObject(GameObject[] target) {
+	public boolean removeObject(GameObject target) {
         for(int i =0; i < gridObjects.length; ++i) {
-            if(target[0] == gridObjects[i])
+            if(target == gridObjects[i])
             {
                 gridObjects[i] = null;
                 return true;

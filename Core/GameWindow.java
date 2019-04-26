@@ -1,3 +1,4 @@
+package Core;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -154,7 +155,7 @@ public class GameWindow extends JPanel {
 		//Finally, render the cards
 		for(int cardNo = 0; cardNo < theHand[0].GetCardCount(); cardNo++) {
 			//Find the name of the cards sprite
-			fileName = theHand[0].GetHandList().get(cardNo)[0].getCardFileName();
+			fileName = theHand[0].GetHandList().get(cardNo).getCardFileName();
 			if(fileName != null) {
 				//Assume the sprite is not found, then search the sprite list for that sprite
 				foundSprite = false;

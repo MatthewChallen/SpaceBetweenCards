@@ -5,5 +5,6 @@ public enum ObjectType {
     PLAYERSHIP,
     ENEMYSHIP,
     DEBRIS,
-    WARP
+    WARP,
+    PROJECTILE
 }

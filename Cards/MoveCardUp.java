@@ -1,3 +1,9 @@
+package Cards;
+
+import Core.Card;
+import Core.PlayField;
+import Core.ResourceManager;
+
 public class MoveCardUp extends Card {
     
     private int distance;
@@ -18,11 +24,11 @@ public class MoveCardUp extends Card {
         return "cardShipUp.png";
     }
 
-    public boolean OnPlay(PlayField[] theField) {
+    public boolean OnPlay(PlayField theField) {
         // Moves the player one space to the Up.
         // Assumed a movePlayer() + getPlayer() method
         // both in the PlayField class but can be changed
-        theField[0].moveObject("up", ResourceManager.GetRM()[0].GetPlayer(), distance);
+        theField.moveObject("up", ResourceManager.GetRM()[0].GetPlayer(), distance);
 
         return true;
     }

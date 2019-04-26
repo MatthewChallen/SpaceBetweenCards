@@ -1,3 +1,4 @@
+package Core;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -20,6 +21,7 @@ public class ResourceManager implements KeyListener, MouseListener {
     //private ArrayList<Card> theDeck;
     private ArrayList<Sprite> spriteList;
     private ArrayList<GameObject> objectList;
+    private ArrayList<GameObject> objectKillList;
     private GameWindow theGameWindow;
     private JFrame theGameFrame;
     private int cardChosen;
@@ -65,6 +67,8 @@ public class ResourceManager implements KeyListener, MouseListener {
         
         // Create a new list of game objects.
         this.objectList = new ArrayList<GameObject>(0);
+        //buffer for objects to remove
+        this.objectKillList = new ArrayList<GameObject>(0);
         
 
         // Create a new playing field
@@ -134,6 +138,31 @@ public class ResourceManager implements KeyListener, MouseListener {
 
     }
 
+    public int GetObjectListSize()
+    {
+        return objectList.size();
+    }
+    
+    public GameObject GetObjectListElement(int index) {
+        return objectList.get(index);
+    }
+    
+    public void RemoveGameObject(GameObject target) {
+        objectKillList.add(target);
+    }
+    
+    public void Update() {
+        while(objectKillList.size() > 0) {
+            for(int i = objectList.size()-1; i>=0;--i) {
+                if(objectKillList.get(0) == objectList.get(i)) {
+                    objectKillList.remove(0);
+                    objectList.remove(i);
+                    i=-1;
+                }
+            }
+        }
+    }
+    
     /*
     // This method draws a card from the deck and adds it to the hand
     public boolean drawCard() {
@@ -177,31 +206,34 @@ public class ResourceManager implements KeyListener, MouseListener {
         }
     }*/
 
-    public PlayerObject [] GetPlayer() {
-        PlayerObject[] hold = new PlayerObject[1];
+    public PlayerObject GetPlayer() {
+        PlayerObject hold = null;
         for(int i=0;i< objectList.size(); ++i)
         {
             if(objectList.get(i).getID() == 0)
             {
-                hold[0] = (PlayerObject) objectList.get(i);
+                hold = (PlayerObject) objectList.get(i);
                 i = objectList.size();
             } else {
-                hold[0] = null;
+                hold = null;
             }
         }
         return hold;
     }
     //returns 1 element array on the selected game object.
-    public GameObject[] GetNewObject(ObjectType type, int X, int Y) {
+    public GameObject GetNewObject(ObjectType type, int X, int Y) {
 
         // temp array to return
-        GameObject[] hold = new GameObject[1];
 
+        GameObject hold = null;
         switch (type) {
         case PLAYERSHIP:
-            GameObject test = new PlayerObject(0, X, Y);
-            objectList.add(test);
-            hold[0] = objectList.get(objectList.lastIndexOf(test));
+            hold = new PlayerObject(0, X, Y);
+            objectList.add(hold);
+            break;
+        case PROJECTILE:
+            hold = new Projectile(X, Y);
+            objectList.add(hold);
             break;
         default:
             return null;
