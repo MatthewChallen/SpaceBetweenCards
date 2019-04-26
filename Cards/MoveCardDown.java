@@ -22,6 +22,10 @@ public class MoveCardDown extends Card {
         // This returns the name of the image that is rendered for this object
         return "cardShipDown.png";
     }
+    
+    public int getDistance() {
+    	return distance;
+    }
 
     public boolean OnPlay(PlayField theField) {
 

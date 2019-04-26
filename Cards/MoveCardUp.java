@@ -23,6 +23,10 @@ public class MoveCardUp extends Card {
         // This returns the name of the image that is rendered for this object
         return "cardShipUp.png";
     }
+    
+    public int getDistance() {
+    	return distance;
+    }
 
     public boolean OnPlay(PlayField theField) {
         // Moves the player one space to the Up.
