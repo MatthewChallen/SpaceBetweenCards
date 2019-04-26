@@ -195,7 +195,7 @@ public class GameWindow extends JPanel {
 
 		// Get the sprite sizes
 		int spriteHeight = ySize / theField.getPlayGridYSize();
-		int spriteWidth = xSize / theField.getPlayGridYSize();
+		int spriteWidth = xSize / theField.getPlayGridXSize();
 
 		// Declare and initialize other variables
 		String fileName = null;
