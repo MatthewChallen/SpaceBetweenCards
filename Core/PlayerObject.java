@@ -1,4 +1,4 @@
-
+package Core;
 public class PlayerObject extends GameObject {
 
 	public PlayerObject(int objectID, int xCoordinate, int yCoordinate) {
