@@ -51,6 +51,8 @@ public class GameWindow extends JPanel {
 		// Make the top space allocated to the enemy deck the same as the bottom space
 		// allocated to the player deck, for symmetry
 		int topSpacePixels = bottomSpacePixels;
+		//Set the spacing around the bolts for the plating. This number is from 0 - 100, with 100 showing nothing at all
+		int cardSpacing = 10;
 
 		// Put the bottom left text on the bottom left
 		screen.setFont(new Font("Game Font", Font.PLAIN, 24));
@@ -62,19 +64,19 @@ public class GameWindow extends JPanel {
 		screen.setColor(Color.WHITE);
 		screen.drawString(bottomLeftText, 20, this.getHeight() - 20);
 
-		paintBackGround(screen);
+		paintBackGround(screen, bottomSpacePixels, topSpacePixels, leftSpacePixels, rightSpacePixels);
 		// paintCards(screen);
 
 		// Render the player deck in the bottom left corner
-		paintPlayerDeck(screen, 0, this.getHeight() - bottomSpacePixels, leftSpacePixels, bottomSpacePixels);
+		paintPlayerDeck(screen, 0, this.getHeight() - bottomSpacePixels, leftSpacePixels, (95 * bottomSpacePixels)/100);
 
 		// Render the discard pile in the bottom right corner
 		paintPlayerDiscardDeck(screen, this.getWidth() - rightSpacePixels, this.getHeight() - bottomSpacePixels,
 				rightSpacePixels, bottomSpacePixels);
 
 		// Render the hand in between the two, with the space left over
-		paintPlayerHand(screen, leftSpacePixels, this.getHeight() - bottomSpacePixels,
-				this.getWidth() - leftSpacePixels - rightSpacePixels, bottomSpacePixels);
+		paintPlayerHand(screen, leftSpacePixels + (this.getWidth() - leftSpacePixels - rightSpacePixels) *  cardSpacing / 100, this.getHeight() - ((100 - cardSpacing) * bottomSpacePixels)/100,
+				(this.getWidth() - leftSpacePixels - rightSpacePixels) * (100 - 2 * cardSpacing) / 100, ((100 - 2 *cardSpacing) * bottomSpacePixels)/100);
 
 		// Render the enemy deck in the top right corner
 		paintEnemyDeck(screen, this.getWidth() - rightSpacePixels, 0, rightSpacePixels, topSpacePixels);
@@ -83,13 +85,71 @@ public class GameWindow extends JPanel {
 		paintField(screen, 0, 0, getWidth() - rightSpacePixels, getHeight() - bottomSpacePixels);
 	}
 
-	private void paintBackGround(Graphics Screen) {
+	private void paintBackGround(Graphics Screen, int bottomSpacePixels, int topSpacePixels, int leftSpacePixels,
+			int rightSpacePixels) {
 		// This method paints the background
 
+		// Only render the interface background if all the sprites can be loaded
+		if (loadNewSprite("plating.png") && loadNewSprite("bolt.png")) {
+
+			// Get the location of the sprites
+			int platingSpriteNumber = 0;
+			int boltSpriteNumber = 0;
+			for (int i = 0; i < spriteList.size(); i++) {
+				if (spriteList.get(i).getName().equals("bolt.png")) {
+					boltSpriteNumber = i;
+				}
+			}
+			for (int i = 0; i < spriteList.size(); i++) {
+				if (spriteList.get(i).getName().equals("plating.png")) {
+					platingSpriteNumber = i;
+				}
+			}
+
+			int screenHeight = this.getHeight();
+			int screenWidth = this.getWidth();
+
+			// Render plating via a method with inbuilt bullet placing
+			paintPlating(Screen, platingSpriteNumber, boltSpriteNumber, 0, screenHeight - bottomSpacePixels,
+					bottomSpacePixels, leftSpacePixels);
+			paintPlating(Screen, platingSpriteNumber, boltSpriteNumber, leftSpacePixels,
+					screenHeight - bottomSpacePixels, bottomSpacePixels,
+					screenWidth - leftSpacePixels - rightSpacePixels);
+			paintPlating(Screen, platingSpriteNumber, boltSpriteNumber, screenWidth - rightSpacePixels,
+					screenHeight - bottomSpacePixels, bottomSpacePixels, rightSpacePixels);
+			paintPlating(Screen, platingSpriteNumber, boltSpriteNumber, screenWidth - rightSpacePixels, 0,
+					screenHeight - bottomSpacePixels, rightSpacePixels);
+		}
+
+	}
+
+	private void paintPlating(Graphics Screen, int platingSpriteNumber, int boltSpriteNumber, int xLocation,
+			int yLocation, int height, int width) {
+		// This method paints the plating for the interface
+
+		// Paint the plating itself
+		spriteList.get(platingSpriteNumber).paint(Screen, xLocation, yLocation, height, width);
+
+		// Decide the bolt sizes
+		int boltHeight = 0;
+		if(height > width) {
+			boltHeight = width / 6;
+		}else {
+			boltHeight = height / 6;
+		}
+		int boltWidth = boltHeight;
+
+		spriteList.get(boltSpriteNumber).paint(Screen, xLocation, yLocation, boltHeight, boltWidth);
+		spriteList.get(boltSpriteNumber).paint(Screen, xLocation, yLocation + height - boltHeight, boltHeight,
+				boltWidth);
+		spriteList.get(boltSpriteNumber).paint(Screen, xLocation + width - boltWidth, yLocation, boltHeight, boltWidth);
+		spriteList.get(boltSpriteNumber).paint(Screen, xLocation + width - boltWidth, yLocation + height - boltHeight,
+				boltHeight, boltWidth);
 	}
 
 	private boolean loadNewSprite(String fileName) {
 		// Loads a sprite with the mentioned filename and adds it to the loaded sprites
+		// Returns true if the sprite is loaded already or loaded successfully
 		BufferedImage img = null;
 		Boolean doLoad = true;
 		// Make sure the sprite isn't already loaded
@@ -114,7 +174,7 @@ public class GameWindow extends JPanel {
 				return false;
 			}
 		} else {
-			return false;
+			return true;
 		}
 	}
 
@@ -194,11 +254,11 @@ public class GameWindow extends JPanel {
 		// This method paints the field in the space specified
 
 		// Get the sprite sizes
-	    if(theField.getPlayGridXSize() > theField.getPlayGridYSize()) {
-	        int spriteWidth = xSize / theField.getPlayGridYSize();
-            int spriteHeight = ySize / theField.getPlayGridYSize();
-	        
-	    }
+		if (theField.getPlayGridXSize() > theField.getPlayGridYSize()) {
+			int spriteWidth = xSize / theField.getPlayGridYSize();
+			int spriteHeight = ySize / theField.getPlayGridYSize();
+
+		}
 		int spriteHeight = ySize / theField.getPlayGridYSize();
 		int spriteWidth = xSize / theField.getPlayGridXSize();
 
@@ -207,17 +267,17 @@ public class GameWindow extends JPanel {
 		boolean foundSprite = false;
 		int currentXPosition = 0;
 		int currentYPosition = 0;
-		
-		//Set the color to cyan
+
+		// Set the color to cyan
 		screen.setColor(Color.CYAN);
-		
+
 		// Render the lines from top to bottom
 		for (int x = 0; x < theField.getPlayGridXSize() + 1; x++) {
 			currentXPosition = (x * xSize) / theField.getPlayGridXSize();
 			screen.drawLine(currentXPosition, yStartingPosition, currentXPosition, yStartingPosition + ySize);
 		}
-		
-		//Render the lines from left to right
+
+		// Render the lines from left to right
 		for (int y = 0; y < theField.getPlayGridYSize() + 1; y++) {
 			currentYPosition = (y * ySize) / theField.getPlayGridYSize();
 			screen.drawLine(xStartingPosition, currentYPosition, xStartingPosition + xSize, currentYPosition);
