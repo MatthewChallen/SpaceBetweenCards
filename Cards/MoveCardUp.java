@@ -10,7 +10,7 @@ public class MoveCardUp extends Card {
 
     public MoveCardUp(String name, String description) {
         super(name, description);
-        distance = 1;
+        distance = 5;
     }
 
     public MoveCardUp(String name, String description, int dist) {

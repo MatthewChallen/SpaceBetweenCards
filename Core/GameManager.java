@@ -56,7 +56,7 @@ public class GameManager {
 				System.out.println("Goodbye!");
 			} else {
 			    theHand[0].PlayCard(theField, cardChosen);
-			    theHand[0].DrawCard();
+			    theHand[0].DrawCard(5);
 			    Update();
 				//theResourceManager.playCard(cardChosen - 0);
 				// theField.newTurn();

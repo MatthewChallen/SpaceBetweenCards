@@ -194,8 +194,13 @@ public class GameWindow extends JPanel {
 		// This method paints the field in the space specified
 
 		// Get the sprite sizes
+	    if(theField.getPlayGridXSize() > theField.getPlayGridYSize()) {
+	        int spriteWidth = xSize / theField.getPlayGridYSize();
+            int spriteHeight = ySize / theField.getPlayGridYSize();
+	        
+	    }
 		int spriteHeight = ySize / theField.getPlayGridYSize();
-		int spriteWidth = xSize / theField.getPlayGridYSize();
+		int spriteWidth = xSize / theField.getPlayGridXSize();
 
 		// Declare and initialize other variables
 		String fileName = null;
