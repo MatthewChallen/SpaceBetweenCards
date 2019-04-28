@@ -12,7 +12,7 @@ public class Projectile extends GameObject {
     public Projectile(int x, int y) {
         super(x, y);
               
-        this.speed = 1;
+        this.speed = 2;
     }
     
     public void Update(PlayField field) {

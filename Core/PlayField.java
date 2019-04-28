@@ -140,6 +140,7 @@ public class PlayField {
                     if(target instanceof PlayerObject) {
                         y=start;
                     } else {
+                        ResourceManager.GetRM().RemoveGameObject(target);
                         onGrid = false;
                     }
                 } else {
@@ -156,6 +157,7 @@ public class PlayField {
                     if(target instanceof PlayerObject) {
                         y = GetActualY(playGridYSize-1);
                     }else {
+                        ResourceManager.GetRM().RemoveGameObject(target);
                         onGrid = false;
                     }
                 }
