@@ -10,48 +10,80 @@ public class PlayField {
 	public PlayField(int x, int y) {
 		this.playGridXSize = x;
 	    this.playGridYSize = y;
+	    
+	    
 		playGrid = new GameObjectList[x][y];
 		for(int i = 0; i < x; i++) {
 			for(int j = 0; j < y; j++) {
 				playGrid[i][j] = new GameObjectList();
 			}
 		}
-		spawnPlayer(x, y);
-		start =0;
+		
+		spawnPlayer(x/2, y-3);
+		start = 0;
 		
 	}
 	
+	//Converts Y array location to the Y location as shown on the grid
 	private int GetVisualY(int y) {
-	    y += start;
-	    y %= playGridYSize;
-	    return y;
+	    return ToRangeY(y-start);
+	}
+	//Converts Y from visual location, to location in array 
+	private int GetActualY(int y) {
+	    return ToRangeY(y+start);	    
 	}
 	
-	public void update() {
+	//Converts value to be within the array's range
+	private int ToRangeY(int y) {
 	    
-	    for(int i = 0; i < playGridXSize; ++i) {
-            playGrid[i][GetVisualY(playGridYSize)].RemovedAll();
+	    //while used over if statement in case Y is more than one grid length out
+        while(y<0) {
+            y+=playGrid[0].length;
+        }
+        while(y>=playGrid[0].length) {
+            y-=playGrid[0].length;
+        }
+        return y;
+    }
+	
+	//Converts value to be within the array's range
+	private int ToRangeX(int x) { //test
+        //while used over if statement in case X is more than one grid length out
+        while(x <0) {
+            x +=playGrid.length;
+        }
+        while(x>=playGrid.length) {
+            x-=playGrid.length;
+        }
+        return x;
+    }
+	
+	public void update() {
+	    --start;
+	    start = ToRangeY(start);
+	    
+	    
+	    for(int i =0; i < playGridXSize; ++i) {
+            playGrid[i][start].RemovedAll();
         }
 	    
-	    start--;
-	    if(start < 0) {
-	        start = playGridYSize-1;
-	    }
-	    System.out.println("Staring line: " +start);
-	    
+
+        if(ResourceManager.GetRM().GetPlayer().getYCoordinates() == start) {
+            while(true) {
+                System.out.println("Player defeated: Player ship lost to the void");
+            }
+        }
 	    
 	}
 	
 	// Spawns player at requested point
 	public void spawnPlayer(int x, int y) {
-	    x = x/2;
-	    y = y-3;
-	    playGrid[x][GetVisualY(y)].addObject(ResourceManager.GetRM().GetNewObject(ObjectType.PLAYERSHIP, x, GetVisualY(y)));
+	    playGrid[x][GetActualY(y)].addObject(ResourceManager.GetRM().GetNewObject(ObjectType.PLAYERSHIP, x, GetActualY(y)));
 	}
 	
 	public void spawnObject(ObjectType type, int x, int y) {
 	    if(x>=0 && x < playGridXSize && y >=0 && y < playGridYSize) {
-	        playGrid[x][GetVisualY(y)].addObject(ResourceManager.GetRM().GetNewObject(type, x, GetVisualY(y)));
+	        playGrid[x][y].addObject(ResourceManager.GetRM().GetNewObject(type, x, y));
 	    }
 	}
 	
@@ -60,8 +92,8 @@ public class PlayField {
 	    //maybe playGridXSize and playGridYSize
 		for (int i = 0; i < playGrid.length; i++) {
 			for (int j = 0; j < playGrid.length; j++) {
-				if (playGrid[i][GetVisualY(j)].isThereCollision() == true) {
-					return playGrid[i][GetVisualY(j)].getObjectsID();
+				if (playGrid[i][GetActualY(j)].isThereCollision() == true) {
+					return playGrid[i][GetActualY(j)].getObjectsID();
 				}
 			}
 		}
@@ -70,7 +102,7 @@ public class PlayField {
 	}
 	// calls to destroy the object/s, GameManager will need to take number of objects to be destroyed, maximum is 2
 	public void destroyObjects(int y, int x, int noToDestroy) {
-		playGrid[x][GetVisualY(y)].removeObject(noToDestroy);	
+		playGrid[x][GetActualY(y)].removeObject(noToDestroy);	
 	}
 	
 	// Method for moving player around the board
@@ -81,6 +113,8 @@ public class PlayField {
 		int x = target.getXCoordinates();
 		int y = target.getYCoordinates();
 	    
+		boolean onGrid = true; 
+		
 	    switch(direction) {
 		case "left" :
 			if(playGrid[x][y].removeObject(target)){
@@ -88,8 +122,6 @@ public class PlayField {
 			    if(x < 0) {
 			        x=0;
 			    }
-			    playGrid[x][y].addObject(target);
-			    target.setXYCoordinates(x, y);
 			}
 			break;
 		case "right" :
@@ -98,52 +130,44 @@ public class PlayField {
                 if(x >= playGridXSize) {
                     x=playGridXSize-1;
                 }
-                playGrid[x][y].addObject(target);
-                target.setXYCoordinates(x, y);
             }
 			break;
 		case "up" :
 		    if(playGrid[x][y].removeObject(target)){
                 y -= distance;
-                if(GetVisualY(y) < 0) {
-                    
+
+                if(y < start && (y+distance) >= start) {
                     if(target instanceof PlayerObject) {
                         y=start;
-                        
-                    }else {
-                      ResourceManager.GetRM().RemoveGameObject(target);
-                      break;
+                    } else {
+                        onGrid = false;
                     }
-                    
-                    //y=0;
+                } else {
+                    y = ToRangeY(y);
                 }
-                playGrid[x][y].addObject(target);
-                target.setXYCoordinates(x, y);
+                    
             }
 			break;
 		case "down" :
 		    if(playGrid[x][y].removeObject(target)){
                 y += distance;
-                if(target instanceof PlayerObject)
-                {
-                    if(GetVisualY(y) >= playGridYSize) {
-                        y=(playGridYSize-1+start)%playGridYSize;
+                
+                if(GetVisualY(y-distance) > GetVisualY(ToRangeY(y))) {
+                    if(target instanceof PlayerObject) {
+                        y = GetActualY(playGridYSize-1);
+                    }else {
+                        onGrid = false;
                     }
-                    playGrid[x][y].addObject(target);
-                    target.setXYCoordinates(x, y);
-                }else {
-                    ResourceManager.GetRM().RemoveGameObject(target);
-                    break;
-                  }
+                }
+                y = ToRangeY(y);
+                
             }
 			break;
 		}
 	    
-
-        ResourceManager.bottomLeftText = "Player Y:" + target.getYCoordinates();
-
-	    if(target instanceof PlayerObject) {
-	        System.out.println("Player X: " + target.getXCoordinates() +", player Y: " + (target.getYCoordinates()+1));
+	    if(onGrid) {
+	        playGrid[x][y].addObject(target);
+	        target.setXYCoordinates(x, y);
 	    }
 	}
 	
@@ -159,7 +183,7 @@ public class PlayField {
 	
 	public String getObjectFileName(int xLocation, int yLocation) {
 		//Returns the filename for the sprite, so it can be rendered
-		return playGrid[xLocation][GetVisualY(yLocation)].getObjectFileName();
+		return playGrid[xLocation][GetActualY(yLocation)].getObjectFileName();
 	}
 	
 	public int getPlayGridXSize() {
