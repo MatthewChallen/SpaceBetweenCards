@@ -24,6 +24,10 @@ public class MoveCardRight extends Card {
 		return "cardShipRight.png";
 	}
 	
+    public int getDistance() {
+    	return distance;
+    }
+	
 	public boolean OnPlay(PlayField  theField) {
 		// Moves the player one space to the Right.
 		// Assumed a movePlayer() + getPlayer() method
