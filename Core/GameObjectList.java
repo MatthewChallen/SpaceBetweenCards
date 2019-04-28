@@ -40,6 +40,7 @@ public class GameObjectList {
 	            } else {
 	                System.out.println("removed bullet" + gridObjects[i].getID());
 	            }
+	            ResourceManager.GetRM().RemoveGameObject(gridObjects[i]);
 	            gridObjects[i] = null;
 	        }
 	        

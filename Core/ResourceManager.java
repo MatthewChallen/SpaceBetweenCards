@@ -180,8 +180,6 @@ public class ResourceManager implements KeyListener, MouseListener {
     //returns 1 element array on the selected game object.
     public GameObject GetNewObject(ObjectType type, int X, int Y) {
 
-        // temp array to return
-
         GameObject hold = null;
         switch (type) {
         case PLAYERSHIP:
@@ -191,6 +189,32 @@ public class ResourceManager implements KeyListener, MouseListener {
             break;
         case PROJECTILE:
             hold = new Projectile(X, Y);
+            objectList.add(hold);
+            System.out.println("Generated Projectile: " + hold.getID());
+            break;
+        case ENEMYSHIP:
+            hold = new Enemy(X, Y);
+            objectList.add(hold);
+            System.out.println("Generated Enemy: " + hold.getID());
+            break;
+        default:
+            return null;
+        }
+        return hold;
+
+    }
+
+    public GameObject GetNewObject(ObjectType type, int X, int Y, int value) {
+
+        GameObject hold = null;
+        switch (type) {
+        case PLAYERSHIP:
+            hold = new PlayerObject(0, X, Y);
+            objectList.add(hold);
+            System.out.println("Generated player");
+            break;
+        case PROJECTILE:
+            hold = new Projectile(X, Y, value);
             objectList.add(hold);
             System.out.println("Generated Projectile: " + hold.getID());
             break;

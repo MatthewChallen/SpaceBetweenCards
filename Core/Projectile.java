@@ -1,18 +1,39 @@
 package Core;
 
+import TypeListings.Direction;
+
 public class Projectile extends GameObject {
 
-    int speed;
+    int speed = 2;
+    Direction direction;
         
     public Projectile(PlayerObject shooter, int speed) {
         super(shooter.getXCoordinates(), shooter.getYCoordinates());
-              
-        this.speed = speed;
+        if(speed >0) {
+            direction = Direction.UP;
+            this.speed = speed;
+        } else {
+            direction = Direction.DOWN;
+            this.speed = 0-speed;
+        }
     }
     public Projectile(int x, int y) {
         super(x, y);
               
-        this.speed = 2;
+        direction = Direction.UP;
+        
+    }
+    public Projectile(int x, int y, int speed) {
+        super(x, y);
+              
+        this.speed = speed;
+        if(speed >0) {
+            direction = Direction.UP;
+            this.speed = speed;
+        } else {
+            direction = Direction.DOWN;
+            this.speed = 0-speed;
+        }
     }
     
     public void Update(PlayField field) {
@@ -22,7 +43,12 @@ public class Projectile extends GameObject {
     
     public String getObjectFileName() {
         //This method returns null, because an object should never be of just GameObject, it should always be an extended version
-        return "projectile.png";
+        if(direction == Direction.UP) {
+            return "projectile.png";
+        } else {
+            return "projectile_down.png";
+        }
+        
     }
     
 }

@@ -1,7 +1,14 @@
 package Core;
+import java.util.Random;
+
 import TypeListings.ObjectType;
 
 public class PlayField {
+    
+    private static Random rand = new Random();
+    private static boolean seedSet = false;
+    private final static long seed = System.currentTimeMillis();
+    
 	private GameObjectList[][] playGrid;
     private int playGridXSize;
     private int playGridYSize;
@@ -11,6 +18,10 @@ public class PlayField {
 		this.playGridXSize = x;
 	    this.playGridYSize = y;
 	    
+	    if (seedSet == false) {
+            rand.setSeed(seed);
+            seedSet = true;
+        }
 	    
 		playGrid = new GameObjectList[x][y];
 		for(int i = 0; i < x; i++) {
@@ -74,6 +85,9 @@ public class PlayField {
             }
         }
 	    
+        if(rand.nextBoolean()) {
+            spawnObject(ObjectType.ENEMYSHIP, rand.nextInt(playGridXSize), GetActualY(0));
+        }
 	}
 	
 	// Spawns player at requested point
@@ -82,10 +96,16 @@ public class PlayField {
 	}
 	
 	public void spawnObject(ObjectType type, int x, int y) {
-	    if(x>=0 && x < playGridXSize && y >=0 && y < playGridYSize) {
-	        playGrid[x][y].addObject(ResourceManager.GetRM().GetNewObject(type, x, y));
-	    }
-	}
+        if(x>=0 && x < playGridXSize && y >=0 && y < playGridYSize) {
+            playGrid[x][y].addObject(ResourceManager.GetRM().GetNewObject(type, x, y));
+        }
+    }
+	
+	public void spawnObject(ObjectType type, int x, int y, int value) {
+        if(x>=0 && x < playGridXSize && y >=0 && y < playGridYSize) {
+            playGrid[x][y].addObject(ResourceManager.GetRM().GetNewObject(type, x, y, value));
+        }
+    }
 	
 	// Checks for collision and then supplies string of object ID's
 	public String checkForCollision() {
