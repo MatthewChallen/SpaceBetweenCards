@@ -15,14 +15,14 @@ public class GameWindow extends JPanel {
 	private PlayField theField;
 	private ArrayList<Sprite> spriteList;
 	// private ArrayList<Card> theHand;
-	private Hand[] theHand;
+	private Hand theHand;
 	private String bottomLeftText;
 	private String folderName;
 	private int bottomPercentageAllocated;
 	private int rightPercentageAllocated;
 	private double cardRatio;
 
-	public GameWindow(PlayField theField, ArrayList<Sprite> spriteList, Hand[] theHand, String bottomLeftText) {
+	public GameWindow(PlayField theField, ArrayList<Sprite> spriteList, Hand theHand, String bottomLeftText) {
 		// This creates a new window, passing the things that need to be displayed by
 		// reference
 		this.theField = theField;
@@ -60,7 +60,7 @@ public class GameWindow extends JPanel {
 		screen.setColor(Color.BLACK);
 		screen.fillRect(0, 0, this.getWidth(), this.getHeight());
 		screen.setColor(Color.WHITE);
-		screen.drawString(bottomLeftText, 20, this.getHeight() - 20);
+		//screen.drawString(bottomLeftText, 20, this.getHeight() - 20);
 
 		paintBackGround(screen);
 		// paintCards(screen);
@@ -123,7 +123,7 @@ public class GameWindow extends JPanel {
 
 		// First, find out if the hand is more constrained by height or width
 		double heightConstraint = ySize / cardRatio;
-		double widthConstraint = xSize / theHand[0].GetCardCount();
+		double widthConstraint = xSize / theHand.GetCardCount();
 
 		// declare/initialize other needed variables
 		int cardHeight = 0;
@@ -140,13 +140,13 @@ public class GameWindow extends JPanel {
 			cardHeight = ySize;
 			cardWidth = (int) (ySize / cardRatio);
 			// Find the excess space, and remove it
-			occupiedSpace = cardWidth * theHand[0].GetCardCount();
+			occupiedSpace = cardWidth * theHand.GetCardCount();
 			xPosition += (xSize - occupiedSpace) / 2;
 			xSize = occupiedSpace;
 		} else {
 			// If the cards are more constrained by width, base the cards on the available
 			// width
-			cardWidth = xSize / theHand[0].GetCardCount();
+			cardWidth = xSize / theHand.GetCardCount();
 			cardHeight = (int) (cardWidth * cardRatio);
 			// Find the excess space, and remove it
 			occupiedSpace = cardHeight;
@@ -155,9 +155,9 @@ public class GameWindow extends JPanel {
 		}
 
 		// Finally, render the cards
-		for (int cardNo = 0; cardNo < theHand[0].GetCardCount(); cardNo++) {
+		for (int cardNo = 0; cardNo < theHand.GetCardCount(); cardNo++) {
 			// Find the name of the cards sprite
-			fileName = theHand[0].GetHandList().get(cardNo).getCardFileName();
+			fileName = theHand.GetHandList().get(cardNo).getCardFileName();
 			if (fileName != null) {
 				// Assume the sprite is not found, then search the sprite list for that sprite
 				foundSprite = false;
@@ -193,33 +193,46 @@ public class GameWindow extends JPanel {
 	private void paintField(Graphics screen, int xStartingPosition, int yStartingPosition, int xSize, int ySize) {
 		// This method paints the field in the space specified
 
-		// Get the sprite sizes
-	    if(theField.getPlayGridXSize() > theField.getPlayGridYSize()) {
-	        int spriteWidth = xSize / theField.getPlayGridYSize();
-            int spriteHeight = ySize / theField.getPlayGridYSize();
+
+        screen.drawString(bottomLeftText, 20, this.getHeight() - 20);
+
+        int xCentering =0;
+        int yCentering =0;
+	    
+		// Get the sprite sizes	    
+	    if(xSize < ySize) {
+	        yStartingPosition += (ySize - xSize)/2;
+	        yCentering += (ySize - xSize)/2;
+	        ySize = xSize;
 	        
+	    } else {
+	        xStartingPosition += (xSize - ySize)/2;
+	        xCentering +=  (xSize - ySize)/2;
+	        xSize = ySize;
 	    }
-		int spriteHeight = ySize / theField.getPlayGridYSize();
-		int spriteWidth = xSize / theField.getPlayGridXSize();
+
+        int spriteWidth = xSize / theField.getPlayGridXSize();
+        int spriteHeight = ySize / theField.getPlayGridYSize();
+		
+        int currentXPosition = 0;
+        int currentYPosition = 0;
 
 		// Declare and initialize other variables
 		String fileName = null;
 		boolean foundSprite = false;
-		int currentXPosition = 0;
-		int currentYPosition = 0;
 		
 		//Set the color to cyan
 		screen.setColor(Color.CYAN);
 		
 		// Render the lines from top to bottom
 		for (int x = 0; x < theField.getPlayGridXSize() + 1; x++) {
-			currentXPosition = (x * xSize) / theField.getPlayGridXSize();
-			screen.drawLine(currentXPosition, yStartingPosition, currentXPosition, yStartingPosition + ySize);
+			currentXPosition = (x * xSize) / theField.getPlayGridXSize() + xCentering;
+			screen.drawLine(currentXPosition, yStartingPosition, currentXPosition, yStartingPosition+ySize);
 		}
 		
 		//Render the lines from left to right
 		for (int y = 0; y < theField.getPlayGridYSize() + 1; y++) {
-			currentYPosition = (y * ySize) / theField.getPlayGridYSize();
+			currentYPosition = (y * ySize) / theField.getPlayGridYSize() + yCentering;
 			screen.drawLine(xStartingPosition, currentYPosition, xStartingPosition + xSize, currentYPosition);
 		}
 
@@ -242,8 +255,8 @@ public class GameWindow extends JPanel {
 							foundSprite = true;
 							// Increase the position by one to fit the lines in to the left rather than the
 							// right
-							currentXPosition = yStartingPosition + (x * xSize) / theField.getPlayGridXSize() + 1;
-							currentYPosition = yStartingPosition + (y * ySize) / theField.getPlayGridYSize() + 1;
+							currentXPosition = yStartingPosition + (x * xSize) / theField.getPlayGridXSize() + 1+ xCentering;
+							currentYPosition = yStartingPosition + (y * ySize) / theField.getPlayGridYSize() + 1+ yCentering;
 							spriteList.get(spritePosition).paint(screen, currentXPosition, currentYPosition,
 									spriteHeight, spriteWidth);
 						}
@@ -255,8 +268,8 @@ public class GameWindow extends JPanel {
 							// If the sprite is successfully loaded, render the most recently loaded sprite
 							// Increase the position by one to fit the lines in to the left rather than the
 							// right
-							currentXPosition = yStartingPosition + (x * xSize) / theField.getPlayGridXSize() + 1;
-							currentYPosition = yStartingPosition + (y * ySize) / theField.getPlayGridYSize() + 1;
+							currentXPosition = yStartingPosition + (x * xSize) / theField.getPlayGridXSize() + 1+xCentering;
+							currentYPosition = yStartingPosition + (y * ySize) / theField.getPlayGridYSize() + 1+yCentering;
 							spriteList.get(spriteList.size() - 1).paint(screen, currentXPosition, currentYPosition,
 									spriteHeight, spriteWidth);
 						}

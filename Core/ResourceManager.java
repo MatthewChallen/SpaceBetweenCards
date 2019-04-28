@@ -17,7 +17,7 @@ public class ResourceManager implements KeyListener, MouseListener {
     private PlayField theField;
     private Deck[] theDecks;
     //private ArrayList<Card> theHand;
-    private Hand[] theHand; 
+    private Hand theHand; 
     //private ArrayList<Card> theDeck;
     private ArrayList<Sprite> spriteList;
     private ArrayList<GameObject> objectList;
@@ -30,7 +30,7 @@ public class ResourceManager implements KeyListener, MouseListener {
     private int maxHandSize;
     
     //made static so other's could use it as debug text
-    private static String bottomLeftText;
+    public static String bottomLeftText;
     
     
     //Made instance available so classes can request objects.
@@ -43,7 +43,7 @@ public class ResourceManager implements KeyListener, MouseListener {
     // This method is the constructor for the resource manager. If xSize and ySize
     // are 0, it will full screen
     public ResourceManager(String gameName, int xScreenSize, int yScreenSize, int xBoardSize, int yBoardSize,
-            Deck[] theDecks, Hand[] theHand) {
+            Deck[] theDecks, Hand theHand) {
 
         instance = this;
 
@@ -53,7 +53,7 @@ public class ResourceManager implements KeyListener, MouseListener {
         //theHand = new ArrayList<Card>(0);
         //theDeck = new ArrayList<Card>(0);
         maxHandSize = 5;
-        theHand[0].DrawCard(maxHandSize);
+        theHand.DrawCard(maxHandSize);
         
         
         //addCardsToDeck(60);
@@ -61,7 +61,7 @@ public class ResourceManager implements KeyListener, MouseListener {
 
         // Create a new list of sprites, to be added to as needed
         this.spriteList = new ArrayList<Sprite>();
-        this.bottomLeftText = "Loop Successful";
+        ResourceManager.bottomLeftText = "load Successful";
 
 
         
@@ -187,10 +187,12 @@ public class ResourceManager implements KeyListener, MouseListener {
         case PLAYERSHIP:
             hold = new PlayerObject(0, X, Y);
             objectList.add(hold);
+            System.out.println("Generated player");
             break;
         case PROJECTILE:
             hold = new Projectile(X, Y);
             objectList.add(hold);
+            System.out.println("Generated Projectile: " + hold.getID());
             break;
         default:
             return null;
@@ -238,7 +240,7 @@ public class ResourceManager implements KeyListener, MouseListener {
         // to read it if it is a valid input
         char keyPressed = e.getKeyChar();
         cardChosen = Character.getNumericValue(keyPressed);
-        if (cardChosen > 0 && cardChosen <= theHand[0].GetCardCount()) {
+        if (cardChosen > 0 && cardChosen <= theHand.GetCardCount()) {
             isCardChosen = true;
         }
         if ((int) cardChosen == -1) {

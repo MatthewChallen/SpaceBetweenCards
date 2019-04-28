@@ -2,11 +2,11 @@ package Core;
 import java.util.concurrent.TimeUnit;
 
 public class GameManager {
-    final private int fieldXSize = 20;
-    final private int fieldYSize = 20;
+    final private int fieldXSize = 10;
+    final private int fieldYSize = 12;
 	private PlayField theField;
 	private Deck[] theDecks;
-	private Hand[] theHand;
+	private Hand theHand;
 	//private int handSize;
 	// Create an reference to a resource manager
 	ResourceManager theResourceManager;
@@ -21,14 +21,13 @@ public class GameManager {
 		// objects by calling the constructors of other classes
 		
 		//Set up all the decks
-		theHand = new Hand[1];
-		theHand[0] = new Hand(); 
+		theHand = new Hand(); 
 		Deck thePlayerDeck = new Deck();
 		Deck theEnemyDeck = new Deck();
 		Deck theFieldDeck = new Deck();
 		Deck[] theDecks = {thePlayerDeck, theFieldDeck, theEnemyDeck};
 
-        theHand[0].SetDrawDeck(theDecks[0]);
+        theHand.SetDrawDeck(theDecks[0]);
 		
 		//Make the resource manager
 		theResourceManager = new ResourceManager("The Space Between Cards", 0, 0, fieldXSize, fieldYSize, theDecks, theHand);
@@ -55,8 +54,8 @@ public class GameManager {
 				running = false;
 				System.out.println("Goodbye!");
 			} else {
-			    theHand[0].PlayCard(theField, cardChosen);
-			    theHand[0].DrawCard(5);
+			    theHand.PlayCard(theField, cardChosen);
+			    theHand.DrawCard(5);
 			    Update();
 				//theResourceManager.playCard(cardChosen - 0);
 				// theField.newTurn();
@@ -73,6 +72,7 @@ public class GameManager {
 	        theResourceManager.GetObjectListElement(i).Update(theField);
 	    }
 	    
+	    theField.update();
 	    theResourceManager.Update();
 	}
 

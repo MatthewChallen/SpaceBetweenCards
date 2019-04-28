@@ -32,6 +32,20 @@ public class GameObjectList {
         }
     }
 	
+	public void RemovedAll() {
+	    for(int i =0; i< gridObjects.length;++i) {
+	        if(gridObjects[i] != null){
+	            if(gridObjects[i] instanceof PlayerObject) {
+	                System.out.println("removed player");
+	            } else {
+	                System.out.println("removed bullet" + gridObjects[i].getID());
+	            }
+	            gridObjects[i] = null;
+	        }
+	        
+	    }
+	}
+	
 	//removes specific object. returns false if object not found.
 	public boolean removeObject(GameObject target) {
         for(int i =0; i < gridObjects.length; ++i) {
