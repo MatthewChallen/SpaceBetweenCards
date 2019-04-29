@@ -1,6 +1,7 @@
 package Core;
 import java.util.Random;
 
+import TypeListings.Direction;
 import TypeListings.ObjectType;
 
 public class PlayField {
@@ -124,14 +125,14 @@ public class PlayField {
 	// Checks board for player object and then moves the object to another GameObjectList
 	// Code can be reduced to check for player before case and then implement the move
 	// Exception still needs to be implemented to stop player moving off board
-	public void moveObject(String direction, GameObject target, int distance) {
+	public void moveObject(Direction direction, GameObject target, int distance) {
 		int x = target.getXCoordinates();
 		int y = target.getYCoordinates();
 	    
 		boolean onGrid = true; 
 		
 	    switch(direction) {
-		case "left" :
+		case LEFT:
 			if(playGrid[x][y].removeObject(target)){
 			    x -= distance;
 			    if(x < 0) {
@@ -139,7 +140,7 @@ public class PlayField {
 			    }
 			}
 			break;
-		case "right" :
+		case RIGHT :
 		    if(playGrid[x][y].removeObject(target)){
                 x += distance;
                 if(x >= playGridXSize) {
@@ -147,7 +148,7 @@ public class PlayField {
                 }
             }
 			break;
-		case "up" :
+		case UP :
 		    if(playGrid[x][y].removeObject(target)){
                 y -= distance;
 
@@ -164,7 +165,7 @@ public class PlayField {
                     
             }
 			break;
-		case "down" :
+		case DOWN :
 		    if(playGrid[x][y].removeObject(target)){
                 y += distance;
                 
@@ -186,16 +187,6 @@ public class PlayField {
 	        playGrid[x][y].addObject(target);
 	        target.setXYCoordinates(x, y);
 	    }
-	}
-	
-	//Moves the field down a space to prepare for the next turn
-	public void moveField() {
-		
-	}
-	
-	//This moves all the objects in motion once such as projectiles
-	public void moveAllObjects() {
-		
 	}
 	
 	public String getObjectFileName(int xLocation, int yLocation) {

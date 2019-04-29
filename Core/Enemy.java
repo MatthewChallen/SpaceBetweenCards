@@ -2,6 +2,7 @@ package Core;
 
 import java.util.Random;
 
+import TypeListings.Direction;
 import TypeListings.ObjectType;
 
 public class Enemy extends GameObject {
@@ -37,16 +38,16 @@ public class Enemy extends GameObject {
             field.spawnObject(ObjectType.PROJECTILE, this.getXCoordinates(), this.getYCoordinates()+1, 0);
             break;
         case 1:
-            field.moveObject("left", this, 1);
+            field.moveObject(Direction.UP, this, 1);
             break;
         case 2:
-            field.moveObject("right", this, 1);
+            field.moveObject(Direction.RIGHT, this, 1);
             break;
         case 3:
-            field.moveObject("down", this, 1);
+            field.moveObject(Direction.DOWN, this, 1);
             break;
         case 4:
-            field.moveObject("up", this, 1);
+            field.moveObject(Direction.LEFT, this, 1);
             break;
         default:
             break;

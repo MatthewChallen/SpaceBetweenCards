@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import TypeListings.Direction;
 import TypeListings.ObjectType;
 
 public class ResourceManager implements KeyListener, MouseListener {
@@ -152,6 +153,7 @@ public class ResourceManager implements KeyListener, MouseListener {
     }
     
     public void Update() {
+    	//This method kills all objects from the object kill list
         while(objectKillList.size() > 0) {
             for(int i = objectList.size()-1; i>=0;--i) {
                 if(objectKillList.get(0) == objectList.get(i)) {
@@ -306,6 +308,17 @@ public class ResourceManager implements KeyListener, MouseListener {
     public void stopRendering() {
         theGameWindow.removeKeyListener(this);
         theGameFrame.dispose();
+    }
+    
+    public void moveObjects(PlayField theField) {
+    	//This method moves all objects in motion, and applies the changes to the field specified
+    	Direction direction = null;
+    	int speed = 0;
+    	for(int i = 0; i < objectList.size(); i++) {
+    		direction = objectList.get(i).getDirection();
+    		speed = objectList.get(i).getSpeed();
+    		theField.moveObject(direction, objectList.get(i), speed);
+    	}
     }
 
 }

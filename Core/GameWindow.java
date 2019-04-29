@@ -60,7 +60,6 @@ public class GameWindow extends JPanel {
 		// Clear the screen with black
 		screen.setColor(Color.BLACK);
 		screen.fillRect(0, 0, this.getWidth(), this.getHeight());
-		//screen.drawString(bottomLeftText, 20, this.getHeight() - 20);
 
 		paintBackGround(screen, bottomSpacePixels, topSpacePixels, leftSpacePixels, rightSpacePixels);
 		// paintCards(screen);
@@ -119,7 +118,7 @@ public class GameWindow extends JPanel {
 					screenHeight - bottomSpacePixels, rightSpacePixels);
 		}
 		
-		//Paint the top left text
+		//Paint the bottom left text
 		paintText(Screen, this.bottomLeftText, this.getHeight(), 0, 100, 20);
 
 	}

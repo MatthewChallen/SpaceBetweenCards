@@ -3,6 +3,7 @@ package Cards;
 import Core.Card;
 import Core.PlayField;
 import Core.ResourceManager;
+import TypeListings.Direction;
 
 public class MoveCardUp extends Card {
     
@@ -32,7 +33,7 @@ public class MoveCardUp extends Card {
         // Moves the player one space to the Up.
         // Assumed a movePlayer() + getPlayer() method
         // both in the PlayField class but can be changed
-        theField.moveObject("up", ResourceManager.GetRM().GetPlayer(), distance);
+        theField.moveObject(Direction.UP, ResourceManager.GetRM().GetPlayer(), distance);
 
         return true;
     }

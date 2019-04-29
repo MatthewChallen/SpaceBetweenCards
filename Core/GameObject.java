@@ -1,5 +1,7 @@
 package Core;
 
+import TypeListings.Direction;
+
 public abstract class GameObject {
 	private int objectID;
 	private int health;
@@ -64,4 +66,12 @@ public abstract class GameObject {
 	
 	//This method must be implemented in any subclasses, so that they can be rendered
 	public abstract String getObjectFileName();
+	
+	public Direction getDirection() {
+		return null;
+	}
+	
+	public int getSpeed() {
+		return 0;
+	}
 }
