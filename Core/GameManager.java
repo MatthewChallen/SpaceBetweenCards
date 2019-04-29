@@ -10,6 +10,7 @@ public class GameManager {
 	//private int handSize;
 	// Create an reference to a resource manager
 	ResourceManager theResourceManager;
+	private static String gameState;
 
 	public static void main(String args[]) {
 		GameManager spaceBetweenCards = new GameManager();
@@ -39,19 +40,19 @@ public class GameManager {
 	public void run() {
 		// This method contains the game logic loop (no rendering)
 		// Firstly, make the player object at with id 1 at location 3, 3
-		boolean running = true;
+		 GameManager.gameState = "running";
 		int cardChosen;
 		
         theResourceManager.repaintWindow();
 		
         // Start the loop
-		while (running) {
+		while (GameManager.gameState.equals("running")) {
 			// wait for player input
 			cardChosen = theResourceManager.getInput();
 			// Choose a card with the input and play it or close
 			if ((int) cardChosen == -1) {
 				// This is the escape key. Avada Kedavara!
-				running = false;
+				GameManager.setGameState("Closed");
 				System.out.println("Goodbye!");
 			} else {
 			    theHand.PlayCard(theField, cardChosen);
@@ -75,24 +76,8 @@ public class GameManager {
 	    theField.update();
 	    theResourceManager.Update();
 	}
-
-	/*public boolean checkEndConditions() {
-		boolean running = true;
-		// If the Player is not on the board, stop the game
-		if (theField.getPlayerLocation()[0] >= 0 && theField.getPlayerLocation()[0] < theField.getPlayGridXSize()
-				&& theField.getPlayerLocation()[1] >= 0
-				&& theField.getPlayerLocation()[1] < theField.getPlayGridYSize()) {
-			//The player is on the field, the game can continue!
-		}else {
-			//The player is not on the field!
-			running = false;
-		}
-		
-		//If the enemy deck is out of cards, stop the game
-		if(theDecks[2].GetCardCount() == 0) {
-			running = false;
-		}
-		
-		return running;
-	}*/
+	
+	public static void setGameState(String gameState) {
+		GameManager.gameState = "gameState";
+	}
 }

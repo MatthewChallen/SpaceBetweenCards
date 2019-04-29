@@ -70,19 +70,14 @@ public class PlayField {
     }
 	
 	public void update() {
+		//This method updates the field
+		
 	    --start;
 	    start = ToRangeY(start);
 	    
 	    
 	    for(int i =0; i < playGridXSize; ++i) {
             playGrid[i][start].RemovedAll();
-        }
-	    
-
-        if(ResourceManager.GetRM().GetPlayer().getYCoordinates() == start) {
-            while(true) {
-                System.out.println("Player defeated: Player ship lost to the void");
-            }
         }
 	    
         if(rand.nextBoolean()) {

@@ -54,14 +54,12 @@ public class GameWindow extends JPanel {
 		//Set the spacing around the bolts for the plating. This number is from 0 - 100, with 100 showing nothing at all
 		int cardSpacing = 10;
 
-		// Put the bottom left text on the bottom left
+		// Set the screen font
 		screen.setFont(new Font("Game Font", Font.PLAIN, 24));
-		System.out.println(bottomLeftText);
 
 		// Clear the screen with black
 		screen.setColor(Color.BLACK);
 		screen.fillRect(0, 0, this.getWidth(), this.getHeight());
-		screen.setColor(Color.WHITE);
 		//screen.drawString(bottomLeftText, 20, this.getHeight() - 20);
 
 		paintBackGround(screen, bottomSpacePixels, topSpacePixels, leftSpacePixels, rightSpacePixels);
@@ -120,6 +118,9 @@ public class GameWindow extends JPanel {
 			paintPlating(Screen, platingSpriteNumber, boltSpriteNumber, screenWidth - rightSpacePixels, 0,
 					screenHeight - bottomSpacePixels, rightSpacePixels);
 		}
+		
+		//Paint the top left text
+		paintText(Screen, this.bottomLeftText, this.getHeight(), 0, 100, 20);
 
 	}
 
@@ -324,7 +325,6 @@ public class GameWindow extends JPanel {
 					// If the sprite wasn't found, load it
 					if (!foundSprite) {
 						if (loadNewSprite(fileName)) {
-							System.out.println(fileName + " loaded");
 							// If the sprite is successfully loaded, render the most recently loaded sprite
 							// Increase the position by one to fit the lines in to the left rather than the
 							// right
@@ -341,7 +341,24 @@ public class GameWindow extends JPanel {
 
 	}
 
-	private void paintEnemyDeck(Graphics screen, int xPosition, int yPosition, int xSize, int ySize) {
+	private void paintEnemyDeck(Graphics Screen, int xPosition, int yPosition, int xSize, int ySize) {
 		// This method paints the enemy deck in the space specified
+	}
+	
+	private void paintText(Graphics screen, String text, int xPosition, int yPosition, int xSize, int ySize) {
+		//This method renders text in the specified location, scaled to the correct size
+		
+		//Firstly, set the font size to a large amount
+		screen.setFont(new Font(screen.getFont().getFontName(), screen.getFont().getStyle(), 100));
+		
+		//While the font is too big
+		while(screen.getFontMetrics().stringWidth(text) > xSize || screen.getFontMetrics().getHeight() > ySize){
+			
+			//Make a new font that is the same as the old font, but one smaller
+			screen.setFont(new Font(screen.getFont().getFontName(), screen.getFont().getStyle(), screen.getFont().getSize()-1));
+		}
+		
+		//Render the font
+		screen.drawString(text, xPosition, yPosition);
 	}
 }

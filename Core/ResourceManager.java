@@ -155,6 +155,9 @@ public class ResourceManager implements KeyListener, MouseListener {
         while(objectKillList.size() > 0) {
             for(int i = objectList.size()-1; i>=0;--i) {
                 if(objectKillList.get(0) == objectList.get(i)) {
+                	if(objectKillList.get(0) instanceof PlayerObject) {
+                		GameManager.setGameState("The player was lost to the void");
+                	}
                     objectKillList.remove(0);
                     objectList.remove(i);
                     i=-1;
