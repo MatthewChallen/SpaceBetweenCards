@@ -4,8 +4,6 @@ import TypeListings.Direction;
 
 public class Projectile extends GameObject {
 
-    private int speed = 2;
-    private Direction direction;
         
     public Projectile(PlayerObject shooter, int speed) {
         super(shooter.getXCoordinates(), shooter.getYCoordinates());
@@ -17,12 +15,14 @@ public class Projectile extends GameObject {
             this.speed = 0-speed;
         }
     }
+    
     public Projectile(int x, int y) {
         super(x, y);
-              
         direction = Direction.UP;
+        speed = 2;
         
     }
+    
     public Projectile(int x, int y, int speed) {
         super(x, y);
               
@@ -34,12 +34,7 @@ public class Projectile extends GameObject {
             direction = Direction.DOWN;
             this.speed = 0-speed;
         }
-    }
-    
-    public void Update(PlayField field) {
-        field.moveObject(Direction.UP, this, speed);
-    }
-
+    } 
     
     public String getObjectFileName() {
         //This method returns null, because an object should never be of just GameObject, it should always be an extended version
@@ -50,12 +45,5 @@ public class Projectile extends GameObject {
         }
         
     }
-    
-    public Direction getDirection() {
-    	return direction;
-    }
-    
-    public int getSpeed() {
-    	return speed;
-    }
+        
 }

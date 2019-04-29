@@ -182,9 +182,9 @@ public class ResourceManager implements KeyListener, MouseListener {
         }
         return hold;
     }
+    
     //returns 1 element array on the selected game object.
     public GameObject GetNewObject(ObjectType type, int X, int Y) {
-
         GameObject hold = null;
         switch (type) {
         case PLAYERSHIP:
@@ -210,7 +210,6 @@ public class ResourceManager implements KeyListener, MouseListener {
     }
 
     public GameObject GetNewObject(ObjectType type, int X, int Y, int value) {
-
         GameObject hold = null;
         switch (type) {
         case PLAYERSHIP:
@@ -310,15 +309,35 @@ public class ResourceManager implements KeyListener, MouseListener {
         theGameFrame.dispose();
     }
     
-    public void moveObjects(PlayField theField) {
-    	//This method moves all objects in motion, and applies the changes to the field specified
+    public void moveObjects() {
+    	//This method consumes all the remaining movement for objects, making them move
     	Direction direction = null;
-    	int speed = 0;
-    	for(int i = 0; i < objectList.size(); i++) {
-    		direction = objectList.get(i).getDirection();
-    		speed = objectList.get(i).getSpeed();
-    		theField.moveObject(direction, objectList.get(i), speed);
+    	boolean moveAgain = true;
+    	while(moveAgain) {
+    		//Assume this is the last loop
+    		moveAgain = false;
+    		//Move all the objects
+    		System.out.println("hello");
+    		for(int i = 0; i < objectList.size(); i++) {
+        		direction = objectList.get(i).getDirection();
+        		if(objectList.get(i).remainingMove() == true) {
+        			objectList.get(i).reduceRemainingMove();
+        			//Move the object once in the correct direction
+        			theField.moveObject(direction, objectList.get(i), 1);
+        			System.out.println("hello");
+        			//If an object has moved this loop, continue the loop
+        			moveAgain = true;
+        		}
+        	}
+    		//Check for collisions
+    		theField.checkForCollision();
     	}
     }
-
+    
+    public void resetMove() {
+    	//This method converts all objects speed into movement, to be consumed
+    	for(int i = 0; i < objectList.size(); i++) {
+    		objectList.get(i).resetMove();
+    	}
+    }
 }

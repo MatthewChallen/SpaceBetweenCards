@@ -7,24 +7,27 @@ public abstract class GameObject {
 	private int health;
 	private int xCoordinate;
 	private int yCoordinate;
+	
+	//The movement variables. All objects have them, but some will have no inbuilt movement
+	protected Direction direction;
+	protected int speed;
+	private int move;
 
 	static private int ID = 1;
-
-	protected GameObject(int objectID, int xCoordinate, int yCoordinate) {
-		this.objectID = objectID;
-		this.xCoordinate = xCoordinate;
-		this.yCoordinate = yCoordinate;
-		this.health = 0;
-	}
 
 	public GameObject(int xCoordinate, int yCoordinate) {
 		this.objectID = ID++;
 		this.xCoordinate = xCoordinate;
 		this.yCoordinate = yCoordinate;
 		this.health = 0;
+		this.speed = 0;
+		this.move = 0;
+		this.direction = null;
 	}
-
-	public void Update(PlayField field) {
+	
+	protected GameObject(int objectID, int xCoordinate, int yCoordinate) {
+		this(xCoordinate, yCoordinate);
+		this.objectID = objectID;
 	}
 
 	public int getID() {
@@ -68,10 +71,22 @@ public abstract class GameObject {
 	public abstract String getObjectFileName();
 	
 	public Direction getDirection() {
-		return null;
+		return direction;
 	}
 	
-	public int getSpeed() {
-		return 0;
+	public void resetMove() {
+		move = speed;
+	}
+	
+	public boolean remainingMove() {
+		if(move > 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public void reduceRemainingMove() {
+		move--;
 	}
 }

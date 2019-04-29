@@ -78,7 +78,7 @@ public class PlayField {
 	    
 	    
 	    for(int i =0; i < playGridXSize; ++i) {
-            playGrid[i][start].RemovedAll();
+            playGrid[i][start].removedAll();
         }
 	    
         if(rand.nextBoolean()) {
@@ -104,23 +104,19 @@ public class PlayField {
     }
 	
 	// Checks for collision and then supplies string of object ID's
-	public String checkForCollision() {
+	public void checkForCollision() {
 	    //maybe playGridXSize and playGridYSize
-		for (int i = 0; i < playGrid.length; i++) {
-			for (int j = 0; j < playGrid.length; j++) {
-				if (playGrid[i][GetActualY(j)].isThereCollision() == true) {
-					return playGrid[i][GetActualY(j)].getObjectsID();
+		for (int i = 0; i < playGridXSize; i++) {
+			for (int j = 0; j < playGridYSize; j++) {
+				while(playGrid[i][GetActualY(j)].isThereCollision()) {
+					//For the moment, destroy all objects in that location
+					playGrid[i][GetActualY(j)].removedAll();
+					
 				}
 			}
-		}
-		
-		return null;	
+		}	
 	}
-	// calls to destroy the object/s, GameManager will need to take number of objects to be destroyed, maximum is 2
-	public void destroyObjects(int y, int x, int noToDestroy) {
-		playGrid[x][GetActualY(y)].removeObject(noToDestroy);	
-	}
-	
+
 	// Method for moving player around the board
 	// Checks board for player object and then moves the object to another GameObjectList
 	// Code can be reduced to check for player before case and then implement the move

@@ -58,8 +58,10 @@ public class GameManager {
 			    theHand.PlayCard(theField, cardChosen);
 			    theHand.DrawCard(5);
 			    Update();
-				//theResourceManager.playCard(cardChosen - 0);
-				// theField.newTurn();
+				//Move objects in motion
+			    ResourceManager.GetRM().resetMove();
+			    ResourceManager.GetRM().moveObjects();
+				
 				// Rerender the screen
 				theResourceManager.repaintWindow();
 			}
@@ -68,11 +70,6 @@ public class GameManager {
 	}
 	
 	private void Update() {
-	    int size = theResourceManager.GetObjectListSize();
-	    for(int i = 0; i <size; ++i) {
-	        theResourceManager.GetObjectListElement(i).Update(theField);
-	    }
-	    
 	    theField.update();
 	    theResourceManager.Update();
 	}
