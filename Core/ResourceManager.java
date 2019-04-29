@@ -317,7 +317,6 @@ public class ResourceManager implements KeyListener, MouseListener {
     		//Assume this is the last loop
     		moveAgain = false;
     		//Move all the objects
-    		System.out.println("hello");
     		for(int i = 0; i < objectList.size(); i++) {
         		direction = objectList.get(i).getDirection();
         		if(objectList.get(i).remainingMove() == true) {
