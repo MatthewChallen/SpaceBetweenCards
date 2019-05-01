@@ -13,8 +13,10 @@ public class MusicClips{
 	private String name;
 	private Clip soundClip;
 	
+	// Name of clip is same as filename for ease
+	// vol controls volume; 1.0 = 100% and .0 = 0%
 	public MusicClips(String name, double vol) {
-		// Name of clip is same as filename for ease
+		
 		this.name = name;
 		try
 		{	//File object that will be used for the audio stream
