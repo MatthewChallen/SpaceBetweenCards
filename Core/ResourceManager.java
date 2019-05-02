@@ -30,6 +30,7 @@ public class ResourceManager implements KeyListener, MouseListener {
     private boolean readyToRender;
     private int maxHandSize;
     private MusicManager theMusicManager;
+    private MusicClips backGround;
     
     //made static so other's could use it as debug text
     public static String bottomLeftText;
@@ -57,6 +58,7 @@ public class ResourceManager implements KeyListener, MouseListener {
         
         //Create an instance of the music manager
         this.theMusicManager = new MusicManager();
+        backGround = new MusicClips("BACKGROUND", 0.15);
         
         // Create a new list of sprites, to be added to as needed
         this.spriteList = new ArrayList<Sprite>();

@@ -29,7 +29,7 @@ public class Shoot extends Card {
         // Assumed a movePlayer() + getPlayer() method
         // both in the PlayField class but can be changed
         theField.spawnObject(ObjectType.PROJECTILE, ResourceManager.GetRM().GetPlayer().getXCoordinates(), ResourceManager.GetRM().GetPlayer().getYCoordinates()-1);
-
+        ResourceManager.GetRM().getMM().addMusic(ObjectType.PROJECTILE);
         return true;
     }
 }
