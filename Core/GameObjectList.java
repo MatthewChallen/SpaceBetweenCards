@@ -1,75 +1,60 @@
 package Core;
 
+import java.util.ArrayList;
+
 public class GameObjectList {
-	private GameObject[] gridObjects = new GameObject[2];
-	
+	private ArrayList<GameObject> gridObjects = new ArrayList<GameObject>();
+
 	public GameObjectList() {
-		
+
 	}
-	// Adds object to list, checks first to see if object already in array index and then adds objects to array
+
+	// Adds object to list, checks first to see if object already in array index and
+	// then adds objects to array
 	public void addObject(GameObject gameObject) {
-		if (gridObjects[0] instanceof GameObject) {
-			gridObjects[1] = gameObject;
-		}
-		
-		else {
-			gridObjects[0] = gameObject;
-		}
+		gridObjects.add(gameObject);
 	}
-	
-	// Removes objects from the board, allows to choose how many need to be removed
-	public void removeObject(int numObjectsToRemove) {
-        int a = numObjectsToRemove;
-        if ( a > 3) {
-            a = 2;
-        }
-        if (a == 1) {
-        gridObjects[0] = null;
-        }
-        else {
-            gridObjects[0] = null;
-            gridObjects[1] = null;
-        }
-    }
-	
-	//removes specific object. returns false if object not found.
+
+	//Removes all objects from the board
+	public void removedAll() {
+		while (gridObjects.size() > 0) {
+			ResourceManager.GetRM().RemoveGameObject(gridObjects.get(0));
+			gridObjects.remove(0);
+		}
+
+	}
+
+	// removes specific object. returns false if object not found.
 	public boolean removeObject(GameObject target) {
-        for(int i =0; i < gridObjects.length; ++i) {
-            if(target == gridObjects[i])
-            {
-                gridObjects[i] = null;
-                return true;
-            }
-        }
-        
-        return false;
-    }
-	
-	// Checks for collision and returns true or false depending. True = collision and False = no collision
-	public boolean isThereCollision(){
-		if (gridObjects[0] instanceof GameObject && gridObjects[1] instanceof GameObject) {
-			return true;
-		}
-		return false;		
+		return gridObjects.remove(target);
 	}
-	
+
+	// Checks for collision and returns true or false depending. True = collision
+	// and False = no collision
+	public boolean isThereCollision() {
+		if(gridObjects.size() > 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
 	// Gets the object ID
 	public String getObjectsID() {
-		return gridObjects[0].getObjectID() + " " + gridObjects[1].getObjectID();
+		return gridObjects.get(0).getObjectID() + " " + gridObjects.get(1).getObjectID();
 	}
-	
+
 	// Supplies object to PlayField
 	public GameObject whatObjectIsThis() {
-		return gridObjects[0];
+		return gridObjects.get(0);
 	}
-	
+
 	public String getObjectFileName() {
 		String fileName = null;
-		if(gridObjects[0] != null) {
-			fileName = gridObjects[0].getObjectFileName();
+		if (gridObjects.size() > 0) {
+			fileName = gridObjects.get(0).getObjectFileName();
 		}
 		return fileName;
 	}
-	
-}
 
+}

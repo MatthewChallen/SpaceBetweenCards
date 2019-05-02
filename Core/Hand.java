@@ -23,7 +23,8 @@ public class Hand {
     // Plays the Xth card
     public void PlayCard(PlayField theField, int X) {
         hand.get(X-1).OnPlay(theField);
-        Discard(X-1);
+        //Discard(X-1);
+        DiscardAll();
     }
 
     // Discards the Xth card in the hand

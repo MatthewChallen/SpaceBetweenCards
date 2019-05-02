@@ -14,9 +14,9 @@ public class Deck {
 
     // Deck() //Creates a deck of 20 cards Deck(int X) //Creates a deck of X cards
 
-    static Random rand = new Random();
-    static boolean seedSet = false;
-    final static long seed = System.currentTimeMillis();
+    private static Random rand = new Random();
+    private static boolean seedSet = false;
+    private final static long seed = System.currentTimeMillis();
 
     List<Card> deck = new ArrayList<Card>();
     List<Card> discard = new ArrayList<Card>();

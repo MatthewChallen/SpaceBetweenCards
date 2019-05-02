@@ -11,13 +11,14 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import TypeListings.Direction;
 import TypeListings.ObjectType;
 
 public class ResourceManager implements KeyListener, MouseListener {
     private PlayField theField;
     private Deck[] theDecks;
     //private ArrayList<Card> theHand;
-    private Hand[] theHand; 
+    private Hand theHand; 
     //private ArrayList<Card> theDeck;
     private ArrayList<Sprite> spriteList;
     private ArrayList<GameObject> objectList;
@@ -29,8 +30,14 @@ public class ResourceManager implements KeyListener, MouseListener {
     private boolean readyToRender;
     private int maxHandSize;
     
+    private int oldWidth;
+    private int oldHeight;
+    
+    private MusicManager theMusicManager;
+    private MusicClips backGround;
+    
     //made static so other's could use it as debug text
-    private static String bottomLeftText;
+    public static String bottomLeftText;
     
     
     //Made instance available so classes can request objects.
@@ -43,27 +50,25 @@ public class ResourceManager implements KeyListener, MouseListener {
     // This method is the constructor for the resource manager. If xSize and ySize
     // are 0, it will full screen
     public ResourceManager(String gameName, int xScreenSize, int yScreenSize, int xBoardSize, int yBoardSize,
-            Deck[] theDecks, Hand[] theHand) {
+            Deck[] theDecks, Hand theHand) {
 
         instance = this;
 
         // Set up the cards
         this.theDecks = theDecks;
         this.theHand = theHand;
-        //theHand = new ArrayList<Card>(0);
-        //theDeck = new ArrayList<Card>(0);
         maxHandSize = 5;
-        theHand[0].DrawCard(maxHandSize);
+        theHand.DrawCard(maxHandSize);
         
+        //Create an instance of the music manager
+        this.theMusicManager = new MusicManager();
+        backGround = new MusicClips("BACKGROUND", 0.15);
         
-        //addCardsToDeck(60);
-        //drawCard();
-
         // Create a new list of sprites, to be added to as needed
         this.spriteList = new ArrayList<Sprite>();
         ResourceManager.bottomLeftText = "Welcome";
 
-
+        
         
         // Create a new list of game objects.
         this.objectList = new ArrayList<GameObject>(0);
@@ -92,6 +97,11 @@ public class ResourceManager implements KeyListener, MouseListener {
             }
         }
 
+    }
+    
+    //This method gets the music manager
+    public MusicManager getMM() {
+    	return this.theMusicManager;
     }
 
     // This method should only ever be called by the game manager once in order to
@@ -129,9 +139,12 @@ public class ResourceManager implements KeyListener, MouseListener {
         theGameFrame.setResizable(true);
         theGameFrame.setVisible(true);
         theGameFrame.setBackground(Color.BLACK);
-        theGameWindow.setFocusable(true);
-        theGameWindow.addKeyListener(this);
-        theGameWindow.addMouseListener(this);
+        // Menu update - moved key and mouse listeners to theGameFrame
+        // to allow for resetting focus - needed when changing contents
+        // of theGameFrame - see the switchToGameWindow() method below.
+        //theGameWindow.setFocusable(true);
+        //theGameWindow.addKeyListener(this);
+        //theGameWindow.addMouseListener(this);
         // The game is now ready to render, and the resourceManager can finish it's
         // constructor
         readyToRender = true;
@@ -152,9 +165,13 @@ public class ResourceManager implements KeyListener, MouseListener {
     }
     
     public void Update() {
+    	//This method kills all objects from the object kill list
         while(objectKillList.size() > 0) {
             for(int i = objectList.size()-1; i>=0;--i) {
                 if(objectKillList.get(0) == objectList.get(i)) {
+                	if(objectKillList.get(0) instanceof PlayerObject) {
+                		GameManager.setGameState("The player was lost to the void");
+                	}
                     objectKillList.remove(0);
                     objectList.remove(i);
                     i=-1;
@@ -177,20 +194,45 @@ public class ResourceManager implements KeyListener, MouseListener {
         }
         return hold;
     }
+    
     //returns 1 element array on the selected game object.
     public GameObject GetNewObject(ObjectType type, int X, int Y) {
-
-        // temp array to return
-
         GameObject hold = null;
         switch (type) {
         case PLAYERSHIP:
             hold = new PlayerObject(0, X, Y);
             objectList.add(hold);
+            System.out.println("Generated player");
             break;
         case PROJECTILE:
             hold = new Projectile(X, Y);
             objectList.add(hold);
+            System.out.println("Generated Projectile: " + hold.getID());
+            break;
+        case ENEMYSHIP:
+            hold = new Enemy(X, Y);
+            objectList.add(hold);
+            System.out.println("Generated Enemy: " + hold.getID());
+            break;
+        default:
+            return null;
+        }
+        return hold;
+
+    }
+
+    public GameObject GetNewObject(ObjectType type, int X, int Y, int value) {
+        GameObject hold = null;
+        switch (type) {
+        case PLAYERSHIP:
+            hold = new PlayerObject(0, X, Y);
+            objectList.add(hold);
+            System.out.println("Generated player");
+            break;
+        case PROJECTILE:
+            hold = new Projectile(X, Y, value);
+            objectList.add(hold);
+            System.out.println("Generated Projectile: " + hold.getID());
             break;
         default:
             return null;
@@ -238,7 +280,7 @@ public class ResourceManager implements KeyListener, MouseListener {
         // to read it if it is a valid input
         char keyPressed = e.getKeyChar();
         cardChosen = Character.getNumericValue(keyPressed);
-        if (cardChosen > 0 && cardChosen <= theHand[0].GetCardCount()) {
+        if (cardChosen > 0 && cardChosen <= theHand.GetCardCount()) {
             isCardChosen = true;
         }
         if ((int) cardChosen == -1) {
@@ -275,8 +317,85 @@ public class ResourceManager implements KeyListener, MouseListener {
 
     // This method ends the rendering process
     public void stopRendering() {
+    	// Frame dimensions are recorded for use with the resetting of the
+    	// game.
+    	oldWidth = theGameFrame.getWidth();
+    	oldHeight = theGameFrame.getHeight();
         theGameWindow.removeKeyListener(this);
-        theGameFrame.dispose();
+        theGameWindow.removeMouseListener(this);
+        theGameWindow.setVisible(false);
+        
+        // The track is stopped - a new track will commence when the game is
+        // reset.
+        backGround.stopMusic();
     }
-
+    
+    public JFrame getGameFrame()
+    {
+    	return theGameFrame;
+    }
+    
+    public int getOldWidth()
+    {
+    	return oldWidth;
+    }
+    
+    public int getOldHeight()
+    {
+    	return oldHeight;
+    }
+    
+    // The title screen is presented at the start of the game - or at the
+    // commencement of a new game.
+    public void setupMenu()
+    {
+    	theGameWindow.setVisible(false);
+    	theGameFrame.add(new TitleScreen(this, theGameFrame.getWidth(),
+           theGameFrame.getHeight()));
+    	theGameFrame.setVisible(true);
+    }
+    
+    // This method is called when the user chooses to start a new game.
+    // The key and mouse listeners are added to theGameFrame and focus
+    // is reset.
+    public void switchToGameWindow()
+    {
+    	theGameFrame.add(theGameWindow);
+    	theGameFrame.setFocusable(true);
+    	theGameFrame.addKeyListener(this);
+    	theGameFrame.addMouseListener(this);
+    	theGameFrame.requestFocusInWindow();
+    	theGameWindow.setVisible(true);
+    }
+    
+    public void moveObjects() {
+    	//This method consumes all the remaining movement for objects, making them move
+    	Direction direction = null;
+    	boolean moveAgain = true;
+    	while(moveAgain) {
+    		//Assume this is the last loop
+    		moveAgain = false;
+    		//Move all the objects
+    		for(int i = 0; i < objectList.size(); i++) {
+        		direction = objectList.get(i).getDirection();
+        		if(objectList.get(i).remainingMove() == true) {
+        			objectList.get(i).reduceRemainingMove();
+        			//Move the object once in the correct direction
+        			theField.moveObject(direction, objectList.get(i), 1);
+        			System.out.println("hello");
+        			//If an object has moved this loop, continue the loop
+        			moveAgain = true;
+        		}
+        	}
+    		//Check for collisions
+    		theField.checkForCollision();
+    	}
+    }
+    
+    public void resetMove() {
+    	//This method converts all objects speed into movement, to be consumed
+    	for(int i = 0; i < objectList.size(); i++) {
+    		objectList.get(i).resetMove();
+    	}
+    }
 }

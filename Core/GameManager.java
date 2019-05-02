@@ -1,15 +1,18 @@
 package Core;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JFrame;
+
 public class GameManager {
-    final private int fieldXSize = 20;
-    final private int fieldYSize = 20;
+    final private int fieldXSize = 10;
+    final private int fieldYSize = 12;
 	private PlayField theField;
 	private Deck[] theDecks;
-	private Hand[] theHand;
+	private Hand theHand;
 	//private int handSize;
 	// Create an reference to a resource manager
 	ResourceManager theResourceManager;
+	private static String gameState;
 
 	public static void main(String args[]) {
 		GameManager spaceBetweenCards = new GameManager();
@@ -21,78 +24,97 @@ public class GameManager {
 		// objects by calling the constructors of other classes
 		
 		//Set up all the decks
-		theHand = new Hand[1];
-		theHand[0] = new Hand(); 
+		theHand = new Hand(); 
 		Deck thePlayerDeck = new Deck();
 		Deck theEnemyDeck = new Deck();
 		Deck theFieldDeck = new Deck();
 		Deck[] theDecks = {thePlayerDeck, theFieldDeck, theEnemyDeck};
 
-        theHand[0].SetDrawDeck(theDecks[0]);
+        theHand.SetDrawDeck(theDecks[0]);
 		
 		//Make the resource manager
 		theResourceManager = new ResourceManager("The Space Between Cards", 0, 0, fieldXSize, fieldYSize, theDecks, theHand);
 		
 		//Get a reference to the Play Field from the resource manager
 		theField = theResourceManager.getPlayField();
+		
+		theResourceManager.setupMenu();
 	}
 
 	public void run() {
 		// This method contains the game logic loop (no rendering)
 		// Firstly, make the player object at with id 1 at location 3, 3
-		boolean running = true;
+		 GameManager.gameState = "running";
 		int cardChosen;
 		
         theResourceManager.repaintWindow();
 		
         // Start the loop
-		while (running) {
+		while (GameManager.gameState.equals("running")) {
 			// wait for player input
 			cardChosen = theResourceManager.getInput();
 			// Choose a card with the input and play it or close
 			if ((int) cardChosen == -1) {
 				// This is the escape key. Avada Kedavara!
-				running = false;
+				GameManager.setGameState("Closed");
 				System.out.println("Goodbye!");
 			} else {
-			    theHand[0].PlayCard(theField, cardChosen);
-			    theHand[0].DrawCard();
+			    theHand.PlayCard(theField, cardChosen);
+			    theHand.DrawCard(5);
 			    Update();
-				//theResourceManager.playCard(cardChosen - 0);
-				// theField.newTurn();
+				//Move objects in motion
+			    ResourceManager.GetRM().resetMove();
+			    ResourceManager.GetRM().moveObjects();
+				
 				// Rerender the screen
 				theResourceManager.repaintWindow();
 			}
 		}
+
+
+		restartMenu();
+	}
+	
+	// This method is called when the game ends or the user has selected
+	// escape to end the game. The game contents are reset and a new window
+	// sets up the title screen.
+	private void restartMenu()
+	{
 		theResourceManager.stopRendering();
+		int oldWidth = theResourceManager.getOldWidth();
+		int oldHeight = theResourceManager.getOldHeight();
+		if(theResourceManager.getGameFrame().getExtendedState() == JFrame.MAXIMIZED_BOTH)
+		{
+			oldWidth = 0;
+			oldHeight = 0;
+		}
+		theResourceManager.getGameFrame().dispose();
+		
+		// Game details are now reset.
+		theHand = new Hand(); 
+		Deck thePlayerDeck = new Deck();
+		Deck theEnemyDeck = new Deck();
+		Deck theFieldDeck = new Deck();
+		Deck[] theDecks = {thePlayerDeck, theFieldDeck, theEnemyDeck};
+		
+        theHand.SetDrawDeck(theDecks[0]);
+        
+        // A new resource manager is generated.
+        theResourceManager = new ResourceManager("The Space Between Cards",
+           oldWidth, oldHeight, fieldXSize, fieldYSize, theDecks, theHand);
+		theField = theResourceManager.getPlayField();
+		theResourceManager.setupMenu();
+		
+		// The new game can now be run.
+		run();
 	}
 	
 	private void Update() {
-	    int size = theResourceManager.GetObjectListSize();
-	    for(int i = 0; i <size; ++i) {
-	        theResourceManager.GetObjectListElement(i).Update(theField);
-	    }
-	    
+	    theField.update();
 	    theResourceManager.Update();
 	}
-
-	/*public boolean checkEndConditions() {
-		boolean running = true;
-		// If the Player is not on the board, stop the game
-		if (theField.getPlayerLocation()[0] >= 0 && theField.getPlayerLocation()[0] < theField.getPlayGridXSize()
-				&& theField.getPlayerLocation()[1] >= 0
-				&& theField.getPlayerLocation()[1] < theField.getPlayGridYSize()) {
-			//The player is on the field, the game can continue!
-		}else {
-			//The player is not on the field!
-			running = false;
-		}
-		
-		//If the enemy deck is out of cards, stop the game
-		if(theDecks[2].GetCardCount() == 0) {
-			running = false;
-		}
-		
-		return running;
-	}*/
+	
+	public static void setGameState(String gameState) {
+		GameManager.gameState = "gameState";
+	}
 }

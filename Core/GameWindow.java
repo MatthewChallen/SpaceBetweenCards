@@ -15,14 +15,14 @@ public class GameWindow extends JPanel {
 	private PlayField theField;
 	private ArrayList<Sprite> spriteList;
 	// private ArrayList<Card> theHand;
-	private Hand[] theHand;
+	private Hand theHand;
 	private String bottomLeftText;
 	private String folderName;
 	private int bottomPercentageAllocated;
 	private int rightPercentageAllocated;
 	private double cardRatio;
 
-	public GameWindow(PlayField theField, ArrayList<Sprite> spriteList, Hand[] theHand, String bottomLeftText) {
+	public GameWindow(PlayField theField, ArrayList<Sprite> spriteList, Hand theHand, String bottomLeftText) {
 		// This creates a new window, passing the things that need to be displayed by
 		// reference
 		this.theField = theField;
@@ -51,30 +51,29 @@ public class GameWindow extends JPanel {
 		// Make the top space allocated to the enemy deck the same as the bottom space
 		// allocated to the player deck, for symmetry
 		int topSpacePixels = bottomSpacePixels;
+		//Set the spacing around the bolts for the plating. This number is from 0 - 100, with 100 showing nothing at all
+		int cardSpacing = 10;
 
-		// Put the bottom left text on the bottom left
+		// Set the screen font
 		screen.setFont(new Font("Game Font", Font.PLAIN, 24));
-		System.out.println(bottomLeftText);
 
 		// Clear the screen with black
 		screen.setColor(Color.BLACK);
 		screen.fillRect(0, 0, this.getWidth(), this.getHeight());
-		screen.setColor(Color.WHITE);
-		screen.drawString(bottomLeftText, 20, this.getHeight() - 20);
 
-		paintBackGround(screen);
+		paintBackGround(screen, bottomSpacePixels, topSpacePixels, leftSpacePixels, rightSpacePixels);
 		// paintCards(screen);
 
 		// Render the player deck in the bottom left corner
-		paintPlayerDeck(screen, 0, this.getHeight() - bottomSpacePixels, leftSpacePixels, bottomSpacePixels);
+		paintPlayerDeck(screen, 0, this.getHeight() - bottomSpacePixels, leftSpacePixels, (95 * bottomSpacePixels)/100);
 
 		// Render the discard pile in the bottom right corner
 		paintPlayerDiscardDeck(screen, this.getWidth() - rightSpacePixels, this.getHeight() - bottomSpacePixels,
 				rightSpacePixels, bottomSpacePixels);
 
 		// Render the hand in between the two, with the space left over
-		paintPlayerHand(screen, leftSpacePixels, this.getHeight() - bottomSpacePixels,
-				this.getWidth() - leftSpacePixels - rightSpacePixels, bottomSpacePixels);
+		paintPlayerHand(screen, leftSpacePixels + (this.getWidth() - leftSpacePixels - rightSpacePixels) *  cardSpacing / 100, this.getHeight() - ((100 - cardSpacing) * bottomSpacePixels)/100,
+				(this.getWidth() - leftSpacePixels - rightSpacePixels) * (100 - 2 * cardSpacing) / 100, ((100 - 2 *cardSpacing) * bottomSpacePixels)/100);
 
 		// Render the enemy deck in the top right corner
 		paintEnemyDeck(screen, this.getWidth() - rightSpacePixels, 0, rightSpacePixels, topSpacePixels);
@@ -83,13 +82,74 @@ public class GameWindow extends JPanel {
 		paintField(screen, 0, 0, getWidth() - rightSpacePixels, getHeight() - bottomSpacePixels);
 	}
 
-	private void paintBackGround(Graphics Screen) {
+	private void paintBackGround(Graphics Screen, int bottomSpacePixels, int topSpacePixels, int leftSpacePixels,
+			int rightSpacePixels) {
 		// This method paints the background
 
+		// Only render the interface background if all the sprites can be loaded
+		if (loadNewSprite("plating.png") && loadNewSprite("bolt.png")) {
+
+			// Get the location of the sprites
+			int platingSpriteNumber = 0;
+			int boltSpriteNumber = 0;
+			for (int i = 0; i < spriteList.size(); i++) {
+				if (spriteList.get(i).getName().equals("bolt.png")) {
+					boltSpriteNumber = i;
+				}
+			}
+			for (int i = 0; i < spriteList.size(); i++) {
+				if (spriteList.get(i).getName().equals("plating.png")) {
+					platingSpriteNumber = i;
+				}
+			}
+
+			int screenHeight = this.getHeight();
+			int screenWidth = this.getWidth();
+
+			// Render plating via a method with inbuilt bullet placing
+			paintPlating(Screen, platingSpriteNumber, boltSpriteNumber, 0, screenHeight - bottomSpacePixels,
+					bottomSpacePixels, leftSpacePixels);
+			paintPlating(Screen, platingSpriteNumber, boltSpriteNumber, leftSpacePixels,
+					screenHeight - bottomSpacePixels, bottomSpacePixels,
+					screenWidth - leftSpacePixels - rightSpacePixels);
+			paintPlating(Screen, platingSpriteNumber, boltSpriteNumber, screenWidth - rightSpacePixels,
+					screenHeight - bottomSpacePixels, bottomSpacePixels, rightSpacePixels);
+			paintPlating(Screen, platingSpriteNumber, boltSpriteNumber, screenWidth - rightSpacePixels, 0,
+					screenHeight - bottomSpacePixels, rightSpacePixels);
+		}
+		
+		//Paint the bottom left text
+		paintText(Screen, this.bottomLeftText, this.getHeight(), 0, 100, 20);
+
+	}
+
+	private void paintPlating(Graphics Screen, int platingSpriteNumber, int boltSpriteNumber, int xLocation,
+			int yLocation, int height, int width) {
+		// This method paints the plating for the interface
+
+		// Paint the plating itself
+		spriteList.get(platingSpriteNumber).paint(Screen, xLocation, yLocation, height, width);
+
+		// Decide the bolt sizes
+		int boltHeight = 0;
+		if(height > width) {
+			boltHeight = width / 6;
+		}else {
+			boltHeight = height / 6;
+		}
+		int boltWidth = boltHeight;
+
+		spriteList.get(boltSpriteNumber).paint(Screen, xLocation, yLocation, boltHeight, boltWidth);
+		spriteList.get(boltSpriteNumber).paint(Screen, xLocation, yLocation + height - boltHeight, boltHeight,
+				boltWidth);
+		spriteList.get(boltSpriteNumber).paint(Screen, xLocation + width - boltWidth, yLocation, boltHeight, boltWidth);
+		spriteList.get(boltSpriteNumber).paint(Screen, xLocation + width - boltWidth, yLocation + height - boltHeight,
+				boltHeight, boltWidth);
 	}
 
 	private boolean loadNewSprite(String fileName) {
 		// Loads a sprite with the mentioned filename and adds it to the loaded sprites
+		// Returns true if the sprite is loaded already or loaded successfully
 		BufferedImage img = null;
 		Boolean doLoad = true;
 		// Make sure the sprite isn't already loaded
@@ -114,7 +174,7 @@ public class GameWindow extends JPanel {
 				return false;
 			}
 		} else {
-			return false;
+			return true;
 		}
 	}
 
@@ -123,7 +183,7 @@ public class GameWindow extends JPanel {
 
 		// First, find out if the hand is more constrained by height or width
 		double heightConstraint = ySize / cardRatio;
-		double widthConstraint = xSize / theHand[0].GetCardCount();
+		double widthConstraint = xSize / theHand.GetCardCount();
 
 		// declare/initialize other needed variables
 		int cardHeight = 0;
@@ -140,13 +200,13 @@ public class GameWindow extends JPanel {
 			cardHeight = ySize;
 			cardWidth = (int) (ySize / cardRatio);
 			// Find the excess space, and remove it
-			occupiedSpace = cardWidth * theHand[0].GetCardCount();
+			occupiedSpace = cardWidth * theHand.GetCardCount();
 			xPosition += (xSize - occupiedSpace) / 2;
 			xSize = occupiedSpace;
 		} else {
 			// If the cards are more constrained by width, base the cards on the available
 			// width
-			cardWidth = xSize / theHand[0].GetCardCount();
+			cardWidth = xSize / theHand.GetCardCount();
 			cardHeight = (int) (cardWidth * cardRatio);
 			// Find the excess space, and remove it
 			occupiedSpace = cardHeight;
@@ -155,9 +215,9 @@ public class GameWindow extends JPanel {
 		}
 
 		// Finally, render the cards
-		for (int cardNo = 0; cardNo < theHand[0].GetCardCount(); cardNo++) {
+		for (int cardNo = 0; cardNo < theHand.GetCardCount(); cardNo++) {
 			// Find the name of the cards sprite
-			fileName = theHand[0].GetHandList().get(cardNo).getCardFileName();
+			fileName = theHand.GetHandList().get(cardNo).getCardFileName();
 			if (fileName != null) {
 				// Assume the sprite is not found, then search the sprite list for that sprite
 				foundSprite = false;
@@ -193,28 +253,46 @@ public class GameWindow extends JPanel {
 	private void paintField(Graphics screen, int xStartingPosition, int yStartingPosition, int xSize, int ySize) {
 		// This method paints the field in the space specified
 
-		// Get the sprite sizes
-		int spriteHeight = ySize / theField.getPlayGridYSize();
-		int spriteWidth = xSize / theField.getPlayGridXSize();
+
+        screen.drawString(bottomLeftText, 20, this.getHeight() - 20);
+
+        int xCentering =0;
+        int yCentering =0;
+	    
+		// Get the sprite sizes	    
+	    if(xSize < ySize) {
+	        yStartingPosition += (ySize - xSize)/2;
+	        yCentering += (ySize - xSize)/2;
+	        ySize = xSize;
+	        
+	    } else {
+	        xStartingPosition += (xSize - ySize)/2;
+	        xCentering +=  (xSize - ySize)/2;
+	        xSize = ySize;
+	    }
+
+        int spriteWidth = xSize / theField.getPlayGridXSize();
+        int spriteHeight = ySize / theField.getPlayGridYSize();
+		
+        int currentXPosition = 0;
+        int currentYPosition = 0;
 
 		// Declare and initialize other variables
 		String fileName = null;
 		boolean foundSprite = false;
-		int currentXPosition = 0;
-		int currentYPosition = 0;
 		
 		//Set the color to cyan
 		screen.setColor(Color.CYAN);
-		
+
 		// Render the lines from top to bottom
 		for (int x = 0; x < theField.getPlayGridXSize() + 1; x++) {
-			currentXPosition = (x * xSize) / theField.getPlayGridXSize();
-			screen.drawLine(currentXPosition, yStartingPosition, currentXPosition, yStartingPosition + ySize);
+			currentXPosition = (x * xSize) / theField.getPlayGridXSize() + xCentering;
+			screen.drawLine(currentXPosition, yStartingPosition, currentXPosition, yStartingPosition+ySize);
 		}
-		
-		//Render the lines from left to right
+
+		// Render the lines from left to right
 		for (int y = 0; y < theField.getPlayGridYSize() + 1; y++) {
-			currentYPosition = (y * ySize) / theField.getPlayGridYSize();
+			currentYPosition = (y * ySize) / theField.getPlayGridYSize() + yCentering;
 			screen.drawLine(xStartingPosition, currentYPosition, xStartingPosition + xSize, currentYPosition);
 		}
 
@@ -237,8 +315,8 @@ public class GameWindow extends JPanel {
 							foundSprite = true;
 							// Increase the position by one to fit the lines in to the left rather than the
 							// right
-							currentXPosition = yStartingPosition + (x * xSize) / theField.getPlayGridXSize() + 1;
-							currentYPosition = yStartingPosition + (y * ySize) / theField.getPlayGridYSize() + 1;
+							currentXPosition = yStartingPosition + (x * xSize) / theField.getPlayGridXSize() + 1+ xCentering;
+							currentYPosition = yStartingPosition + (y * ySize) / theField.getPlayGridYSize() + 1+ yCentering;
 							spriteList.get(spritePosition).paint(screen, currentXPosition, currentYPosition,
 									spriteHeight, spriteWidth);
 						}
@@ -246,12 +324,11 @@ public class GameWindow extends JPanel {
 					// If the sprite wasn't found, load it
 					if (!foundSprite) {
 						if (loadNewSprite(fileName)) {
-							System.out.println(fileName + " loaded");
 							// If the sprite is successfully loaded, render the most recently loaded sprite
 							// Increase the position by one to fit the lines in to the left rather than the
 							// right
-							currentXPosition = yStartingPosition + (x * xSize) / theField.getPlayGridXSize() + 1;
-							currentYPosition = yStartingPosition + (y * ySize) / theField.getPlayGridYSize() + 1;
+							currentXPosition = yStartingPosition + (x * xSize) / theField.getPlayGridXSize() + 1+xCentering;
+							currentYPosition = yStartingPosition + (y * ySize) / theField.getPlayGridYSize() + 1+yCentering;
 							spriteList.get(spriteList.size() - 1).paint(screen, currentXPosition, currentYPosition,
 									spriteHeight, spriteWidth);
 						}
@@ -263,7 +340,24 @@ public class GameWindow extends JPanel {
 
 	}
 
-	private void paintEnemyDeck(Graphics screen, int xPosition, int yPosition, int xSize, int ySize) {
+	private void paintEnemyDeck(Graphics Screen, int xPosition, int yPosition, int xSize, int ySize) {
 		// This method paints the enemy deck in the space specified
+	}
+	
+	private void paintText(Graphics screen, String text, int xPosition, int yPosition, int xSize, int ySize) {
+		//This method renders text in the specified location, scaled to the correct size
+		
+		//Firstly, set the font size to a large amount
+		screen.setFont(new Font(screen.getFont().getFontName(), screen.getFont().getStyle(), 100));
+		
+		//While the font is too big
+		while(screen.getFontMetrics().stringWidth(text) > xSize || screen.getFontMetrics().getHeight() > ySize){
+			
+			//Make a new font that is the same as the old font, but one smaller
+			screen.setFont(new Font(screen.getFont().getFontName(), screen.getFont().getStyle(), screen.getFont().getSize()-1));
+		}
+		
+		//Render the font
+		screen.drawString(text, xPosition, yPosition);
 	}
 }
