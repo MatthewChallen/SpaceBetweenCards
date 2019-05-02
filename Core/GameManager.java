@@ -1,6 +1,8 @@
 package Core;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JFrame;
+
 public class GameManager {
     final private int fieldXSize = 10;
     final private int fieldYSize = 12;
@@ -35,6 +37,8 @@ public class GameManager {
 		
 		//Get a reference to the Play Field from the resource manager
 		theField = theResourceManager.getPlayField();
+		
+		theResourceManager.setupMenu();
 	}
 
 	public void run() {
@@ -66,7 +70,43 @@ public class GameManager {
 				theResourceManager.repaintWindow();
 			}
 		}
+
+
+		restartMenu();
+	}
+	
+	// This method is called when the game ends or the user has selected
+	// escape to end the game. The game contents are reset and a new window
+	// sets up the title screen.
+	private void restartMenu()
+	{
 		theResourceManager.stopRendering();
+		int oldWidth = theResourceManager.getOldWidth();
+		int oldHeight = theResourceManager.getOldHeight();
+		if(theResourceManager.getGameFrame().getExtendedState() == JFrame.MAXIMIZED_BOTH)
+		{
+			oldWidth = 0;
+			oldHeight = 0;
+		}
+		theResourceManager.getGameFrame().dispose();
+		
+		// Game details are now reset.
+		theHand = new Hand(); 
+		Deck thePlayerDeck = new Deck();
+		Deck theEnemyDeck = new Deck();
+		Deck theFieldDeck = new Deck();
+		Deck[] theDecks = {thePlayerDeck, theFieldDeck, theEnemyDeck};
+		
+        theHand.SetDrawDeck(theDecks[0]);
+        
+        // A new resource manager is generated.
+        theResourceManager = new ResourceManager("The Space Between Cards",
+           oldWidth, oldHeight, fieldXSize, fieldYSize, theDecks, theHand);
+		theField = theResourceManager.getPlayField();
+		theResourceManager.setupMenu();
+		
+		// The new game can now be run.
+		run();
 	}
 	
 	private void Update() {
