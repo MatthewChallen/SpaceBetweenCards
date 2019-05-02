@@ -83,6 +83,8 @@ public class TitleScreen extends JPanel
 		quitGame.repaint();
 	}
 	
+	// Buttons for the title screen - some extra buttons may be included
+	// later if more functionality becomes available - load game and options.
 	public void createButtons()
 	{
 		buttons = Box.createVerticalBox();

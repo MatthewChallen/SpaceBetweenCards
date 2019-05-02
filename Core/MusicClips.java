@@ -47,6 +47,7 @@ public class MusicClips{
 		this.soundClip.start();
 	}
 	
+	// Called when closing the game and switching back to the title screen.
 	public void stopMusic() {
 		this.soundClip.stop();
 	}

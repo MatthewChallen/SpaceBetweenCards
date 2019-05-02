@@ -139,6 +139,9 @@ public class ResourceManager implements KeyListener, MouseListener {
         theGameFrame.setResizable(true);
         theGameFrame.setVisible(true);
         theGameFrame.setBackground(Color.BLACK);
+        // Menu update - moved key and mouse listeners to theGameFrame
+        // to allow for resetting focus - needed when changing contents
+        // of theGameFrame - see the switchToGameWindow() method below.
         //theGameWindow.setFocusable(true);
         //theGameWindow.addKeyListener(this);
         //theGameWindow.addMouseListener(this);
@@ -314,12 +317,16 @@ public class ResourceManager implements KeyListener, MouseListener {
 
     // This method ends the rendering process
     public void stopRendering() {
+    	// Frame dimensions are recorded for use with the resetting of the
+    	// game.
     	oldWidth = theGameFrame.getWidth();
     	oldHeight = theGameFrame.getHeight();
         theGameWindow.removeKeyListener(this);
         theGameWindow.removeMouseListener(this);
         theGameWindow.setVisible(false);
         
+        // The track is stopped - a new track will commence when the game is
+        // reset.
         backGround.stopMusic();
     }
     
@@ -338,6 +345,8 @@ public class ResourceManager implements KeyListener, MouseListener {
     	return oldHeight;
     }
     
+    // The title screen is presented at the start of the game - or at the
+    // commencement of a new game.
     public void setupMenu()
     {
     	theGameWindow.setVisible(false);
@@ -346,6 +355,9 @@ public class ResourceManager implements KeyListener, MouseListener {
     	theGameFrame.setVisible(true);
     }
     
+    // This method is called when the user chooses to start a new game.
+    // The key and mouse listeners are added to theGameFrame and focus
+    // is reset.
     public void switchToGameWindow()
     {
     	theGameFrame.add(theGameWindow);

@@ -75,6 +75,9 @@ public class GameManager {
 		restartMenu();
 	}
 	
+	// This method is called when the game ends or the user has selected
+	// escape to end the game. The game contents are reset and a new window
+	// sets up the title screen.
 	private void restartMenu()
 	{
 		theResourceManager.stopRendering();
@@ -86,6 +89,8 @@ public class GameManager {
 			oldHeight = 0;
 		}
 		theResourceManager.getGameFrame().dispose();
+		
+		// Game details are now reset.
 		theHand = new Hand(); 
 		Deck thePlayerDeck = new Deck();
 		Deck theEnemyDeck = new Deck();
@@ -93,10 +98,14 @@ public class GameManager {
 		Deck[] theDecks = {thePlayerDeck, theFieldDeck, theEnemyDeck};
 		
         theHand.SetDrawDeck(theDecks[0]);
+        
+        // A new resource manager is generated.
         theResourceManager = new ResourceManager("The Space Between Cards",
            oldWidth, oldHeight, fieldXSize, fieldYSize, theDecks, theHand);
 		theField = theResourceManager.getPlayField();
 		theResourceManager.setupMenu();
+		
+		// The new game can now be run.
 		run();
 	}
 	
