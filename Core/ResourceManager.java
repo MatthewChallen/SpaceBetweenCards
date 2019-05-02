@@ -29,6 +29,7 @@ public class ResourceManager implements KeyListener, MouseListener {
     private boolean isCardChosen;
     private boolean readyToRender;
     private int maxHandSize;
+    private MusicManager theMusicManager;
     
     //made static so other's could use it as debug text
     public static String bottomLeftText;
@@ -51,20 +52,17 @@ public class ResourceManager implements KeyListener, MouseListener {
         // Set up the cards
         this.theDecks = theDecks;
         this.theHand = theHand;
-        //theHand = new ArrayList<Card>(0);
-        //theDeck = new ArrayList<Card>(0);
         maxHandSize = 5;
         theHand.DrawCard(maxHandSize);
         
+        //Create an instance of the music manager
+        this.theMusicManager = new MusicManager();
         
-        //addCardsToDeck(60);
-        //drawCard();
-
         // Create a new list of sprites, to be added to as needed
         this.spriteList = new ArrayList<Sprite>();
         ResourceManager.bottomLeftText = "Welcome";
 
-
+        
         
         // Create a new list of game objects.
         this.objectList = new ArrayList<GameObject>(0);
@@ -93,6 +91,11 @@ public class ResourceManager implements KeyListener, MouseListener {
             }
         }
 
+    }
+    
+    //This method gets the music manager
+    public MusicManager getMM() {
+    	return this.theMusicManager;
     }
 
     // This method should only ever be called by the game manager once in order to
