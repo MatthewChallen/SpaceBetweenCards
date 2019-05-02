@@ -29,6 +29,10 @@ public class ResourceManager implements KeyListener, MouseListener {
     private boolean isCardChosen;
     private boolean readyToRender;
     private int maxHandSize;
+    
+    private int oldWidth;
+    private int oldHeight;
+    
     private MusicManager theMusicManager;
     private MusicClips backGround;
     
@@ -135,9 +139,9 @@ public class ResourceManager implements KeyListener, MouseListener {
         theGameFrame.setResizable(true);
         theGameFrame.setVisible(true);
         theGameFrame.setBackground(Color.BLACK);
-        theGameWindow.setFocusable(true);
-        theGameWindow.addKeyListener(this);
-        theGameWindow.addMouseListener(this);
+        //theGameWindow.setFocusable(true);
+        //theGameWindow.addKeyListener(this);
+        //theGameWindow.addMouseListener(this);
         // The game is now ready to render, and the resourceManager can finish it's
         // constructor
         readyToRender = true;
@@ -310,8 +314,46 @@ public class ResourceManager implements KeyListener, MouseListener {
 
     // This method ends the rendering process
     public void stopRendering() {
+    	oldWidth = theGameFrame.getWidth();
+    	oldHeight = theGameFrame.getHeight();
         theGameWindow.removeKeyListener(this);
-        theGameFrame.dispose();
+        theGameWindow.removeMouseListener(this);
+        theGameWindow.setVisible(false);
+        
+        backGround.stopMusic();
+    }
+    
+    public JFrame getGameFrame()
+    {
+    	return theGameFrame;
+    }
+    
+    public int getOldWidth()
+    {
+    	return oldWidth;
+    }
+    
+    public int getOldHeight()
+    {
+    	return oldHeight;
+    }
+    
+    public void setupMenu()
+    {
+    	theGameWindow.setVisible(false);
+    	theGameFrame.add(new TitleScreen(this, theGameFrame.getWidth(),
+           theGameFrame.getHeight()));
+    	theGameFrame.setVisible(true);
+    }
+    
+    public void switchToGameWindow()
+    {
+    	theGameFrame.add(theGameWindow);
+    	theGameFrame.setFocusable(true);
+    	theGameFrame.addKeyListener(this);
+    	theGameFrame.addMouseListener(this);
+    	theGameFrame.requestFocusInWindow();
+    	theGameWindow.setVisible(true);
     }
     
     public void moveObjects() {

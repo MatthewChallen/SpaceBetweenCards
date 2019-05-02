@@ -47,6 +47,10 @@ public class MusicClips{
 		this.soundClip.start();
 	}
 	
+	public void stopMusic() {
+		this.soundClip.stop();
+	}
+	
 	public String getName() {
 		return this.name;
 	}
