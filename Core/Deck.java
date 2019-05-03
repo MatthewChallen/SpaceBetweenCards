@@ -3,12 +3,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import Cards.MoveCardDown;
-import Cards.MoveCardLeft;
-import Cards.MoveCardRight;
-import Cards.MoveCardUp;
-import Cards.Shoot;
+import Cards.MoveCard;
+import Cards.ShootCard;
 import TypeListings.CardType;
+import TypeListings.Direction;
 
 public class Deck {
 
@@ -128,21 +126,22 @@ public class Deck {
 
             switch (CardType.values()[rand.nextInt(5)]) {
             case MOVE_UP:
-                hold = new MoveCardUp("Move up", "Moves the player up");
+                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 3);
                 break;
             case MOVE_DOWN:
-                hold = new MoveCardDown("Move down", "Moves the player down");
+                hold = new MoveCard("Move Down", "Moves player down", Direction.DOWN, 1);
                 break;
             case MOVE_LEFT:
-                hold = new MoveCardLeft("Move Left", "Moves the player Left");
+                hold = new MoveCard("Move Left", "Moves player left", Direction.LEFT, 1);
                 break;
             case MOVE_RIGHT:
-                hold = new MoveCardRight("Move right", "Moves the player right");
+                hold = new MoveCard("Move Right", "Moves player right", Direction.RIGHT, 1);
                 break;
             case SHOOT:
-                hold = new Shoot("Shoots", "Fire a shot forwards");
+                hold = new ShootCard("Shoots", "Fire a shot forwards");
+                break;
             default:
-                hold = new MoveCardUp("Move up", "Moves the player up");
+                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 3);
                 break;
 
             }
@@ -164,26 +163,24 @@ public class Deck {
 
             switch (CardType.values()[rand.nextInt(5)]) {
             case MOVE_UP:
-                hold = new MoveCardUp("Move up", "Moves the player up");
+                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 3);
                 break;
             case MOVE_DOWN:
-                hold = new MoveCardDown("Move down", "Moves the player down");
+                hold = new MoveCard("Move Down", "Moves player down", Direction.DOWN, 1);
                 break;
             case MOVE_LEFT:
-                hold = new MoveCardLeft("Move Left", "Moves the player Left");
+                hold = new MoveCard("Move Left", "Moves player left", Direction.LEFT, 1);
                 break;
             case MOVE_RIGHT:
-                hold = new MoveCardRight("Move right", "Moves the player right");
+                hold = new MoveCard("Move Right", "Moves player right", Direction.RIGHT, 1);
                 break;
             case SHOOT:
-                hold = new Shoot("Shoots", "Fire a shot forwards");
+                hold = new ShootCard("Shoots", "Fire a shot forwards");
                 break;
             default:
-                hold = new MoveCardUp("Move up", "Moves the player up");
+                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 3);
                 break;
-
             }
-
             deck.add(hold);
         }
     }
