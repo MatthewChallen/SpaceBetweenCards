@@ -23,8 +23,7 @@ public class MusicManager {
         			this.musList.get(i).getClip().setFramePosition(0);
         			this.musList.get(i).getClip().start();
         			//this.musList.get(i).getClip().setFramePosition(0);
-        			System.out.println("Replay success");
-        			System.out.println(i);
+        			System.out.println("Replay success: " + i);
         			break;
         		}        			
         	}    		

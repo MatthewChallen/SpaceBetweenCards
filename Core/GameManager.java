@@ -2,6 +2,7 @@ package Core;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 public class GameManager {
     final private int fieldXSize = 10;
@@ -47,7 +48,14 @@ public class GameManager {
 		 GameManager.gameState = "running";
 		int cardChosen;
 		
-        theResourceManager.repaintWindow();
+        //theResourceManager.repaintWindow();
+		// Setting a timer to allow for animations that are
+		// not triggered by either user input or a resizing of the window
+		Timer timer = new Timer(50, e->
+		{
+		   theResourceManager.repaintWindow();
+	    });
+		timer.start();
 		
         // Start the loop
 		while (GameManager.gameState.equals("running")) {
@@ -61,17 +69,16 @@ public class GameManager {
 			} else {
 			    theHand.PlayCard(theField, cardChosen);
 			    theHand.DrawCard(5);
-			    Update();
 				//Move objects in motion
 			    ResourceManager.GetRM().resetMove();
 			    ResourceManager.GetRM().moveObjects();
-				
+				update();
 				// Rerender the screen
 				theResourceManager.repaintWindow();
 			}
 		}
 
-
+		timer.stop();
 		restartMenu();
 	}
 	
@@ -109,9 +116,9 @@ public class GameManager {
 		run();
 	}
 	
-	private void Update() {
+	private void update() {
 	    theField.update();
-	    theResourceManager.Update();
+	    theResourceManager.update();
 	}
 	
 	public static void setGameState(String gameState) {

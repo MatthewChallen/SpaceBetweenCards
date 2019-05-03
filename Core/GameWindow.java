@@ -21,6 +21,7 @@ public class GameWindow extends JPanel {
 	private int bottomPercentageAllocated;
 	private int rightPercentageAllocated;
 	private double cardRatio;
+	private StarField starField;
 
 	public GameWindow(PlayField theField, ArrayList<Sprite> spriteList, Hand theHand, String bottomLeftText) {
 		// This creates a new window, passing the things that need to be displayed by
@@ -36,6 +37,10 @@ public class GameWindow extends JPanel {
 		folderName = "Sprites/";
 		// Load the default sprite at space 0
 		loadNewSprite("Strawberry.jpg");
+		
+		// Creating a star field pattern to be drawn with the
+		// background for the play field
+		starField = new StarField(this);
 	}
 
 	public void paint(Graphics screen) {
@@ -60,6 +65,9 @@ public class GameWindow extends JPanel {
 		// Clear the screen with black
 		screen.setColor(Color.BLACK);
 		screen.fillRect(0, 0, this.getWidth(), this.getHeight());
+		
+		// Draw stars on the background before other objects
+		starField.drawStarField(screen);
 
 		paintBackGround(screen, bottomSpacePixels, topSpacePixels, leftSpacePixels, rightSpacePixels);
 		// paintCards(screen);
