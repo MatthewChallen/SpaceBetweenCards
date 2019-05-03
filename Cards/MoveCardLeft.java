@@ -33,7 +33,7 @@ public class MoveCardLeft extends Card {
 		// Moves the player one space to the Left.
 		// Assumed a movePlayer() + getPlayer() method
 		// both in the PlayField class but can be changed
-	    theField.moveObject(Direction.LEFT, ResourceManager.GetRM().GetPlayer(), distance);
+	    theField.moveObject(Direction.LEFT, ResourceManager.GetRM().getPlayer(), distance);
 
 		return true;
 	}

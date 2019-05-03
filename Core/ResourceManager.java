@@ -151,20 +151,20 @@ public class ResourceManager implements KeyListener, MouseListener {
 
     }
 
-    public int GetObjectListSize()
+    public int getObjectListSize()
     {
         return objectList.size();
     }
     
-    public GameObject GetObjectListElement(int index) {
+    public GameObject getObjectListElement(int index) {
         return objectList.get(index);
     }
     
-    public void RemoveGameObject(GameObject target) {
+    public void removeGameObject(GameObject target) {
         objectKillList.add(target);
     }
     
-    public void Update() {
+    public void update() {
     	//This method kills all objects from the object kill list
         while(objectKillList.size() > 0) {
             for(int i = objectList.size()-1; i>=0;--i) {
@@ -180,7 +180,7 @@ public class ResourceManager implements KeyListener, MouseListener {
         }
     }
 
-    public PlayerObject GetPlayer() {
+    public PlayerObject getPlayer() {
         PlayerObject hold = null;
         for(int i=0;i< objectList.size(); ++i)
         {
@@ -370,30 +370,49 @@ public class ResourceManager implements KeyListener, MouseListener {
     
     public void moveObjects() {
     	//This method consumes all the remaining movement for objects, making them move
-    	Direction direction = null;
-    	boolean moveAgain = true;
-    	while(moveAgain) {
-    		//Assume this is the last loop
-    		moveAgain = false;
-    		//Move all the objects
-    		for(int i = 0; i < objectList.size(); i++) {
-        		direction = objectList.get(i).getDirection();
-        		if(objectList.get(i).remainingMove() == true) {
-        			objectList.get(i).reduceRemainingMove();
-        			//Move the object once in the correct direction
-        			theField.moveObject(direction, objectList.get(i), 1);
-        			System.out.println("hello");
-        			//If an object has moved this loop, continue the loop
-        			moveAgain = true;
-        		}
-        	}
-    		//Check for collisions
+    	//find the highest movement value
+    	int highestMove = 0;
+    	for(int i = 0; i < objectList.size(); i++) {
+    		if(objectList.get(i).getMove() > highestMove) {
+    			highestMove = objectList.get(i).getMove();
+    		}
+    	}
+    	
+    	//Repeat for each value, up to and including the highest movement value
+    	for(int i = 1; i <= highestMove; i++) {
+    		
+    		//Repeat for every object
+    		for(int j = 0; j < objectList.size(); j++) {
+    			
+    			//If it is time for the object to move
+    			if((i * objectList.get(j).getMove() / highestMove) - objectList.get(j).getUsedMove() > 0) {
+    				
+    				//Reduce the remaining movement
+    				objectList.get(j).reduceRemainingMove();
+    				
+    				//Move the object
+    				theField.moveObject(objectList.get(j).getDirection(), objectList.get(j), 1);
+    			}
+    				
+    		}
+    		
+    		//After every object moved, check for collisions and remove objects
     		theField.checkForCollision();
+    		update();
+    		
+    		//Repaint the window, then wait for 70ms
+    		repaintWindow();
+    		try {
+                Thread.sleep(70);
+            } catch (InterruptedException e) {
+                // Thread stopped while waiting
+            }
+    		
     	}
     }
     
     public void resetMove() {
-    	//This method converts all objects speed into movement, to be consumed
+    	//This method converts all objects speed into movement, to be consumed by the moveobject method later
     	for(int i = 0; i < objectList.size(); i++) {
     		objectList.get(i).resetMove();
     	}

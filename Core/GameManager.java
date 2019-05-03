@@ -61,11 +61,10 @@ public class GameManager {
 			} else {
 			    theHand.PlayCard(theField, cardChosen);
 			    theHand.DrawCard(5);
-			    Update();
 				//Move objects in motion
 			    ResourceManager.GetRM().resetMove();
 			    ResourceManager.GetRM().moveObjects();
-				
+				update();
 				// Rerender the screen
 				theResourceManager.repaintWindow();
 			}
@@ -109,9 +108,9 @@ public class GameManager {
 		run();
 	}
 	
-	private void Update() {
+	private void update() {
 	    theField.update();
-	    theResourceManager.Update();
+	    theResourceManager.update();
 	}
 	
 	public static void setGameState(String gameState) {

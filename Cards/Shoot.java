@@ -28,7 +28,7 @@ public class Shoot extends Card {
         // Moves the player one space to the Up.
         // Assumed a movePlayer() + getPlayer() method
         // both in the PlayField class but can be changed
-        theField.spawnObject(ObjectType.PROJECTILE, ResourceManager.GetRM().GetPlayer().getXCoordinates(), ResourceManager.GetRM().GetPlayer().getYCoordinates()-1);
+        theField.spawnObject(ObjectType.PROJECTILE, ResourceManager.GetRM().getPlayer().getXCoordinates(), ResourceManager.GetRM().getPlayer().getYCoordinates()-1);
         ResourceManager.GetRM().getMM().addMusic(ObjectType.PROJECTILE);
         return true;
     }

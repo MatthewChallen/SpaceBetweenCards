@@ -3,10 +3,10 @@ package Core;
 import java.util.ArrayList;
 
 public class GameObjectList {
-	private ArrayList<GameObject> gridObjects = new ArrayList<GameObject>();
+	private ArrayList<GameObject> gridObjects;
 
 	public GameObjectList() {
-
+		gridObjects = new ArrayList<GameObject>(0);
 	}
 
 	// Adds object to list, checks first to see if object already in array index and
@@ -17,11 +17,10 @@ public class GameObjectList {
 
 	//Removes all objects from the board
 	public void removedAll() {
-		while (gridObjects.size() > 0) {
-			ResourceManager.GetRM().RemoveGameObject(gridObjects.get(0));
-			gridObjects.remove(0);
+		for(int i = 0; i < gridObjects.size(); i++) {
+			ResourceManager.GetRM().removeGameObject(gridObjects.get(i));
 		}
-
+		gridObjects = new ArrayList<GameObject>(0);
 	}
 
 	// removes specific object. returns false if object not found.

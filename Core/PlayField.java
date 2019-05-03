@@ -108,10 +108,9 @@ public class PlayField {
 	    //maybe playGridXSize and playGridYSize
 		for (int i = 0; i < playGridXSize; i++) {
 			for (int j = 0; j < playGridYSize; j++) {
-				while(playGrid[i][GetActualY(j)].isThereCollision()) {
+				if(playGrid[i][j].isThereCollision()) {
 					//For the moment, destroy all objects in that location
-					playGrid[i][GetActualY(j)].removedAll();
-					
+					playGrid[i][j].removedAll();
 				}
 			}
 		}	
@@ -152,7 +151,7 @@ public class PlayField {
                     if(target instanceof PlayerObject) {
                         y=start;
                     } else {
-                        ResourceManager.GetRM().RemoveGameObject(target);
+                        ResourceManager.GetRM().removeGameObject(target);
                         onGrid = false;
                     }
                 } else {
@@ -169,7 +168,7 @@ public class PlayField {
                     if(target instanceof PlayerObject) {
                         y = GetActualY(playGridYSize-1);
                     }else {
-                        ResourceManager.GetRM().RemoveGameObject(target);
+                        ResourceManager.GetRM().removeGameObject(target);
                         onGrid = false;
                     }
                 }

@@ -12,6 +12,7 @@ public abstract class GameObject {
 	protected Direction direction;
 	protected int speed;
 	private int move;
+	private int remainingMove;
 
 	static private int ID = 1;
 
@@ -75,18 +76,21 @@ public abstract class GameObject {
 	}
 	
 	public void resetMove() {
-		move = speed;
+		if(speed != 0) {
+			move = speed;
+		}
+		remainingMove = move;
 	}
 	
-	public boolean remainingMove() {
-		if(move > 0) {
-			return true;
-		}else {
-			return false;
-		}
+	public int getMove() {
+		return move;
+	}
+	
+	public int getUsedMove() {
+		return move - remainingMove;
 	}
 	
 	public void reduceRemainingMove() {
-		move--;
+		remainingMove--;
 	}
 }
