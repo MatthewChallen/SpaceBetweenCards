@@ -56,4 +56,9 @@ public class GameObjectList {
 		return fileName;
 	}
 
+	public void UpdateAll(PlayField field) {
+	    for(int i = 0; i < gridObjects.size(); ++i) {
+	        gridObjects.get(i).Update(field);	            
+	    }
+	}
 }

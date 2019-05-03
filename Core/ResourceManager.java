@@ -178,6 +178,8 @@ public class ResourceManager implements KeyListener, MouseListener {
                 }
             }
         }
+        
+        
     }
 
     public PlayerObject getPlayer() {

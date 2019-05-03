@@ -45,7 +45,7 @@ public class GameManager {
 	public void run() {
 		// This method contains the game logic loop (no rendering)
 		// Firstly, make the player object at with id 1 at location 3, 3
-		 GameManager.gameState = "running";
+		GameManager.gameState = "running";
 		int cardChosen;
 		
         //theResourceManager.repaintWindow();
