@@ -30,8 +30,12 @@ public class ResourceManager implements KeyListener, MouseListener {
     private boolean readyToRender;
     private int maxHandSize;
     
+    // Variables used to restore the location and size of
+    // theGameFrame when resetting the game.
     private int oldWidth;
     private int oldHeight;
+    private int oldXCoordinate;
+    private int oldYCoordinate;
     
     private MusicManager theMusicManager;
     private MusicClips backGround;
@@ -336,6 +340,8 @@ public class ResourceManager implements KeyListener, MouseListener {
     	// game.
     	oldWidth = theGameFrame.getWidth();
     	oldHeight = theGameFrame.getHeight();
+    	oldXCoordinate = theGameFrame.getX();
+    	oldYCoordinate = theGameFrame.getY();
         theGameWindow.removeKeyListener(this);
         theGameWindow.removeMouseListener(this);
         theGameWindow.setVisible(false);
@@ -358,6 +364,16 @@ public class ResourceManager implements KeyListener, MouseListener {
     public int getOldHeight()
     {
     	return oldHeight;
+    }
+    
+    public int getOldXCoordinate()
+    {
+    	return oldXCoordinate;
+    }
+    
+    public int getOldYCoordinate()
+    {
+    	return oldYCoordinate;
     }
     
     // The title screen is presented at the start of the game - or at the

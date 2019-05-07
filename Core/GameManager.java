@@ -94,8 +94,11 @@ public class GameManager {
 	private void restartMenu()
 	{
 		theResourceManager.stopRendering();
+		// Record dimensions of the window to use when resetting the game.
 		int oldWidth = theResourceManager.getOldWidth();
 		int oldHeight = theResourceManager.getOldHeight();
+		int oldXCoordinate = theResourceManager.getOldXCoordinate();
+		int oldYCoordinate = theResourceManager.getOldYCoordinate();
 		if(theResourceManager.getGameFrame().getExtendedState() == JFrame.MAXIMIZED_BOTH)
 		{
 			oldWidth = 0;
@@ -115,6 +118,8 @@ public class GameManager {
         // A new resource manager is generated.
         theResourceManager = new ResourceManager("The Space Between Cards",
            oldWidth, oldHeight, fieldXSize, fieldYSize, theDecks, theHand);
+        theResourceManager.getGameFrame().setLocation(oldXCoordinate,
+           oldYCoordinate);
 		theField = theResourceManager.getPlayField();
 		theResourceManager.setupMenu();
 		
