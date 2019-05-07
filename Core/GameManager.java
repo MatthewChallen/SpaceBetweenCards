@@ -66,6 +66,12 @@ public class GameManager {
 				// This is the escape key. Avada Kedavara!
 				GameManager.setGameState("Closed");
 				System.out.println("Goodbye!");
+			} else if(cardChosen == 24)
+			{
+				// User has selected the letter 'o' for the options screen.
+				timer.stop();
+				theResourceManager.displayOptions();
+				timer.restart();
 			} else {
 			    theHand.PlayCard(theField, cardChosen);
 			    theHand.DrawCard(5);

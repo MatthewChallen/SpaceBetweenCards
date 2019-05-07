@@ -36,6 +36,11 @@ public class ResourceManager implements KeyListener, MouseListener {
     private MusicManager theMusicManager;
     private MusicClips backGround;
     
+    // The GameOptions class can be used to set specific settings
+    // for the game.
+    private GameOptions gameOptions;
+    private boolean resumeGame;
+    
     //made static so other's could use it as debug text
     public static String bottomLeftText;
     
@@ -53,6 +58,9 @@ public class ResourceManager implements KeyListener, MouseListener {
             Deck[] theDecks, Hand theHand) {
 
         instance = this;
+        
+        // Set up an instance of GameOPtions
+        gameOptions = new GameOptions();
 
         // Set up the cards
         this.theDecks = theDecks;
@@ -61,8 +69,9 @@ public class ResourceManager implements KeyListener, MouseListener {
         theHand.DrawCard(maxHandSize);
         
         //Create an instance of the music manager
-        this.theMusicManager = new MusicManager();
-        backGround = new MusicClips("BACKGROUND", 0.15);
+        this.theMusicManager = new MusicManager(gameOptions);
+        backGround = new MusicClips("BACKGROUND",
+           0.15 * gameOptions.getVolume());
         
         // Create a new list of sprites, to be added to as needed
         this.spriteList = new ArrayList<Sprite>();
@@ -285,6 +294,10 @@ public class ResourceManager implements KeyListener, MouseListener {
         if (cardChosen > 0 && cardChosen <= theHand.GetCardCount()) {
             isCardChosen = true;
         }
+        
+        // Select letter 'o' for options.
+        if(cardChosen == 24) isCardChosen = true;
+        
         if ((int) cardChosen == -1) {
             // This is the escape key
             isCardChosen = true;
@@ -368,6 +381,46 @@ public class ResourceManager implements KeyListener, MouseListener {
     	theGameFrame.addMouseListener(this);
     	theGameFrame.requestFocusInWindow();
     	theGameWindow.setVisible(true);
+    }
+    
+    // This method is called when displaying the options screen. Select
+    // letter 'o' during the game to display.
+    public void displayOptions()
+    {
+    	resumeGame = false;
+    	theGameWindow.setVisible(false);
+    	theGameFrame.add(new OptionsScreen(this, theGameFrame.getWidth(),
+           theGameFrame.getHeight(), backGround));
+    	theGameFrame.setVisible(true);
+    	
+    	// This loop will run until the user has selected the return
+    	// button on the options screen.
+    	while(!resumeGame)
+    	{
+    		try{Thread.sleep(200);}catch(Exception ex){}
+    	}
+    	
+    	// Save changes to options in Data/game_options.txt
+    	gameOptions.saveOptions();
+    	
+    	// Now return to the normal game loop.
+    	theGameFrame.add(theGameWindow);
+    	theGameWindow.setVisible(true);
+    	theGameFrame.toFront();
+    	
+    	return;
+    }
+    
+    // The GameOptions instance is accessed by the OptionsScreen class.
+    public GameOptions getGameOptions()
+    {
+    	return gameOptions;
+    }
+    
+    // Called when options screen is ready to return to the game.
+    public void setResumeGame(boolean resumeGame)
+    {
+       this.resumeGame = resumeGame;
     }
     
     public void moveObjects() {
