@@ -3,11 +3,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import Cards.DiscardCard;
+import Cards.MeteorShowerCard;
 import Cards.MoveCardDown;
 import Cards.MoveCardLeft;
 import Cards.MoveCardRight;
 import Cards.MoveCardUp;
+import Cards.ShieldCard;
 import Cards.Shoot;
+import Cards.StrikeCard;
 import TypeListings.CardType;
 
 public class Deck {
@@ -162,7 +166,7 @@ public class Deck {
             // TODO: update to be calling from resource manager
             Card hold = null;
 
-            switch (CardType.values()[rand.nextInt(5)]) {
+            switch (CardType.values()[rand.nextInt(9)]) {
             case MOVE_UP:
                 hold = new MoveCardUp("Move up", "Moves the player up");
                 break;
@@ -178,6 +182,18 @@ public class Deck {
             case SHOOT:
                 hold = new Shoot("Shoots", "Fire a shot forwards");
                 break;
+            case STRIKE:
+            	hold = new StrikeCard("Strike", "Strikes a random enemy on the field");
+            	break;
+            case SHIELD:
+            	hold = new ShieldCard("Shield", "Generates a shield to protect the player", 100);
+            	break;
+            case DISCARD:
+            	hold = new DiscardCard("Discard", "Discards all cards and re-draws");
+            	break;
+            case METEORSHOWER:
+            	hold = new MeteorShowerCard("Meteor Shower", "Destorys ALL enemies on the field");
+            	break;
             default:
                 hold = new MoveCardUp("Move up", "Moves the player up");
                 break;
