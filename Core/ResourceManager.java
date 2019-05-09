@@ -72,6 +72,9 @@ public class ResourceManager implements KeyListener, MouseListener {
         maxHandSize = 5;
         theHand.DrawCard(maxHandSize);
         
+        // Store seed value in gameOptions if user wishes to save.
+        gameOptions.setSeed(Deck.getSeed());
+        
         //Create an instance of the music manager
         this.theMusicManager = new MusicManager(gameOptions);
         backGround = new MusicClips("BACKGROUND",
@@ -406,7 +409,7 @@ public class ResourceManager implements KeyListener, MouseListener {
     	resumeGame = false;
     	theGameWindow.setVisible(false);
     	theGameFrame.add(new OptionsScreen(this, theGameFrame.getWidth(),
-           theGameFrame.getHeight(), backGround));
+           theGameFrame.getHeight(), backGround, false));
     	theGameFrame.setVisible(true);
     	
     	// This loop will run until the user has selected the return
@@ -431,6 +434,13 @@ public class ResourceManager implements KeyListener, MouseListener {
     public GameOptions getGameOptions()
     {
     	return gameOptions;
+    }
+    
+    // The getBackGround() method allows the options screen to access
+    // a reference to the background music from the title screen.
+    public MusicClips getBackGround()
+    {
+    	return backGround;
     }
     
     // Called when options screen is ready to return to the game.

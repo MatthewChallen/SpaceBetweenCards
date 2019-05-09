@@ -184,5 +184,12 @@ public class Deck {
             deck.add(hold);
         }
     }
+    
+    // Access to seed to allow the user to save the seed. Can be
+    // loaded at a later stage to reconstitute game/deck conditions.
+    public static long getSeed()
+    {
+    	return seed;
+    }
 
 }
