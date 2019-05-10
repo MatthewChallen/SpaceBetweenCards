@@ -72,13 +72,16 @@ public class TitleScreen extends JPanel
 		buttons.add(Box.createVerticalStrut(height / 4));
 		buttons.add(startGame);
 		startGame.repaint();
-		buttons.add(Box.createVerticalStrut(height / 20));
+		buttons.add(Box.createVerticalStrut(height / 24));
 		buttons.add(highScores);
 		highScores.repaint();
-		buttons.add(Box.createVerticalStrut(height / 20));
+		buttons.add(Box.createVerticalStrut(height / 24));
+		buttons.add(options);
+		options.repaint();
+		buttons.add(Box.createVerticalStrut(height / 24));
 		buttons.add(credits);
 		credits.repaint();
-		buttons.add(Box.createVerticalStrut(height / 20));
+		buttons.add(Box.createVerticalStrut(height / 24));
 		buttons.add(quitGame);
 		quitGame.repaint();
 	}
@@ -98,7 +101,7 @@ public class TitleScreen extends JPanel
 			resourceManager.switchToGameWindow();
 		});
 		buttons.add(startGame);
-		buttons.add(Box.createVerticalStrut(height / 20));
+		buttons.add(Box.createVerticalStrut(height / 24));
 		
 		/*loadGame = new JButton("Load Game");
 		MenuStyle.styleButton(loadGame);
@@ -118,17 +121,19 @@ public class TitleScreen extends JPanel
 			theGameFrame.add(new HighScoresScreen(resourceManager, width, height));
 		});
 		buttons.add(highScores);
-		buttons.add(Box.createVerticalStrut(height / 20));
+		buttons.add(Box.createVerticalStrut(height / 24));
 		
-		/*options = new JButton("Options");
+		options = new JButton("Options");
 		MenuStyle.styleButton(options);
 		options.addActionListener(e ->
 		{
-			System.out.println("Options pressed");
+			setVisible(false);
+			theGameFrame.add(new OptionsScreen(resourceManager,
+		       theGameFrame.getWidth(), theGameFrame.getHeight(),
+		       resourceManager.getBackGround(), true));
 		});
 		buttons.add(options);
-		buttons.add(Box.createVerticalStrut(height / 20));
-		*/
+		buttons.add(Box.createVerticalStrut(height / 24));
 		
 		credits = new JButton("Credits");
 		MenuStyle.styleButton(credits);
@@ -138,7 +143,7 @@ public class TitleScreen extends JPanel
 			theGameFrame.add(new CreditsScreen(resourceManager, width, height));
 		});
 		buttons.add(credits);
-		buttons.add(Box.createVerticalStrut(height / 20));
+		buttons.add(Box.createVerticalStrut(height / 24));
 		
 		quitGame = new JButton("Quit Game");
 		MenuStyle.styleButton(quitGame);
@@ -147,7 +152,7 @@ public class TitleScreen extends JPanel
 			System.exit(0);
 		});
 		buttons.add(quitGame);
-		buttons.add(Box.createVerticalStrut(height / 20));
+		buttons.add(Box.createVerticalStrut(height / 24));
 		
 		add(buttons);
 	}

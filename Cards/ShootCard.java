@@ -5,15 +5,15 @@ import Core.PlayField;
 import Core.ResourceManager;
 import TypeListings.ObjectType;
 
-public class Shoot extends Card {
+public class ShootCard extends Card {
     
     int speed;
-    public Shoot(String name, String description) {
+    public ShootCard(String name, String description) {
         super(name, description);
         speed = 1;
     }
 
-    public Shoot(String name, String description, int speed) {
+    public ShootCard(String name, String description, int speed) {
         super(name, description);
         this.speed = speed;
     }

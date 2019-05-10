@@ -1,8 +1,10 @@
 package Core;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -19,12 +21,12 @@ public class HighScoresScreen extends JPanel
 	private int height;
 	
 	private Box highScores;
-	private JLabel highScore1;
-	private JLabel highScore2;
-	private JLabel highScore3;
-	private JLabel highScore4;
-	private JLabel highScore5;
+	private JLabel highScoreTitle;
+    private JLabel[] highScoreLabels;
 	private JButton mainMenu;
+	
+	private String[] highScoreNames;
+	private int[] highScoreValues;
 	
 	public HighScoresScreen(ResourceManager resourceManager, int width, int height)
 	{
@@ -32,6 +34,9 @@ public class HighScoresScreen extends JPanel
 		theGameFrame = resourceManager.getGameFrame();
 		this.width = width;
 		this.height = height;
+		highScoreLabels = new JLabel[10];
+		highScoreNames = new String[10];
+		highScoreValues = new int[10];
 		
 		try
 		{
@@ -42,6 +47,9 @@ public class HighScoresScreen extends JPanel
 			System.out.println("Failed to load background - check folder.");
 		}
 		
+		// First load data from the high_scores.txt file.
+		getHighScores();
+		// Then create labels with the data.
 		addHighScores();
 	}
 	
@@ -60,67 +68,85 @@ public class HighScoresScreen extends JPanel
 		       100);
 		}
 		
+		
+		// Reconfigure the lables and button so that they will be painted
+		// when the window is resized.
 		paintHighScores();
 	}
 	
 	public void paintHighScores()
 	{
 		highScores.removeAll();
-		highScores.add(Box.createVerticalStrut(height / 4));
-		highScores.add(highScore1);
-		highScore1.repaint();
-		highScores.add(Box.createVerticalStrut(height / 20));
-		highScores.add(highScore2);
-		highScore2.repaint();
-		highScores.add(Box.createVerticalStrut(height / 20));
-		highScores.add(highScore3);
-		highScore3.repaint();
-		highScores.add(Box.createVerticalStrut(height / 20));
-		highScores.add(highScore4);
-		highScore4.repaint();
-		highScores.add(Box.createVerticalStrut(height / 20));
-		highScores.add(highScore5);
-		highScore5.repaint();
-		highScores.add(Box.createVerticalStrut(height / 20));
+		highScores.add(Box.createVerticalStrut(height / 8));
+		
 		highScores.add(mainMenu);
 		mainMenu.repaint();
+		highScores.add(Box.createVerticalStrut(height / 40));
+		
+		highScores.add(highScoreTitle);
+		highScoreTitle.repaint();
+		highScores.add(Box.createVerticalStrut(height / 40));
+		
+		if(highScoreNames[0] == null)
+		{
+			highScores.add(highScoreLabels[0]);
+			highScoreLabels[0].repaint();
+		} else
+		{
+			for(int i = 0; i < highScoreLabels.length; i++)
+			{
+				highScores.add(highScoreLabels[i]);
+				highScoreLabels[i].repaint();
+				highScores.add(Box.createVerticalStrut(height / 40));
+			}
+		}
 	}
 	
+	// This method creates a box and lists the high score data that
+	// has been loaded from the high_score.txt file.
 	public void addHighScores()
 	{
 		highScores = Box.createVerticalBox();
-		highScores.add(Box.createVerticalStrut(height / 4));
+		highScores.add(Box.createVerticalStrut(height / 8));
 		
-		highScore1 = new JLabel("Vladimir Putin    38");
-		MenuStyle.styleLabel(highScore1);
-		highScores.add(highScore1);
-		highScores.add(Box.createVerticalStrut(height / 20));
-		
-		highScore2 = new JLabel("William Shatner     24");
-		MenuStyle.styleLabel(highScore2);
-		highScores.add(highScore2);
-		highScores.add(Box.createVerticalStrut(height / 20));
-		
-		highScore3 = new JLabel("Nancy Pelosi     53");
-		MenuStyle.styleLabel(highScore3);
-		highScores.add(highScore3);
-		highScores.add(Box.createVerticalStrut(height / 20));
-		
-		highScore4 = new JLabel("Karl Stefanovic     14");
-		MenuStyle.styleLabel(highScore4);
-		highScores.add(highScore4);
-		highScores.add(Box.createVerticalStrut(height / 20));
-		
-		highScore5 = new JLabel("Elon Musk    16");
-		MenuStyle.styleLabel(highScore5);
-		highScores.add(highScore5);
-		highScores.add(Box.createVerticalStrut(height / 20));
-		
+		// Add the return button
 		setupButton();
+		
+		// Label for the title of the page
+		highScoreTitle = new JLabel("High Scores");
+		MenuStyle.styleLabel(highScoreTitle);
+		highScoreTitle.setForeground(Color.YELLOW);
+		highScoreTitle.setFont(new Font("Arial", Font.BOLD, 40));
+		highScores.add(highScoreTitle);
+		highScores.add(Box.createVerticalStrut(height / 40));
+		
+		// Each entry comes from the high score data that has been
+		// loaded. If the data was not loaded successfully then send
+		// an error message to the screen.
+		if(highScoreNames[0] == null)
+		{
+			highScoreLabels[0] =
+		       new JLabel("Failed to load high scores - check folder.");
+			MenuStyle.styleLabel(highScoreLabels[0]);
+			highScores.add(highScoreLabels[0]);
+		} else
+		{
+			// Can now create each label with the data.
+			for(int i = 0; i < highScoreLabels.length; i++)
+			{
+				String content = highScoreNames[i] + "           " +
+			       highScoreValues[i];
+				highScoreLabels[i] = new JLabel(content);
+				MenuStyle.styleLabel(highScoreLabels[i]);
+				highScores.add(highScoreLabels[i]);
+				highScores.add(Box.createVerticalStrut(height / 40));
+			}
+		}
 		
 		add(highScores);
 	}
 	
+	// Sets up a return to main menu button.
 	public void setupButton()
 	{
 		mainMenu = new JButton("Main Menu");
@@ -131,6 +157,42 @@ public class HighScoresScreen extends JPanel
 			this.setVisible(false);
 			theGameFrame.add(new TitleScreen(resourceManager, width, height));
 		});
+		
 		highScores.add(mainMenu);
+		highScores.add(Box.createVerticalStrut(height / 40));
+		
+	}
+	
+	// This method is used to load high score data from the high_scores.txt
+	// file. The file must have entries for 10 players (name and score)
+	// and uses a comma as a delimiter.
+	private void getHighScores()
+	{
+		String loadData = "";
+		
+		try
+		{
+			File file = new File("Data/high_scores.txt");
+			Scanner scanner = new Scanner(file);
+			loadData = scanner.nextLine();
+			
+			scanner.close();
+			
+			String[] data = loadData.split(",");
+			
+			// Throw exception if data for 10 players was not present
+			// in the file.
+			if(data.length != 20) throw new Exception();
+			for(int i = 0; i < highScoreNames.length; i++)
+			{
+				highScoreNames[i] = data[i * 2];
+				// Convert text data to an integer.
+				highScoreValues[i] = Integer.parseInt(data[i * 2 + 1]);
+			}
+			
+		} catch(Exception ex)
+		{
+			System.out.println("Failed to load high scores - check folder.");
+		}
 	}
 }

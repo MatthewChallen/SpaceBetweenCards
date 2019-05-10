@@ -5,5 +5,10 @@ public enum CardType {
     MOVE_DOWN,
     MOVE_LEFT,
     MOVE_RIGHT,
-    SHOOT
+    SHOOT,
+    STRIKE,
+    DISCARD,
+    SHIELD,
+    METEORSHOWER
+    
 }

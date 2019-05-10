@@ -6,5 +6,6 @@ public enum ObjectType {
     ENEMYSHIP,
     DEBRIS,
     WARP,
-    PROJECTILE
+    PROJECTILE,
+    SHIELD
 }
