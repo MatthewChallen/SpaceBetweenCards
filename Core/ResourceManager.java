@@ -481,10 +481,10 @@ public class ResourceManager implements KeyListener, MouseListener {
     		theField.checkForCollision();
     		update();
     		
-    		//Repaint the window, then wait for 70ms
+    		//Repaint the window, then wait for 100ms
     		repaintWindow();
     		try {
-                Thread.sleep(70);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 // Thread stopped while waiting
             }
@@ -493,9 +493,12 @@ public class ResourceManager implements KeyListener, MouseListener {
     }
     
     public void resetMove() {
-    	//This method converts all objects speed into movement, to be consumed by the moveobject method later
+    	//This method converts all objects speed into movement, to be consumed by the move object method later
     	for(int i = 0; i < objectList.size(); i++) {
     		objectList.get(i).resetMove();
+    		if(objectList.get(i) instanceof Projectile && objectList.get(i).getRemainingMove() == 0) {
+    			System.err.println("Error: projectile with no movement value");
+    		}
     	}
     }
 }

@@ -88,8 +88,12 @@ public abstract class GameObject {
         return move;
     }
 
+    public int getRemainingMove() {
+        return remainingMove;
+    }
+    
     public int getUsedMove() {
-        return move - remainingMove;
+    	return move - remainingMove;
     }
 
     public void reduceRemainingMove() {
@@ -97,5 +101,12 @@ public abstract class GameObject {
     }
 
     public void Update(PlayField field) {
+    }
+    
+    public void setMove(int move, Direction direction) {
+    	//This method manually sets the movement for this turn
+    	this.move = move;
+    	this.direction = direction;
+    	this.speed = 0;
     }
 }

@@ -59,28 +59,43 @@ public class GameManager {
 		
         // Start the loop
 		while (GameManager.gameState.equals("running")) {
-			// wait for player input
+			
+			
+			// paint the screen, then wait for player input
+		    ResourceManager.GetRM().repaintWindow();
 			cardChosen = theResourceManager.getInput();
+			
 			// Choose a card with the input and play it or close
 			if ((int) cardChosen == -1) {
+				
 				// This is the escape key. Avada Kedavara!
 				GameManager.setGameState("Closed");
 				System.out.println("Goodbye!");
 			} else if(cardChosen == 24)
 			{
+				
 				// User has selected the letter 'o' for the options screen.
 				timer.stop();
 				theResourceManager.displayOptions();
 				timer.restart();
 			} else {
+				//Play the chosen card, and draw new cards
 			    theHand.PlayCard(theField, cardChosen);
 			    theHand.DrawCard(5);
+			    //The end of turn stuff
+			    
 				//Move objects in motion
-			    ResourceManager.GetRM().resetMove();
 			    ResourceManager.GetRM().moveObjects();
-				update();
-				// Rerender the screen
-				theResourceManager.repaintWindow();
+			    
+			    //Move the player field and destroy offscreen objects
+			    //Also give enemies their movement for next turn.
+			    theField.update();
+			    
+			    ResourceManager.GetRM().resetMove();
+			    
+			    //Do cleanup of destroyed objects
+			    ResourceManager.GetRM().update();
+			    
 			}
 		}
 
@@ -125,11 +140,6 @@ public class GameManager {
 		
 		// The new game can now be run.
 		run();
-	}
-	
-	private void update() {
-	    theField.update();
-	    theResourceManager.update();
 	}
 	
 	public static void setGameState(String gameState) {

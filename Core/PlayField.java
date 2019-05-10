@@ -195,6 +195,16 @@ public class PlayField {
 		return playGrid[xLocation][GetActualY(yLocation)].getObjectFileName();
 	}
 	
+	public int getObjectRemainingMove(int xLocation, int yLocation) {
+		//Get the movement of an object at a location. Used for rendering
+		return playGrid[xLocation][GetActualY(yLocation)].getRemainingMove();
+	}
+	
+	public Direction getDirection(int xLocation, int yLocation) {
+		//Gets the direction of an object at a location. Used for rendering
+		return playGrid[xLocation][GetActualY(yLocation)].getDirection();
+	}
+	
 	public int getPlayGridXSize() {
 		//Returns the grid size
         return this.playGridXSize;

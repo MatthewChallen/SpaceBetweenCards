@@ -35,19 +35,20 @@ public class Enemy extends GameObject {
         
         switch(AI[turn%AIsteps]) {
         case 0:
-            field.spawnObject(ObjectType.PROJECTILE, this.getXCoordinates(), this.getYCoordinates()+1, 0);
+            field.spawnObject(ObjectType.PROJECTILE, this.getXCoordinates(), this.getYCoordinates()+1, -2);
+            this.setMove(0, Direction.DOWN);
             break;
         case 1:
-            field.moveObject(Direction.UP, this, 1);
+            this.setMove(1, Direction.UP);
             break;
         case 2:
-            field.moveObject(Direction.RIGHT, this, 1);
+        	this.setMove(1, Direction.RIGHT);
             break;
         case 3:
-            field.moveObject(Direction.DOWN, this, 1);
+        	this.setMove(1, Direction.DOWN);
             break;
         case 4:
-            field.moveObject(Direction.LEFT, this, 1);
+        	this.setMove(1, Direction.LEFT);
             break;
         default:
             break;
