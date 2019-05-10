@@ -218,7 +218,7 @@ public class ResourceManager implements KeyListener, MouseListener {
         GameObject hold = null;
         switch (type) {
         case PLAYERSHIP:
-            hold = new PlayerObject(0, X, Y);
+            hold = new PlayerObject(0, X, Y, false);
             objectList.add(hold);
             System.out.println("Generated player");
             break;
@@ -243,7 +243,7 @@ public class ResourceManager implements KeyListener, MouseListener {
         GameObject hold = null;
         switch (type) {
         case PLAYERSHIP:
-            hold = new PlayerObject(0, X, Y);
+            hold = new PlayerObject(0, X, Y, false);
             objectList.add(hold);
             System.out.println("Generated player");
             break;
