@@ -124,11 +124,16 @@ public class Deck {
             seedSet = true;
         }
 
-        for (int i = 0; i < x; ++i) {
+        //ensures 1/10th of the deck is move up
+        for(int i =0; i< x/10;++i) {
+            deck.add(new MoveCard("Move Up", "Moves player up", Direction.UP, 3));
+        }
+        
+        for (int i = 0; i < (x - (x/10)); ++i) {
             // TODO: update to be calling from resource manager
             Card hold = null;
 
-            switch (CardType.values()[rand.nextInt(5)]) {
+            switch (CardType.values()[rand.nextInt(9)]) {
             case MOVE_UP:
                 hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 3);
                 break;
@@ -144,14 +149,27 @@ public class Deck {
             case SHOOT:
                 hold = new ShootCard("Shoots", "Fire a shot forwards");
                 break;
+            case STRIKE:
+                hold = new StrikeCard("Strike", "Strikes a random enemy on the field");
+                break;
+            case SHIELD:
+                hold = new ShieldCard("Shield", "Generates a shield to protect the player", 100);
+                break;
+            case DISCARD:
+                hold = new DiscardCard("Discard", "Discards all cards and re-draws");
+                break;
+            case METEORSHOWER:
+                hold = new MeteorShowerCard("Meteor Shower", "Destorys ALL enemies on the field");
+                break;
             default:
                 hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 3);
                 break;
-
             }
 
             deck.add(hold);
         }
+        
+        Shuffle();
     }
 
     // creates a deck of size 20
@@ -161,7 +179,12 @@ public class Deck {
             seedSet = true;
         }
 
-        for (int i = 0; i < 20; ++i) {
+        //ensure at least 2 move up cards
+        for (int i=0; i<2;++i) {
+            deck.add(new MoveCard("Move Up", "Moves player up", Direction.UP, 3));
+        }
+        
+        for (int i = 0; i < 18; ++i) {
             // TODO: update to be calling from resource manager
             Card hold = null;
 
@@ -199,6 +222,7 @@ public class Deck {
             }
             deck.add(hold);
         }
+        Shuffle();
     }
     
     // Access to seed to allow the user to save the seed. Can be
