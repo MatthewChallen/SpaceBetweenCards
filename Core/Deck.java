@@ -5,12 +5,7 @@ import java.util.Random;
 
 import Cards.DiscardCard;
 import Cards.MeteorShowerCard;
-import Cards.MoveCardDown;
-import Cards.MoveCardLeft;
-import Cards.MoveCardRight;
-import Cards.MoveCardUp;
 import Cards.ShieldCard;
-import Cards.Shoot;
 import Cards.StrikeCard;
 import Cards.MoveCard;
 import Cards.ShootCard;
