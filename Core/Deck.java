@@ -12,7 +12,10 @@ import Cards.MoveCardUp;
 import Cards.ShieldCard;
 import Cards.Shoot;
 import Cards.StrikeCard;
+import Cards.MoveCard;
+import Cards.ShootCard;
 import TypeListings.CardType;
+import TypeListings.Direction;
 
 public class Deck {
 
@@ -132,21 +135,22 @@ public class Deck {
 
             switch (CardType.values()[rand.nextInt(5)]) {
             case MOVE_UP:
-                hold = new MoveCardUp("Move up", "Moves the player up");
+                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 3);
                 break;
             case MOVE_DOWN:
-                hold = new MoveCardDown("Move down", "Moves the player down");
+                hold = new MoveCard("Move Down", "Moves player down", Direction.DOWN, 1);
                 break;
             case MOVE_LEFT:
-                hold = new MoveCardLeft("Move Left", "Moves the player Left");
+                hold = new MoveCard("Move Left", "Moves player left", Direction.LEFT, 1);
                 break;
             case MOVE_RIGHT:
-                hold = new MoveCardRight("Move right", "Moves the player right");
+                hold = new MoveCard("Move Right", "Moves player right", Direction.RIGHT, 1);
                 break;
             case SHOOT:
-                hold = new Shoot("Shoots", "Fire a shot forwards");
+                hold = new ShootCard("Shoots", "Fire a shot forwards");
+                break;
             default:
-                hold = new MoveCardUp("Move up", "Moves the player up");
+                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 3);
                 break;
 
             }
@@ -168,19 +172,19 @@ public class Deck {
 
             switch (CardType.values()[rand.nextInt(9)]) {
             case MOVE_UP:
-                hold = new MoveCardUp("Move up", "Moves the player up");
+                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 3);
                 break;
             case MOVE_DOWN:
-                hold = new MoveCardDown("Move down", "Moves the player down");
+                hold = new MoveCard("Move Down", "Moves player down", Direction.DOWN, 1);
                 break;
             case MOVE_LEFT:
-                hold = new MoveCardLeft("Move Left", "Moves the player Left");
+                hold = new MoveCard("Move Left", "Moves player left", Direction.LEFT, 1);
                 break;
             case MOVE_RIGHT:
-                hold = new MoveCardRight("Move right", "Moves the player right");
+                hold = new MoveCard("Move Right", "Moves player right", Direction.RIGHT, 1);
                 break;
             case SHOOT:
-                hold = new Shoot("Shoots", "Fire a shot forwards");
+                hold = new ShootCard("Shoots", "Fire a shot forwards");
                 break;
             case STRIKE:
             	hold = new StrikeCard("Strike", "Strikes a random enemy on the field");
@@ -195,13 +199,18 @@ public class Deck {
             	hold = new MeteorShowerCard("Meteor Shower", "Destorys ALL enemies on the field");
             	break;
             default:
-                hold = new MoveCardUp("Move up", "Moves the player up");
+                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 3);
                 break;
-
             }
-
             deck.add(hold);
         }
+    }
+    
+    // Access to seed to allow the user to save the seed. Can be
+    // loaded at a later stage to reconstitute game/deck conditions.
+    public static long getSeed()
+    {
+    	return seed;
     }
 
 }

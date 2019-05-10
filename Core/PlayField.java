@@ -84,6 +84,12 @@ public class PlayField {
         if(rand.nextBoolean()) {
             spawnObject(ObjectType.ENEMYSHIP, rand.nextInt(playGridXSize), GetActualY(0));
         }
+        
+        for(int i = 0; i < playGrid.length; i++) {
+            for(int j = 0; j < playGrid[0].length; j++) {
+                playGrid[i][j].UpdateAll(this);
+            }
+        }
 	}
 	
 	// Spawns player at requested point

@@ -45,7 +45,7 @@ public class GameManager {
 	public void run() {
 		// This method contains the game logic loop (no rendering)
 		// Firstly, make the player object at with id 1 at location 3, 3
-		 GameManager.gameState = "running";
+		GameManager.gameState = "running";
 		int cardChosen;
 		
         //theResourceManager.repaintWindow();
@@ -66,6 +66,12 @@ public class GameManager {
 				// This is the escape key. Avada Kedavara!
 				GameManager.setGameState("Closed");
 				System.out.println("Goodbye!");
+			} else if(cardChosen == 24)
+			{
+				// User has selected the letter 'o' for the options screen.
+				timer.stop();
+				theResourceManager.displayOptions();
+				timer.restart();
 			} else {
 			    theHand.PlayCard(theField, cardChosen);
 			    theHand.DrawCard(5);
@@ -88,8 +94,11 @@ public class GameManager {
 	private void restartMenu()
 	{
 		theResourceManager.stopRendering();
+		// Record dimensions of the window to use when resetting the game.
 		int oldWidth = theResourceManager.getOldWidth();
 		int oldHeight = theResourceManager.getOldHeight();
+		int oldXCoordinate = theResourceManager.getOldXCoordinate();
+		int oldYCoordinate = theResourceManager.getOldYCoordinate();
 		if(theResourceManager.getGameFrame().getExtendedState() == JFrame.MAXIMIZED_BOTH)
 		{
 			oldWidth = 0;
@@ -109,6 +118,8 @@ public class GameManager {
         // A new resource manager is generated.
         theResourceManager = new ResourceManager("The Space Between Cards",
            oldWidth, oldHeight, fieldXSize, fieldYSize, theDecks, theHand);
+        theResourceManager.getGameFrame().setLocation(oldXCoordinate,
+           oldYCoordinate);
 		theField = theResourceManager.getPlayField();
 		theResourceManager.setupMenu();
 		
