@@ -493,7 +493,7 @@ public class ResourceManager implements KeyListener, MouseListener {
     }
     
     public void resetMove() {
-    	//This method converts all objects speed into movement, to be consumed by the move object method later
+    	//This method converts all objects speed into movement, to be consumed by the moveObject method later
     	for(int i = 0; i < objectList.size(); i++) {
     		objectList.get(i).resetMove();
     		if(objectList.get(i) instanceof Projectile && objectList.get(i).getRemainingMove() == 0) {

@@ -375,7 +375,7 @@ public class GameWindow extends JPanel {
 
 							// Same as above, but render a transparent version to display their next move,
 							// but only if they are moving somewhere onfield
-							if (x + xMove > 0 && x + xMove < theField.getPlayGridXSize() && y + yMove > 0
+							if (x + xMove >= 0 && x + xMove < theField.getPlayGridXSize() && y + yMove >= 0
 									&& y + yMove < theField.getPlayGridYSize()) {
 								currentXPosition = yStartingPosition
 										+ ((x + xMove) * xSize) / theField.getPlayGridXSize() + 1 + xCentering;
@@ -403,7 +403,7 @@ public class GameWindow extends JPanel {
 
 							// Same as above, but render a transparent version to display their next move,
 							// but only if they are moving somewhere onfield
-							if (x + xMove > 0 && x + xMove < theField.getPlayGridXSize() && y + yMove > 0
+							if (x + xMove >= 0 && x + xMove < theField.getPlayGridXSize() && y + yMove >= 0
 									&& y + yMove < theField.getPlayGridYSize()) {
 								currentXPosition = yStartingPosition
 										+ ((x + xMove) * xSize) / theField.getPlayGridXSize() + 1 + xCentering;
