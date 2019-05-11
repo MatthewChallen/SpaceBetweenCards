@@ -2,6 +2,8 @@ package Core;
 
 import java.util.ArrayList;
 
+import TypeListings.Direction;
+
 public class GameObjectList {
 	private ArrayList<GameObject> gridObjects;
 
@@ -55,7 +57,25 @@ public class GameObjectList {
 		}
 		return fileName;
 	}
-
+	
+	public int getRemainingMove() {
+		//gets the movement of an object this turn
+		int move = 0;
+		if (gridObjects.size() > 0) {
+			move = gridObjects.get(0).getRemainingMove();
+		}
+		return move;
+	}
+	
+	public Direction getDirection() {
+		//Gets the direction an object is traveling this turn
+		Direction direction = null;
+		if (gridObjects.size() > 0) {
+			direction = gridObjects.get(0).getDirection();
+		}
+		return direction;
+	}
+	
 	public void UpdateAll(PlayField field) {
 	    for(int i = 0; i < gridObjects.size(); ++i) {
 	        gridObjects.get(i).Update(field);	            

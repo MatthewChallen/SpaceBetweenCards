@@ -1,4 +1,6 @@
 package Core;
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -8,26 +10,32 @@ public class Sprite {
 	// request.
 	private BufferedImage img;
 	private String name;
-	private int height;
-	private int width;
 
 	public Sprite(BufferedImage img, String name) {
 		this.img = img;
 		this.name = name;
-		this.height = img.getHeight();
-		this.width = img.getWidth();
+		Graphics2D graphic = img.createGraphics();
+		AlphaComposite tranparencyComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER);
+		graphic.setComposite(tranparencyComposite);
+		
 	}
 
-	public void paint(Graphics Screen, int xLocation, int yLocation, int height, int width) {
+	public void paint(Graphics2D screen, int xLocation, int yLocation, int height, int width) {
 		// This method paints the sprite at the chosen location.
 		
 		// Draw it
-		Screen.drawImage(this.img, xLocation, yLocation, width, height, null);
+		screen.drawImage(this.img, xLocation, yLocation, width, height, null);
+	}
+	
+	//This method paints an image at a preset transparency
+	public void paintTransparent(Graphics2D screen, int xLocation, int yLocation, int height, int width, float alpha) {
+		screen.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+		screen.drawImage(this.img, xLocation, yLocation, width, height, null);
+		screen.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 	}
 
 	public String getName() {
 		return this.name;
-
 	}
 
 }

@@ -61,8 +61,18 @@ public class MoveCard extends Card {
         // Moves the player direction one space
         // Assumed a movePlayer() + getPlayer() method
         // both in the PlayField class but can be changed
-        theField.moveObject(direction, ResourceManager.GetRM().getPlayer(), distance);
-
+    	for(int i = 0; i < distance; i++) {
+    		theField.moveObject(direction, ResourceManager.GetRM().getPlayer(), 1);
+    		theField.checkForCollision();
+    		//Repaint the window, then wait for 100ms, to make the movement clear
+    		ResourceManager.GetRM().repaintWindow();
+    		try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                // Thread stopped while waiting
+            }
+    	}
+        
         return true;
     }
 }
