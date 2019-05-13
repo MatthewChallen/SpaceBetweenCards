@@ -55,6 +55,10 @@ public class ResourceManager implements KeyListener, MouseListener {
     static public ResourceManager GetRM() {
         return instance;
     }
+    
+    // The boolean value gameOver is used to check if the end of game
+    // sequence should be played.
+    private boolean gameOver;
 
     // This method is the constructor for the resource manager. If xSize and ySize
     // are 0, it will full screen
@@ -62,6 +66,9 @@ public class ResourceManager implements KeyListener, MouseListener {
             Deck[] theDecks, Hand theHand) {
 
         instance = this;
+        
+        // Set gameOver to false;
+        gameOver = false;
         
         // Set up an instance of GameOPtions
         gameOptions = new GameOptions();
@@ -187,6 +194,7 @@ public class ResourceManager implements KeyListener, MouseListener {
                 if(objectKillList.get(0) == objectList.get(i)) {
                 	if(objectKillList.get(0) instanceof PlayerObject) {
                 		GameManager.setGameState("The player was lost to the void");
+                		gameOver = true;
                 	}
                     objectKillList.remove(0);
                     objectList.remove(i);
@@ -501,4 +509,23 @@ public class ResourceManager implements KeyListener, MouseListener {
     		}
     	}
     }
+    
+    public boolean getGameOver()
+    {
+    	return gameOver;
+    }
+    
+    public void endOfGameSequence()
+    {
+    	System.out.println("End of Game Sequence reached.");
+    	theGameWindow.setVisible(false);
+    	theGameFrame.add(new EndGameScreen(this, theGameFrame.getWidth(),
+    	   theGameFrame.getHeight()));
+    	theGameFrame.setVisible(true);
+    	// Pause game for the end of game sequence - system should then restart.
+    	try{Thread.sleep(5000);}catch(Exception ex)
+    	   {System.out.println("Exited thread sleep early.");}
+    	
+    }
+    
 }

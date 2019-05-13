@@ -100,6 +100,8 @@ public class GameManager {
 		}
 
 		timer.stop();
+		// If gameOver is true, play the end of game sequence.
+		if(theResourceManager.getGameOver()) theResourceManager.endOfGameSequence();
 		restartMenu();
 	}
 	
