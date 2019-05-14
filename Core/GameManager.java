@@ -87,6 +87,11 @@ public class GameManager {
 				//Move objects in motion
 			    ResourceManager.GetRM().moveObjects();
 			    
+			    // Exit the loop early if gameOver has been set to true.
+			    if(!theResourceManager.getGameOver())
+			    {
+			    	
+			    
 			    //Move the player field and destroy offscreen objects
 			    //Also give enemies their movement for next turn.
 			    theField.update();
@@ -95,7 +100,10 @@ public class GameManager {
 			    
 			    //Do cleanup of destroyed objects
 			    ResourceManager.GetRM().update();
-			    
+			    } else
+			    {
+			    	// Exiting early - gameOver was set to true.
+			    }
 			}
 		}
 

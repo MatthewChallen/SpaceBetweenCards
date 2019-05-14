@@ -28,7 +28,7 @@ public class MoveCard extends Card {
         String hold;
         switch(direction) {
         case UP:
-            hold = "cardShipUP.png";
+            hold = "cardShipUp.png";
             break;
 
         case DOWN:

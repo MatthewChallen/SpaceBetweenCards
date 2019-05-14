@@ -201,6 +201,8 @@ public class ResourceManager implements KeyListener, MouseListener {
                     i=-1;
                 }
             }
+            // If gameOver set to true, exit early...
+            if(gameOver) break;
         }
         
         
@@ -517,7 +519,6 @@ public class ResourceManager implements KeyListener, MouseListener {
     
     public void endOfGameSequence()
     {
-    	System.out.println("End of Game Sequence reached.");
     	theGameWindow.setVisible(false);
     	theGameFrame.add(new EndGameScreen(this, theGameFrame.getWidth(),
     	   theGameFrame.getHeight()));
