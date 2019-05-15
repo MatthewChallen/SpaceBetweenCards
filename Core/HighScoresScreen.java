@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -28,6 +29,10 @@ public class HighScoresScreen extends JPanel
 	private String[] highScoreNames;
 	private int[] highScoreValues;
 	
+	private boolean fromEndGameScreen;
+	private String newInitials;
+	private int newHighScore;
+	
 	public HighScoresScreen(ResourceManager resourceManager, int width, int height)
 	{
 		this.resourceManager = resourceManager;
@@ -37,6 +42,7 @@ public class HighScoresScreen extends JPanel
 		highScoreLabels = new JLabel[10];
 		highScoreNames = new String[10];
 		highScoreValues = new int[10];
+		fromEndGameScreen = false;
 		
 		try
 		{
@@ -49,6 +55,41 @@ public class HighScoresScreen extends JPanel
 		
 		// First load data from the high_scores.txt file.
 		getHighScores();
+		// Then create labels with the data.
+		addHighScores();
+	}
+	
+	// Second constructor is used when moving from end game screen after
+	// obtaining a new high score.
+	public HighScoresScreen(ResourceManager resourceManager, int width, int height,
+       boolean fromEndGameScreen, String initials, int newHighScore)
+	{
+		this.resourceManager = resourceManager;
+		theGameFrame = resourceManager.getGameFrame();
+		this.width = width;
+		this.height = height;
+		highScoreLabels = new JLabel[10];
+		highScoreNames = new String[10];
+		highScoreValues = new int[10];
+		this.fromEndGameScreen = fromEndGameScreen;
+		newInitials = initials;
+		this.newHighScore = newHighScore;
+		
+		try
+		{
+			background = ImageIO.read(new File("Backgrounds/high_scores.jpg"));
+			
+		} catch (Exception ex)
+		{
+			System.out.println("Failed to load background - check folder.");
+		}
+		
+		// First load data from the high_scores.txt file.
+		getHighScores();
+		
+		// Re-tally the high scores including the new value and save to file.
+		saveHighScores();
+		
 		// Then create labels with the data.
 		addHighScores();
 	}
@@ -79,9 +120,12 @@ public class HighScoresScreen extends JPanel
 		highScores.removeAll();
 		highScores.add(Box.createVerticalStrut(height / 8));
 		
-		highScores.add(mainMenu);
-		mainMenu.repaint();
-		highScores.add(Box.createVerticalStrut(height / 40));
+		if(!fromEndGameScreen)
+		{
+			highScores.add(mainMenu);
+			mainMenu.repaint();
+			highScores.add(Box.createVerticalStrut(height / 40));
+		}
 		
 		highScores.add(highScoreTitle);
 		highScoreTitle.repaint();
@@ -110,7 +154,7 @@ public class HighScoresScreen extends JPanel
 		highScores.add(Box.createVerticalStrut(height / 8));
 		
 		// Add the return button
-		setupButton();
+		if(!fromEndGameScreen) setupButton();
 		
 		// Label for the title of the page
 		highScoreTitle = new JLabel("High Scores");
@@ -193,6 +237,67 @@ public class HighScoresScreen extends JPanel
 		} catch(Exception ex)
 		{
 			System.out.println("Failed to load high scores - check folder.");
+		}
+	}
+	
+	public void saveHighScores()
+	{
+		if(highScoreNames[0] == null)
+		{
+			System.out.println("Cannot add new high score - check folder.");
+		} else
+		{
+			// First obtain the new ranking.
+			int rank = 0;
+			boolean ranked = false;
+			for(int i = 0; i < highScoreValues.length && !ranked; i++)
+			{
+				if(newHighScore >= highScoreValues[i])
+				{
+					ranked = true;
+				} else
+				{
+					rank ++;
+				}
+			}
+			
+			// Now include the new score and push down all other scores
+			// that are equal to or lower.
+			String tempName = highScoreNames[rank];
+			int tempValue = highScoreValues[rank];
+			highScoreNames[rank] = newInitials;
+			highScoreValues[rank] = newHighScore;
+			for(int i = rank + 1; i < highScoreValues.length; i++)
+			{
+				String newTempName = highScoreNames[i];
+				int newTempValue = highScoreValues[i];
+				highScoreNames[i] = tempName;
+				highScoreValues[i] = tempValue;
+				tempName = newTempName;
+				tempValue = newTempValue;
+			}
+			
+			// Now save the new high score list to high_scores.txt
+			String saveData = "";
+			for(int i = 0; i < highScoreValues.length; i++)
+			{
+				saveData += highScoreNames[i] + ",";
+				saveData += highScoreValues[i];
+				if(i < highScoreValues.length - 1) saveData += ",";
+			}
+			saveData += "\n";
+			
+			try
+			{
+				File file = new File("Data/high_scores.txt");
+				PrintWriter printWriter = new PrintWriter(file);
+				printWriter.println(saveData);
+				printWriter.close();
+				
+			}catch (Exception ex)
+			{
+			   System.out.println("Cannot add new high score - check folder.");
+			}
 		}
 	}
 }

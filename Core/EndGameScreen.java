@@ -3,6 +3,8 @@ package Core;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -11,8 +13,9 @@ import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 
-public class EndGameScreen extends JPanel
+public class EndGameScreen extends JPanel implements KeyListener
 {
 	private ResourceManager resourceManager;
 	private JFrame theGameFrame;
@@ -21,6 +24,12 @@ public class EndGameScreen extends JPanel
 	private int height;
 	
 	private Box gameOverBox;
+	private boolean newHighScore;
+	private int highScoreVal;
+	private boolean highScoresUpdated;
+	private char[] charInitials;
+	private int charPointer;
+	private String initials;
 	private JLabel gameOver;
 	private JLabel message1;
 	private JLabel message2;
@@ -40,12 +49,16 @@ public class EndGameScreen extends JPanel
      "your ship for a fireworks display"
     };
 	
-	public EndGameScreen(ResourceManager resourceManager, int width, int height)
+	public EndGameScreen(ResourceManager resourceManager, int width, int height,
+	   boolean newHighScore)
 	{
 		this.resourceManager = resourceManager;
 		theGameFrame = resourceManager.getGameFrame();
+		theGameFrame.addKeyListener(this);
 		this.width = width;
 		this.height = height;
+		this.newHighScore = newHighScore;
+		highScoresUpdated = false;
 		
 		try
 		{
@@ -56,10 +69,32 @@ public class EndGameScreen extends JPanel
 			System.out.println("Failed to load background - check folder.");
 		}
 		
-		// Set up a random choice for the game over message.
-		int choice = (int)(Math.random() * 5) * 2;
-		chosenMessage1 = messages[choice];
-		chosenMessage2 = messages[choice + 1];
+		//High Score scenario
+		if(newHighScore)
+		{
+			// highScoreVal must have been given a new value for this
+			// part of the code to be functional. Setting a temporary
+			// value.
+			highScoreVal = 33;
+			chosenMessage1 = "We have a new high score!";
+			chosenMessage2 = "Please enter your initials: ";
+			charPointer = 0;
+			charInitials = new char[3];
+			charInitials[0] = ' ';
+			charInitials[1] = ' ';
+			charInitials[2] = ' ';
+			initials = String.valueOf(charInitials[0]) + String.valueOf(charInitials[1])
+			   + String.valueOf(charInitials[2]);
+		} else
+		{
+			// Set up a random choice for the game over message.
+			int choice = (int)(Math.random() * 5) * 2;
+			chosenMessage1 = messages[choice];
+			chosenMessage2 = messages[choice + 1];
+			
+			resourceManager.setResumeGame(true);
+		}
+
 		displayGameOverMessage();
 	}
 	
@@ -78,7 +113,15 @@ public class EndGameScreen extends JPanel
 		       100);
 		}
 		
-		paintMessage();
+		if(highScoresUpdated)
+		{
+			
+		} else
+		{
+			paintMessage();
+			
+			if(newHighScore) paintInitials(screen);
+		}
 	}
 	
 	public void paintMessage()
@@ -95,6 +138,19 @@ public class EndGameScreen extends JPanel
 		gameOverBox.add(message2);
 		message2.repaint();
 		gameOverBox.add(Box.createVerticalStrut(height / 40));
+	}
+	
+	public void paintInitials(Graphics screen)
+	{
+		screen.setColor(Color.BLACK);
+		screen.fillRect(width / 2 - 150, height / 2 - 50, 300, 100);
+		
+		screen.setColor(Color.CYAN);
+		screen.setFont(new Font("Arial", Font.BOLD, 70));
+		
+		screen.drawString(initials, width / 2 - 70, height / 2 + 20);
+		screen.drawLine(width / 2 - 70, height / 2 + 25, width / 2 + 80,
+	       height / 2 + 25);
 	}
 	
 	public void displayGameOverMessage()
@@ -119,5 +175,67 @@ public class EndGameScreen extends JPanel
 		
 		add(gameOverBox);
 		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+		if(newHighScore)
+		{
+			int keyNumber = Character.getNumericValue(e.getKeyChar());
+			
+			if(keyNumber == -1)
+			{
+				// Enter or escape key was chosen - resume game (after another pause)
+				resourceManager.setResumeGame(true);
+				
+				//Switch to high score screen to show updated values.
+				setVisible(false);
+				theGameFrame.add(new HighScoresScreen(resourceManager, width,
+				   height, true, initials, highScoreVal));
+				theGameFrame.setVisible(true);
+				
+			} else if(charPointer == 0 && keyNumber >= 10 && keyNumber <= 36)
+			{
+				charInitials[0] = Character.toUpperCase(e.getKeyChar());
+				initials = String.valueOf(charInitials[0]) + String.valueOf(charInitials[1])
+				   + String.valueOf(charInitials[2]);
+				charPointer ++;
+				repaint();
+			} else if(charPointer == 1 && keyNumber >= 10 && keyNumber <= 36)
+			{
+				charInitials[1] = Character.toUpperCase(e.getKeyChar());
+				initials = String.valueOf(charInitials[0]) + String.valueOf(charInitials[1])
+				   + String.valueOf(charInitials[2]);
+				charPointer ++;
+				repaint();
+			} else if(charPointer == 2 && keyNumber >= 10 && keyNumber <= 36)
+			{
+				charInitials[2] = Character.toUpperCase(e.getKeyChar());
+				initials = String.valueOf(charInitials[0]) + String.valueOf(charInitials[1])
+				   + String.valueOf(charInitials[2]);
+				repaint();
+				// Can resume loop (after a pause)
+				resourceManager.setResumeGame(true);
+				
+				//Switch to high score screen to show updated values.
+				setVisible(false);
+				theGameFrame.add(new HighScoresScreen(resourceManager, width,
+				   height, true, initials, highScoreVal));
+				theGameFrame.setVisible(true);
+			}
+		}
 	}
 }

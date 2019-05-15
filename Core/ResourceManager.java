@@ -39,11 +39,17 @@ public class ResourceManager implements KeyListener, MouseListener {
     
     private MusicManager theMusicManager;
     private MusicClips backGround;
+    private MusicClips highScoreTrack;
     
     // The GameOptions class can be used to set specific settings
     // for the game.
     private GameOptions gameOptions;
     private boolean resumeGame;
+    
+    // Once scoring system implement, this variable can be used
+    // to organise adding a new high score as part of the end
+    // of game sequence.
+    private boolean newHighScore;
     
     //made static so other's could use it as debug text
     public static String bottomLeftText;
@@ -67,8 +73,9 @@ public class ResourceManager implements KeyListener, MouseListener {
 
         instance = this;
         
-        // Set gameOver to false;
+        // Set gameOver and newHighScore to false;
         gameOver = false;
+        newHighScore = false;
         
         // Set up an instance of GameOPtions
         gameOptions = new GameOptions();
@@ -520,13 +527,38 @@ public class ResourceManager implements KeyListener, MouseListener {
     public void endOfGameSequence()
     {
     	theGameWindow.setVisible(false);
+    	theGameFrame.removeMouseListener(this);
+    	theGameFrame.removeKeyListener(this);
+    	resumeGame = false;
+    	
+    	newHighScore = false;
+    	// If a new high score achieved - switch tracks.
+    	if(newHighScore)
+    	{
+    		backGround.stopMusic();
+        	highScoreTrack = new MusicClips("BachWellTempKlavier",
+     	           0.15 * gameOptions.getVolume());
+     	    highScoreTrack.playMusic();
+    	}
+    	
     	theGameFrame.add(new EndGameScreen(this, theGameFrame.getWidth(),
-    	   theGameFrame.getHeight()));
+           theGameFrame.getHeight(), newHighScore));
     	theGameFrame.setVisible(true);
+    	
+    	// Pause game to allow user to enter read message or enter high score.
+    	while(!resumeGame)
+    	{
+    		// Loop will exit when EndGameScreen sets resumeGame to true.
+           try{Thread.sleep(100);}catch(Exception ex)
+     	      {System.out.println("Exited thread sleep early.");}
+    	}
+    	
     	// Pause game for the end of game sequence - system should then restart.
     	try{Thread.sleep(5000);}catch(Exception ex)
     	   {System.out.println("Exited thread sleep early.");}
     	
+    	// End high score track if running
+    	if(highScoreTrack != null) highScoreTrack.stopMusic();
     }
     
 }

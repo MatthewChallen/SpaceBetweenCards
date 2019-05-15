@@ -28,7 +28,8 @@ public class MusicClips{
 				this.soundClip.open(audioInput);
 				// volume controls for clip
 				setVol(vol, this.soundClip);
-				if (name.contentEquals("BACKGROUND")) {
+				if (name.contentEquals("BACKGROUND") ||
+					name.contentEquals("BachWellTempKlavier")) {
 					this.soundClip.loop(this.soundClip.LOOP_CONTINUOUSLY);
 				}
 			}

@@ -1,1 +1,2 @@
-Ryan Gosling,55,Ariana Grande,50,Robert Downey Jr,45,Kim Kardashian,38,Chris Hemsworth,36,Benedict Cumberbatch,27,Taylor Swift,22,Chewbacca,18,Elizabeth Warren,12,Hillary Clinton,5
+YAY,72,RBA,55,ARG,50,RDJ,31,CHE,25,KKA,22,CHH,20,RDD,14,ULO,13,BEC,10
+
