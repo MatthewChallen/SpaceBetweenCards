@@ -7,5 +7,6 @@ public enum ObjectType {
     DEBRIS,
     WARP,
     PROJECTILE,
+    PLAYERPROJECTILE,
     SHIELD
 }

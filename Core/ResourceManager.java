@@ -6,7 +6,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -50,6 +52,7 @@ public class ResourceManager implements KeyListener, MouseListener {
     // to organise adding a new high score as part of the end
     // of game sequence.
     private boolean newHighScore;
+    private int score;
     
     //made static so other's could use it as debug text
     public static String bottomLeftText;
@@ -76,6 +79,7 @@ public class ResourceManager implements KeyListener, MouseListener {
         // Set gameOver and newHighScore to false;
         gameOver = false;
         newHighScore = false;
+        score = 0;
         
         // Set up an instance of GameOPtions
         gameOptions = new GameOptions();
@@ -140,6 +144,19 @@ public class ResourceManager implements KeyListener, MouseListener {
     public PlayField getPlayField() {
         return this.theField;
     }
+    
+    // Allows the GameWindow to get the current score value.
+    public int getScore()
+    {
+    	return score;
+    }
+    
+    // This method will increment the score value each time a PlayerProjectile
+    // is found to collide with an enemy
+    public void incrementScore()
+    {
+    	score++;
+    }
 
     // This method creates a separate thread for rendering the screen
     private void beginRendering(String gameName, int xScreenSize, int yScreenSize) {
@@ -196,23 +213,29 @@ public class ResourceManager implements KeyListener, MouseListener {
     
     public void update() {
     	//This method kills all objects from the object kill list
-        while(objectKillList.size() > 0) {
-            for(int i = objectList.size()-1; i>=0;--i) {
-                if(objectKillList.get(0) == objectList.get(i)) {
-                	if(objectKillList.get(0) instanceof PlayerObject) {
+    	for(int i = 0; i < objectKillList.size(); i++)
+    	{
+    		boolean objectFound = false;
+    		for(int j = 0; j < objectList.size() && !objectFound; j++)
+    		{
+    			// Safest method to check for equality is with the ID value.
+    			if(objectKillList.get(i).getID() == objectList.get(j).getID())
+    			{
+    				if(objectList.get(j) instanceof PlayerObject)
+    				{
                 		GameManager.setGameState("The player was lost to the void");
                 		gameOver = true;
-                	}
-                    objectKillList.remove(0);
-                    objectList.remove(i);
-                    i=-1;
-                }
-            }
-            // If gameOver set to true, exit early...
-            if(gameOver) break;
-        }
-        
-        
+    				}
+    				objectList.remove(j);
+    				objectFound = true;
+    			}
+    		}
+    	}
+    	
+    	// Some objects in the kill list may not have been in the object list.
+    	// (For example, because the play field has moved downward) so flush
+    	// any extra items from the kill list...
+    	objectKillList = new ArrayList<GameObject>(0);  
     }
 
     public PlayerObject getPlayer() {
@@ -244,6 +267,11 @@ public class ResourceManager implements KeyListener, MouseListener {
             objectList.add(hold);
             System.out.println("Generated Projectile: " + hold.getID());
             break;
+        case PLAYERPROJECTILE:
+            hold = new PlayerProjectile(X, Y);
+            objectList.add(hold);
+            System.out.println("Generated PlayerProjectile: " + hold.getID());
+            break;
         case ENEMYSHIP:
             hold = new Enemy(X, Y);
             objectList.add(hold);
@@ -268,6 +296,11 @@ public class ResourceManager implements KeyListener, MouseListener {
             hold = new Projectile(X, Y, value);
             objectList.add(hold);
             System.out.println("Generated Projectile: " + hold.getID());
+            break;
+        case PLAYERPROJECTILE:
+            hold = new PlayerProjectile(X, Y, value);
+            objectList.add(hold);
+            System.out.println("Generated PlayerProjectile: " + hold.getID());
             break;
         default:
             return null;
@@ -513,7 +546,8 @@ public class ResourceManager implements KeyListener, MouseListener {
     	//This method converts all objects speed into movement, to be consumed by the moveObject method later
     	for(int i = 0; i < objectList.size(); i++) {
     		objectList.get(i).resetMove();
-    		if(objectList.get(i) instanceof Projectile && objectList.get(i).getRemainingMove() == 0) {
+    		if((objectList.get(i) instanceof Projectile || objectList.get(i) instanceof PlayerProjectile)
+    	       && objectList.get(i).getRemainingMove() == 0) {
     			System.err.println("Error: projectile with no movement value");
     		}
     	}
@@ -531,7 +565,9 @@ public class ResourceManager implements KeyListener, MouseListener {
     	theGameFrame.removeKeyListener(this);
     	resumeGame = false;
     	
-    	newHighScore = false;
+    	System.out.println("Player's final score is: " + score);
+    	
+    	newHighScore = isNewHighScore();
     	// If a new high score achieved - switch tracks.
     	if(newHighScore)
     	{
@@ -559,6 +595,41 @@ public class ResourceManager implements KeyListener, MouseListener {
     	
     	// End high score track if running
     	if(highScoreTrack != null) highScoreTrack.stopMusic();
+    }
+    
+    // This method checks to see if the score is equal to or higher than the
+    // lowest high score listed in the high_score.txt file.
+    public boolean isNewHighScore()
+    {
+    	boolean isNewHighScore = false;
+    	String loadData = "";
+    	
+    	try
+    	{
+		   File file = new File("Data/high_scores.txt");
+		   Scanner scanner = new Scanner(file);
+		   loadData = scanner.nextLine();
+		
+		   scanner.close();
+		
+		   String[] data = loadData.split(",");
+		
+		   // Throw exception if data for 10 players was not present
+		   // in the file.
+		   if(data.length != 20) throw new Exception();
+		   
+		   if(score >= Integer.parseInt(data[19]))
+		   {
+			   isNewHighScore = true;
+			   return isNewHighScore;
+		   }
+		
+	    } catch(Exception ex)
+	    {
+		   System.out.println("Failed to check high scores - check folder.");
+	    }
+    	
+    	return isNewHighScore;
     }
     
 }

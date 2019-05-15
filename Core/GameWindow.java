@@ -96,6 +96,9 @@ public class GameWindow extends JPanel {
 		// Render the enemy deck in the top right corner
 		paintEnemyDeck(screen, this.getWidth() - rightSpacePixels, 0, rightSpacePixels, topSpacePixels);
 
+		// Also render score in the top right area of the plating.
+		paintScore(screen, this.getWidth() - rightSpacePixels + 20, topSpacePixels, rightSpacePixels - 40, topSpacePixels / 2);
+		
 		// Render the player field in the top left corner
 		paintField(screen, 0, 0, getWidth() - rightSpacePixels, getHeight() - bottomSpacePixels);
 	}
@@ -419,6 +422,34 @@ public class GameWindow extends JPanel {
 			}
 		}
 
+	}
+	
+	// This method will paint the current score value in the top right corner.
+	private void paintScore(Graphics2D Screen, int x, int y, int width, int height)
+	{
+		int scoreValue = ResourceManager.GetRM().getScore();
+		String score = "";
+		if(scoreValue < 10)
+		{
+			score = "00" + scoreValue;
+		} else if(scoreValue < 100)
+		{
+			score = "0" + scoreValue;
+		} else
+		{
+			score = String.valueOf(scoreValue);
+		}
+		Screen.setColor(Color.BLACK);
+		Screen.fillRect(x, y, width, height);
+		Screen.setColor(Color.GREEN);
+		Screen.setFont(new Font("Arial", Font.BOLD, 40));
+		Screen.drawString(score, x + width / 2 - 30, y + height / 2 + 15);
+		
+		Screen.setFont(new Font("Arial", Font.BOLD, 20));
+		Screen.setColor(Color.DARK_GRAY);
+		Screen.drawString("SCORE", x + width / 2 - 35, y + height + 20);
+		
+		Screen.setColor(Color.BLACK);
 	}
 
 	private void paintEnemyDeck(Graphics2D Screen, int xPosition, int yPosition, int xSize, int ySize) {

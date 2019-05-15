@@ -39,6 +39,30 @@ public class GameObjectList {
 			return false;
 		}
 	}
+	
+	// Verifies that objects at this location will, when collided, constitute
+	// a score event for the player.
+	public boolean isScoreEvent()
+	{
+		boolean scoreEvent = false;
+		
+		for(int i = 0; i < gridObjects.size(); i++)
+		{
+			if(gridObjects.get(i) instanceof PlayerProjectile)
+			{
+				for(int j = 0; j < gridObjects.size(); j++)
+				{
+					if(gridObjects.get(j) instanceof Enemy)
+					{
+						scoreEvent = true;
+						return scoreEvent;
+					}
+				}
+			}
+		}
+		
+		return scoreEvent;
+	}
 
 	// Gets the object ID
 	public String getObjectsID() {

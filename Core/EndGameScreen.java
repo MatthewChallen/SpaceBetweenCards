@@ -72,10 +72,8 @@ public class EndGameScreen extends JPanel implements KeyListener
 		//High Score scenario
 		if(newHighScore)
 		{
-			// highScoreVal must have been given a new value for this
-			// part of the code to be functional. Setting a temporary
-			// value.
-			highScoreVal = 33;
+			// highScoreVal taken from the score in the resource manager.
+			highScoreVal = resourceManager.getScore();
 			chosenMessage1 = "We have a new high score!";
 			chosenMessage2 = "Please enter your initials: ";
 			charPointer = 0;

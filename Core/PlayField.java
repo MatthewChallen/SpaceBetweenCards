@@ -115,6 +115,14 @@ public class PlayField {
 		for (int i = 0; i < playGridXSize; i++) {
 			for (int j = 0; j < playGridYSize; j++) {
 				if(playGrid[i][j].isThereCollision()) {
+					
+					// Check if player's score should be incremented.
+					if(playGrid[i][j].isScoreEvent())
+					{
+						System.out.println("Player has scored a direct hit!");
+						ResourceManager.GetRM().incrementScore();
+					}
+					
 					//For the moment, destroy all objects in that location
 					playGrid[i][j].removedAll();
 				}
