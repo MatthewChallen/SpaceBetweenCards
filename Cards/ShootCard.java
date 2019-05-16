@@ -28,7 +28,13 @@ public class ShootCard extends Card {
         // Moves the player one space to the Up.
         // Assumed a movePlayer() + getPlayer() method
         // both in the PlayField class but can be changed
-        theField.spawnObject(ObjectType.PLAYERPROJECTILE, ResourceManager.GetRM().getPlayer().getXCoordinates(), ResourceManager.GetRM().getPlayer().getYCoordinates()-1);
+    	
+    	// Creating a variable to ensure projectile will be created upward from
+    	// the player
+    	int yCoord = ResourceManager.GetRM().getPlayer().getYCoordinates() - 1;
+    	if(yCoord == -1) yCoord = 11;
+    	
+        theField.spawnObject(ObjectType.PLAYERPROJECTILE, ResourceManager.GetRM().getPlayer().getXCoordinates(), yCoord);
         ResourceManager.GetRM().getMM().addMusic(ObjectType.PROJECTILE);
         return true;
     }
