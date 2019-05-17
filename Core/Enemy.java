@@ -58,6 +58,6 @@ public class Enemy extends GameObject {
     }
     
     public String getObjectFileName(){
-    	return "strawberry.jpg";
+    	return "enemy.png";
     }
 }
