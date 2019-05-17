@@ -105,4 +105,28 @@ public class GameObjectList {
 	        gridObjects.get(i).Update(field);	            
 	    }
 	}
+	
+	// Used for console output for MVF 3
+	public String getObjects()
+	{
+		String objects = "empty";
+		
+		if(gridObjects.size() == 0)
+		{
+			return objects;
+		} else if(gridObjects.size() == 1) 
+		{
+			objects = String.valueOf(gridObjects.get(0).getID());
+		} else
+		{
+			objects = "";
+			for(int i = 0; i < gridObjects.size(); i++)
+			{
+				objects += String.valueOf(gridObjects.get(i).getID() + " ");
+			}
+		}
+		
+		return objects;
+	}
+	
 }

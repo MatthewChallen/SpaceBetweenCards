@@ -29,6 +29,10 @@ public class GameManager {
 		Deck thePlayerDeck = new Deck();
 		Deck theEnemyDeck = new Deck();
 		Deck theFieldDeck = new Deck();
+		theDecks = new Deck[3];
+		theDecks[0] = thePlayerDeck;
+		theDecks[1] = theFieldDeck;
+		theDecks[2] = theEnemyDeck;
 		Deck[] theDecks = {thePlayerDeck, theFieldDeck, theEnemyDeck};
 
         theHand.SetDrawDeck(theDecks[0]);
@@ -82,6 +86,21 @@ public class GameManager {
 				//Play the chosen card, and draw new cards
 			    theHand.PlayCard(theField, cardChosen);
 			    theHand.DrawCard(5);
+			    // MVF 1: Display player hand card names
+			    System.out.print("Current player hand: ");
+			    for(int i = 0; i < theHand.GetHandList().size(); i++)
+			    {
+			    	System.out.print((i + 1) + "." + theHand.GetHandList().get(i).getName() +
+			    	   " ");
+			    }
+			    System.out.println();
+			    
+			    // MVF 1: Display player deck card numbers
+			    System.out.print("Player deck card count: ");
+			    System.out.print("Deck size: " + theDecks[0].GetCardCount());
+			    System.out.print(" Drawn cards: " + theDecks[0].GetCardCountDrawn());
+			    System.out.print(" Discard pile: " + theDecks[0].GetCardCountDiscard());
+			    System.out.println();
 			    //The end of turn stuff
 			    
 				//Move objects in motion
