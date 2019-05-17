@@ -230,8 +230,12 @@ public class PlayField {
     public void displayPlayField()
     {		
     	System.out.println("Representation of the play field:");
+    	System.out.println("X:    0   1   2   3   4   5   6   7   8   9");
+    	System.out.println("------------------------------------------");
+    	System.out.println("Y");
     	for(int j = 0; j < playGridYSize; j++)
     	{
+    		System.out.print(j + "  | ");
     		for(int i = 0; i < playGridXSize; i++)
     		{
     			System.out.print(playGrid[i][GetActualY(j)].getObjects() + " ");

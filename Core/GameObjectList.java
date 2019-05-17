@@ -109,7 +109,7 @@ public class GameObjectList {
 	// Used for console output for MVF 3
 	public String getObjects()
 	{
-		String objects = "empty";
+		String objects = "   ";
 		
 		if(gridObjects.size() == 0)
 		{
@@ -119,7 +119,7 @@ public class GameObjectList {
 			objects = String.valueOf(gridObjects.get(0).getID());
 		} else
 		{
-			objects = "";
+			objects = " ";
 			for(int i = 0; i < gridObjects.size(); i++)
 			{
 				objects += String.valueOf(gridObjects.get(i).getID() + " ");
