@@ -21,7 +21,7 @@ public class ShootCard extends Card {
     public String getCardFileName() {
 
         // This returns the name of the image that is rendered for this object
-        return "projectile.png";
+        return "projectileCard.png";
     }
 
     public boolean OnPlay(PlayField theField) {
@@ -32,8 +32,8 @@ public class ShootCard extends Card {
     	// Creating a variable to ensure projectile will be created upward from
     	// the player
     	int yCoord = ResourceManager.GetRM().getPlayer().getYCoordinates() - 1;
-    	if(yCoord == -1) yCoord = 11;
-    	
+    	if(yCoord == -1) yCoord = 11;    	
+
         theField.spawnObject(ObjectType.PLAYERPROJECTILE, ResourceManager.GetRM().getPlayer().getXCoordinates(), yCoord);
         ResourceManager.GetRM().getMM().addMusic(ObjectType.PROJECTILE);
         return true;

@@ -39,6 +39,12 @@ public abstract class Card {
 		// example) then the method returns false. Otherwise, it returns true.
 		return false;
 	}
+    public boolean OnPlay(PlayField theField, Hand theHand) {
+    	return false;
+    }
+    public boolean OnPlay(PlayField theField, PlayerObject thePlayer) {
+    	return false;
+    }
 	
 	public String getCardFileName() {
 		//This method returns a string of the filename of the JPG file that has the image of the card.

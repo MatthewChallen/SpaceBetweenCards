@@ -13,15 +13,12 @@ public class DiscardCard extends Card {
 		super(name, description);
 	}
 	
-	public boolean OnPlay(Hand hand) {
+	public boolean OnPlay(PlayField theField, Hand theHand) {
 
-		// Discards all cards first
-		hand.DiscardAll();
-		// Re-draws a completely new hand
-		for (int i = 0; hand.GetCardCount() < 5; i++) {
-			hand.DrawCard(i);
-		}
-        return true;
+		theField.moveObject(Direction.UP, ResourceManager.GetRM().getPlayer(), 1);
+		theHand.DiscardAll();
+		theHand.DrawCard(5);
+		return true;
     }
 	
 	public String getCardFileName() {

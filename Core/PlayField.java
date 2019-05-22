@@ -1,4 +1,5 @@
 package Core;
+import java.lang.reflect.Array;
 import java.util.Random;
 
 import TypeListings.Direction;
@@ -222,4 +223,12 @@ public class PlayField {
     	//Returns the grid size
         return this.playGridYSize;
     }
+
+	public void removeEnemies() {
+		for (int i = 0; i < playGridXSize; i++) {
+			for (int j = ResourceManager.GetRM().getPlayer().getYCoordinates() + 1; j < playGridYSize; j++) {
+				playGrid[i][j].removedAll();		
+			}
+		}
+	}
 }

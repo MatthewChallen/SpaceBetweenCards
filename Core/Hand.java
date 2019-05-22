@@ -1,6 +1,12 @@
 package Core;
 import java.util.ArrayList;
 import java.util.List;
+import Cards.DiscardCard;
+import Cards.LightningStrikeCard;
+import Cards.MoveCard;
+import Cards.ShieldCard;
+import Cards.ShootCard;
+import Cards.StrikeCard;
 
 public class Hand {
 
@@ -22,9 +28,17 @@ public class Hand {
 
     // Plays the Xth card
     public void PlayCard(PlayField theField, int X) {
-        hand.get(X-1).OnPlay(theField);
-        //Discard(X-1);
-        DiscardAll();
+        if (hand.get(X-1) instanceof MoveCard || hand.get(X-1) instanceof ShootCard || hand.get(X-1) instanceof
+        		 LightningStrikeCard || hand.get(X-1) instanceof StrikeCard) {
+        	hand.get(X-1).OnPlay(theField);
+        } else if (hand.get(X-1) instanceof DiscardCard) {
+        	hand.get(X-1).OnPlay(theField, this);
+        } else if (hand.get(X-1) instanceof ShieldCard) {
+        	hand.get(X-1).OnPlay(theField, ResourceManager.GetRM().getPlayer());
+        }
+        Discard(X-1);
+        DrawCard();
+        //DiscardAll();
     }
 
     // Discards the Xth card in the hand

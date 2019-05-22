@@ -9,6 +9,6 @@ public enum CardType {
     STRIKE,
     DISCARD,
     SHIELD,
-    METEORSHOWER
+    LIGHTNINGSTRIKE
     
 }

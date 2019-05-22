@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import Cards.DiscardCard;
-import Cards.MeteorShowerCard;
+import Cards.LightningStrikeCard;
 import Cards.ShieldCard;
 import Cards.StrikeCard;
 import Cards.MoveCard;
@@ -126,7 +126,7 @@ public class Deck {
 
         //ensures 1/10th of the deck is move up
         for(int i =0; i< x/10;++i) {
-            deck.add(new MoveCard("Move Up", "Moves player up", Direction.UP, 3));
+            deck.add(new MoveCard("Move Up", "Moves player up", Direction.UP, 1));
         }
         
         for (int i = 0; i < (x - (x/10)); ++i) {
@@ -135,7 +135,7 @@ public class Deck {
 
             switch (CardType.values()[rand.nextInt(9)]) {
             case MOVE_UP:
-                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 3);
+                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 1);
                 break;
             case MOVE_DOWN:
                 hold = new MoveCard("Move Down", "Moves player down", Direction.DOWN, 1);
@@ -153,16 +153,16 @@ public class Deck {
                 hold = new StrikeCard("Strike", "Strikes a random enemy on the field");
                 break;
             case SHIELD:
-                hold = new ShieldCard("Shield", "Generates a shield to protect the player", 100);
+                hold = new ShieldCard("Shield", "Generates a shield to protect the player");
                 break;
             case DISCARD:
                 hold = new DiscardCard("Discard", "Discards all cards and re-draws");
                 break;
-            case METEORSHOWER:
-                hold = new MeteorShowerCard("Meteor Shower", "Destorys ALL enemies on the field");
+            case LIGHTNINGSTRIKE:
+                hold = new LightningStrikeCard("Lightning Strike", "Destorys random enemies on the field");
                 break;
             default:
-                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 3);
+                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 1);
                 break;
             }
 
@@ -181,7 +181,7 @@ public class Deck {
 
         //ensure at least 2 move up cards
         for (int i=0; i<2;++i) {
-            deck.add(new MoveCard("Move Up", "Moves player up", Direction.UP, 3));
+            deck.add(new MoveCard("Move Up", "Moves player up", Direction.UP, 1));
         }
         
         for (int i = 0; i < 18; ++i) {
@@ -190,7 +190,7 @@ public class Deck {
 
             switch (CardType.values()[rand.nextInt(9)]) {
             case MOVE_UP:
-                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 3);
+                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 1);
                 break;
             case MOVE_DOWN:
                 hold = new MoveCard("Move Down", "Moves player down", Direction.DOWN, 1);
@@ -208,16 +208,16 @@ public class Deck {
             	hold = new StrikeCard("Strike", "Strikes a random enemy on the field");
             	break;
             case SHIELD:
-            	hold = new ShieldCard("Shield", "Generates a shield to protect the player", 100);
+            	hold = new ShieldCard("Shield", "Generates a shield to protect the player");
             	break;
             case DISCARD:
             	hold = new DiscardCard("Discard", "Discards all cards and re-draws");
             	break;
-            case METEORSHOWER:
-            	hold = new MeteorShowerCard("Meteor Shower", "Destorys ALL enemies on the field");
+            case LIGHTNINGSTRIKE:
+            	hold = new LightningStrikeCard("Lightning Strike", "Destorys random enemies on the field");
             	break;
             default:
-                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 3);
+                hold = new MoveCard("Move Up", "Moves player up", Direction.UP, 1);
                 break;
             }
             deck.add(hold);

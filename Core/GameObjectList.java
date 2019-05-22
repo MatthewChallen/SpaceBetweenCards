@@ -105,4 +105,7 @@ public class GameObjectList {
 	        gridObjects.get(i).Update(field);	            
 	    }
 	}
+	public int getSize() {
+		return gridObjects.size();
+	}
 }

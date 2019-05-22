@@ -81,7 +81,7 @@ public class GameManager {
 			} else {
 				//Play the chosen card, and draw new cards
 			    theHand.PlayCard(theField, cardChosen);
-			    theHand.DrawCard(5);
+			    //theHand.DrawCard(5);
 			    //The end of turn stuff
 			    
 				//Move objects in motion

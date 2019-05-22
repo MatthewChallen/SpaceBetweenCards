@@ -21,12 +21,10 @@ public class PlayerObject extends GameObject {
 		return this.shieldStatus;
 	}
 
-	// Changing status of shield (default state false)
-	// Can change to int values and have multiple shield
-	// states (level 1, 2 ,3 etc. )
 	public void setShieldStatus() {
 		if (this.shieldStatus == false) {
 			this.shieldStatus = true;
+			System.out.println("Player now has active Shield");
 		} else {
 			System.out.println("Player can only use one shield at a time");
 		}

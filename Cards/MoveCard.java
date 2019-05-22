@@ -72,6 +72,7 @@ public class MoveCard extends Card {
                 // Thread stopped while waiting
             }
     	}
+    	theField.moveObject(direction.UP, ResourceManager.GetRM().getPlayer(), 1);
         
         return true;
     }
