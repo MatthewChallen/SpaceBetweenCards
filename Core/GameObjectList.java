@@ -68,6 +68,18 @@ public class GameObjectList {
 	public String getObjectsID() {
 		return gridObjects.get(0).getObjectID() + " " + gridObjects.get(1).getObjectID();
 	}
+	
+	// Gets the objects
+	public String getObjects() {
+		String result = "   ";
+		
+		if(gridObjects.size() > 0)
+		{
+			result = " " + String.valueOf(gridObjects.get(0).getID()) + " ";
+		}
+		
+		return result;
+	}
 
 	// Supplies object to PlayField
 	public GameObject whatObjectIsThis() {

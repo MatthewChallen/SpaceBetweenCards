@@ -231,4 +231,26 @@ public class PlayField {
 			}
 		}
 	}
+	
+    // MVF 3 output: This method will assist with outputting play field
+    // information to the console - demonstrating the scrolling effect
+    // for MVF 3. Numbers represent the ID of objects on the field.
+    // The player object has ID 0.
+    public void displayPlayField()
+    {		
+    	System.out.println("Representation of the play field:");
+    	System.out.println("X:    0   1   2   3   4   5   6   7   8   9");
+    	System.out.println("------------------------------------------");
+    	System.out.println("Y");
+    	for(int j = 0; j < playGridYSize; j++)
+    	{
+    		System.out.print(j + "  | ");
+    		for(int i = 0; i < playGridXSize; i++)
+    		{
+    			System.out.print(playGrid[i][GetActualY(j)].getObjects() + " ");
+    		}
+    		System.out.println();
+    	}
+    }
+	
 }

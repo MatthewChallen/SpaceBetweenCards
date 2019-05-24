@@ -156,6 +156,9 @@ public class ResourceManager implements KeyListener, MouseListener {
     public void incrementScore()
     {
     	score++;
+    	
+    	// MVF 2 Display player's current score.
+    	System.out.println("The player's score is now: " + score);
     }
 
     // This method creates a separate thread for rendering the screen
@@ -354,6 +357,11 @@ public class ResourceManager implements KeyListener, MouseListener {
         
         // Select letter 'o' for options.
         if(cardChosen == 24) isCardChosen = true;
+        
+        // MVF 3: use the displayPlayField() method to send output to
+        // the console to demonstrate MVF3. Select letter 'p' to
+        // send play field details to the console.
+        if(cardChosen == 25) theField.displayPlayField();
         
         if ((int) cardChosen == -1) {
             // This is the escape key
